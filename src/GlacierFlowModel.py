@@ -24,7 +24,7 @@ numy = 6000
 save_plots = False
 
 # Set Accumulation - Parameters
-ELA = 2850.0                          # Equilibrium Line Altitude
+ELA = 2850.0                        # Equilibrium Line Altitude
 m = 0.0006                          # Alpine Gradient [m/m]
 
 # Set Iceflow - Parameters
