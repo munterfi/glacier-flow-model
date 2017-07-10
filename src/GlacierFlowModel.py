@@ -5,8 +5,8 @@
 ###############################################################################
 
 # from Packages.gradient import slope
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 from os import path
 from osgeo import gdal
 import scipy.ndimage.filters as filter
@@ -18,14 +18,14 @@ import pandas as pd
 
 # Set Up Scenario to render
 scenario = 'Cooling10'
-temp_change = -10
+temp_change = 0
 steps = 5
 numy = 6000
+save_plots = False
 
 # Set Accumulation - Parameters
 ELA = 2850.0                          # Equilibrium Line Altitude
 m = 0.0006                          # Alpine Gradient [m/m]
-m1 = 0.0006                         # Start Gradient [m/m]
 
 # Set Iceflow - Parameters
 A = 1.4 * 10e-16                    # Rate factor Ice
@@ -38,11 +38,11 @@ df_value_slp = 22                   # Number of df-pixels for Slope
 df_value_asp = 3                    # Number of df-pixels for Aspect
 
 # Path of DEM
-raster_path = 'Data/Raster/'
-figures_path = 'Data/Figures/Cooling10'
-data_path = 'Data/Files/'
-dem_name = 'dhm25_Oberland.tif'
-
+raster_path = 'data'
+figures_path = 'figures'
+dem_name = 'dhm25_Bern.tif'
+#dem_file = path.join(raster_path, dem_name)
+dem_file = '/Users/Merlin/Documents/Projekte/glacier-flow-model/data/DEM.tif'
 
 
 
@@ -50,7 +50,7 @@ dem_name = 'dhm25_Oberland.tif'
 # Open and Prepare DEM
 ###############################################################################
 
-dem = gdal.Open(path.join(raster_path, dem_name))
+dem = gdal.Open(dem_file)
 res = dem.GetGeoTransform()[1]
 band = dem.GetRasterBand(1)
 ele = band.ReadAsArray()
@@ -66,10 +66,10 @@ newrow = np.zeros((1, ele.shape[1]))
 ###############################################################################
 
 # Initial Surface Mass Balance
-b = m1 * (ele - ELA)
+b = m * (ele_orig - ELA)
 
 # Glaciated Area
-h_old = np.loadtxt(path.join(data_path, 'Stst6000.txt'))
+h_old = b * (b > 0)
 
 
 ###############################################################################
@@ -241,14 +241,18 @@ for i in xrange(numy):
                                                            angle_altitude=45))
         h = np.ma.masked_where(h_old <= 1, h_old)
 
-        # Setup plot
-        fig = plt.figure(figsize=(20, 15))
-        fig.patch.set_facecolor('black')
+        if i == 0:
+            plt.ion()
+            # Setup plot
+            #fig = plt.figure(figsize=(20, 15))
+            fig = plt.figure()
+            fig.patch.set_facecolor('black')
+
+        # Plot images
+        fig.clear()
         ax = plt.subplot(111, axisbg='black')
         ax.tick_params(axis='x', colors='w')
         ax.tick_params(axis='y', colors='w')
-
-        # Plot images
         plt.imshow(hs, vmin=90, vmax=345, cmap='copper',
                    extent=[x0, x1, y1, y0])
         plt.imshow(255 - hs_back, vmin=1, vmax=150, cmap='Greys',
@@ -257,10 +261,14 @@ for i in xrange(numy):
         titletext = 'Year: ' + str(i) + '   ELA: ' + str(int(ELA))
         ax.set_title(titletext, color='white', size=20)
 
-        fig_name = scenario+'_'+str(t)+'.png'
-        plt.savefig(path.join(figures_path, fig_name),
-                    facecolor=fig.get_facecolor(), edgecolor='none')
-        plt.close(fig)
+        if save_plots:
+            fig_name = scenario+'_'+str(t)+'.png'
+            plt.savefig(path.join(figures_path, fig_name),
+                        facecolor=fig.get_facecolor(), edgecolor='none')
+            plt.close(fig)
+
+        fig.canvas.draw()
+        plt.pause(0.05)
 
         # Update image count
         t += 1
@@ -276,11 +284,11 @@ for i in xrange(numy):
 
 print 'End of loop'
 
-# Save array
-np.savetxt(path.join(data_path, scenario+'.txt'), h_old)
-print 'Array saved.'
-
-# Save stats
-stats = pd.DataFrame([mean_thick, max_thick, mean_vel, ela_list])
-stats.to_csv(path.join(data_path, scenario+'.csv'), index=False, header=False, sep=';')
-print 'Stats saved.'
+# # Save array
+# np.savetxt(path.join(data_path, scenario+'.txt'), h_old)
+# print 'Array saved.'
+#
+# # Save stats
+# stats = pd.DataFrame([mean_thick, max_thick, mean_vel, ela_list])
+# stats.to_csv(path.join(data_path, scenario+'.csv'), index=False, header=False, sep=';')
+# print 'Stats saved.'
