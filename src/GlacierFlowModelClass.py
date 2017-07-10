@@ -41,12 +41,11 @@ class GlacierFlowModel(object):
         # Save statisticsw
         self.mean_velocity = list()
         self.max_thickness = list()
+        self.mean_thickness = list()
 
         # Setup plot ----------------------------------------------------------
         self.fig = self.setup_plot()
-        self.fig_stats = self.setup_plot()
         self.update_plot()
-        self.update_stats_plot()
 
     def reach_steady_state(self, years):
         # Loop through years
@@ -58,7 +57,6 @@ class GlacierFlowModel(object):
             self.update_stats()
             if i % 5 == 0:
                 self.update_plot()
-                self.update_stats_plot()
 
         # Set steady variable to True
         self.steady_state = True
@@ -77,7 +75,6 @@ class GlacierFlowModel(object):
                 self.update_stats()
                 if i % 5 == 0:
                     self.update_plot()
-                    self.update_stats_plot()
 
                 # Adjust temperature change
                 if temp_change > 0:
@@ -190,13 +187,18 @@ class GlacierFlowModel(object):
 
     def update_stats(self):
         self.mean_velocity.append(np.mean(self.u[self.u > 0]))
-        self.max_thickness.append(np.amax(self.h))
+        #self.max_thickness.append(np.amax(self.h))
+        self.max_thickness.append(np.percentile(self.h[self.h > 0], 80))
+        print(np.mean(self.h[self.h > 0]))
+        print(np.percentile(self.h[self.h > 0], 90))
+
+        self.mean_thickness.append(np.mean(self.h[self.h > 2]))
 
 
     @staticmethod
-    def setup_plot(x=5, y=7):
+    def setup_plot(x=15, y=5):
         plt.ion()
-        fig = plt.figure(figsize=(y, x))
+        fig = plt.figure(figsize=(x, y))
         fig.patch.set_facecolor('black')
         return fig
 
@@ -210,7 +212,7 @@ class GlacierFlowModel(object):
 
         # Clear plot and draw axes
         self.fig.clear()
-        ax = plt.subplot(111, axisbg='black')
+        ax = plt.subplot(121, axisbg='black')
         ax.tick_params(axis='x', colors='w')
         ax.tick_params(axis='y', colors='w')
         title_text = 'Year: ' + str(self.i) + '   ELA: ' + str(int(self.ELA))
@@ -221,31 +223,23 @@ class GlacierFlowModel(object):
                    extent=self.extent)
         plt.imshow(255 - hs_back, vmin=1, vmax=150, cmap='Greys',
                    extent=self.extent)
-        self.fig.canvas.draw()
-        plt.pause(0.05)
 
-    def update_stats_plot(self):
-        # Clear plot and draw axes
-        self.fig_stats.clear()
         # Plot mean velocity
-        ax1 = plt.subplot(211, axisbg='black')
+        ax1 = plt.subplot(222, axisbg='black')
         plt.plot(self.mean_velocity, color='w')
         plt.setp(ax1.get_xticklabels(), visible=False)
         ax1.tick_params(axis='y', colors='w')
+
         # Plot maximum thickness
-        ax2 = plt.subplot(212, sharex=ax1, axisbg='black')
-        plt.plot(self.max_thickness, color='w')
+        ax2 = plt.subplot(224, sharex=ax1, axisbg='black')
+        plt.plot(self.max_thickness, color='r')
+        plt.plot(self.mean_thickness, color='w')
         ax2.tick_params(axis='x', colors='w')
         ax2.tick_params(axis='y', colors='w')
-        self.fig_stats.canvas.draw()
+
+        # Draw new plot
+        self.fig.canvas.draw()
         plt.pause(0.05)
-
-
-
-
-        #title_text = 'Year: ' + str(self.i) + '   ELA: ' + str(int(self.ELA))
-        #ax.set_title(title_text, color='white', size=20)
-
 
     @staticmethod
     def hillshade(array, azimuth, angle_altitude):
@@ -274,5 +268,5 @@ class GlacierFlowModel(object):
 GFM = GlacierFlowModel(
     '/Users/Merlin/Documents/Projekte/glacier-flow-model/data/DEM.tif')
 
-GFM.reach_steady_state(300)
+GFM.reach_steady_state(1000)
 GFM.simulate(1000, 5)
