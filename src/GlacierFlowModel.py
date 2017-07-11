@@ -122,7 +122,7 @@ class GlacierFlowModel(object):
         # If steady state is not reached yet, exit the method
         else:
             return("Model is not yet in steady state. " +
-                  "Please call 'reach_steady_state()' method first.")
+                  "Please press 'Steady state' first.")
 
     def add_mass_balance(self):
         # Add new accumulation / ablation on the layer ------------------------
