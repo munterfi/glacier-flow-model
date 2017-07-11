@@ -4,6 +4,8 @@
 # Date:             11.07.2017
 ###############################################################################
 
+import matplotlib as mpl
+mpl.rcParams['toolbar'] = 'None'
 import matplotlib.pyplot as plt
 import numpy as np
 from osgeo import gdal
@@ -65,7 +67,7 @@ class GlacierFlowModel(object):
 
         # Loop through years
         for i in xrange(years):
-            print '----------Year: ', i, ' -----------'
+            # print '----------Year: ', i, ' -----------'
             self.i = i
             self.add_mass_balance()
             self.flow()
@@ -75,11 +77,14 @@ class GlacierFlowModel(object):
 
             # Check if mass balance is constantly around zero; steady state
             if -0.0001 <= self.mass_balance_l_trend[-1] <= 0.0001:
-                print('Steady state reached after ' + str(self.i) + ' years.')
-                break
+                # Set steady variable to True
+                self.steady_state = True
+                return ('Steady state reached after ' + str(self.i) +
+                ' years (ELA: ' + str(self.ELA) + ').')
 
         # Set steady variable to True
         self.steady_state = True
+        return "Steady State was not reached after 10'000 years"
 
     def simulate(self, temp_change, years=10000):
         if self.steady_state:
@@ -89,7 +94,7 @@ class GlacierFlowModel(object):
 
             # Loop through years
             for i in xrange(years):
-                print '----------Year: ', i, ' -----------'
+                # print '----------Year: ', i, ' -----------'
                 self.i = i
                 self.add_mass_balance()
                 self.flow()
@@ -107,16 +112,17 @@ class GlacierFlowModel(object):
 
                 # Check if mass balance is constantly around zero; steady state
                 if -0.0001 <= self.mass_balance_l_trend[-1] <= 0.0001:
-                    print('Steady state reached after ' +
-                          str(self.i) + ' years.')
-                    break
+                    self.steady_state = True
+                    return ('Steady state reached after ' + str(self.i) +
+                    ' years (ELA: ' + str(self.ELA) + ', dT = ' +
+                            str(temp_change)+ ').')
 
-            # Set steady variable to True
-            self.steady_state = True
+            return "Steady State was not reached after 10'000 years"
+
         # If steady state is not reached yet, exit the method
         else:
-            print("Model is not yet in steady state. "
-                  "Please call 'reach_steady_state()' method first.")
+            return("Model is not yet in steady state. " +
+                  "Please press 'Steady state' first.")
 
     def add_mass_balance(self):
         # Add new accumulation / ablation on the layer ------------------------
@@ -167,7 +173,7 @@ class GlacierFlowModel(object):
         # Change of ice per pixel that changes
         change = (self.u / self.res) * self.h
 
-        # Calculate the flow per direction 'F8' -------------------------------
+        # Calculate the flow per direction 'D8' -------------------------------
         change_1 = change * (asp == 8)
         change_1 = np.concatenate((change_1, self.newrow), axis=0)
         change_1 = np.delete(change_1, (0), axis=0)
@@ -240,11 +246,6 @@ class GlacierFlowModel(object):
         else:
             self.mass_balance_l_trend = np.append(
                 self.mass_balance_l_trend, np.mean(self.mass_balance[-100:]))
-
-        print(self.mass[-1])
-        print(self.mass_balance[-1])
-        print(self.mass_balance_s_trend[-1])
-        print(self.mass_balance_l_trend[-1])
 
     @staticmethod
     def setup_plot(x=15, y=5):
@@ -323,12 +324,3 @@ class GlacierFlowModel(object):
                    * np.cos(azimuthrad - aspect)
 
         return 255 * (shaded + 1) / 2
-
-
-
-GFM = GlacierFlowModel(
-    '/Users/Merlin/Documents/Projekte/glacier-flow-model/data/DEM.tif')
-
-GFM.reach_steady_state()
-print(GFM.steady_state)
-GFM.simulate(5)
