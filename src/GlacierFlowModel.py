@@ -44,16 +44,25 @@ class GlacierFlowModel(object):
         self.newcolumn = np.zeros((ele.shape[0], 1))
         self.newrow = np.zeros((1, ele.shape[1]))
 
-        # Save statisticsw
-        self.mean_velocity = np.array([0])
-        self.max_thickness = np.array([0])
-        self.mean_thickness = np.array([0])
+        # Save statistics
+        self.mass = np.array([0])
+        self.mass_balance = np.array([0])
+        self.mass_balance_s_trend = np.array([0])
+        self.mass_balance_l_trend = np.array([0])
 
         # Setup plot ----------------------------------------------------------
         self.fig = self.setup_plot()
         self.update_plot()
 
-    def reach_steady_state(self, years):
+    def reach_steady_state(self, years=10000):
+        # Reset stats, year and state of model
+        self.i = 0
+        self.steady_state = False
+        self.mass = np.array([0])
+        self.mass_balance = np.array([0])
+        self.mass_balance_s_trend = np.array([0])
+        self.mass_balance_l_trend = np.array([0])
+
         # Loop through years
         for i in xrange(years):
             print '----------Year: ', i, ' -----------'
@@ -64,13 +73,19 @@ class GlacierFlowModel(object):
             if i % 5 == 0:
                 self.update_plot()
 
+            # Check if mass balance is constantly around zero; steady state
+            if -0.0001 <= self.mass_balance_l_trend[-1] <= 0.0001:
+                print('Steady state reached after ' + str(self.i) + ' years.')
+                break
+
         # Set steady variable to True
         self.steady_state = True
 
-    def simulate(self, years, temp_change):
+    def simulate(self, temp_change, years=10000):
         if self.steady_state:
-            # Reset year of model
+            # Reset year and state of model
             self.i = 0
+            self.steady_state = False
 
             # Loop through years
             for i in xrange(years):
@@ -89,6 +104,16 @@ class GlacierFlowModel(object):
                 elif temp_change < 0:
                     if self.ELA > (self.ELA_start + 100 * temp_change):
                         self.ELA -= 1
+
+                # Check if mass balance is constantly around zero; steady state
+                if -0.0001 <= self.mass_balance_l_trend[-1] <= 0.0001:
+                    print('Steady state reached after ' +
+                          str(self.i) + ' years.')
+                    break
+
+            # Set steady variable to True
+            self.steady_state = True
+        # If steady state is not reached yet, exit the method
         else:
             print("Model is not yet in steady state. "
                   "Please call 'reach_steady_state()' method first.")
@@ -192,15 +217,34 @@ class GlacierFlowModel(object):
         self.h[h_new_index] = 0
 
     def update_stats(self):
-        # Velocity
-        self.mean_velocity = np.append(self.mean_velocity, np.mean(self.u))
-        # Thickness
-        self.max_thickness = np.append(self.max_thickness,
-                                       np.percentile(self.h[self.h > 0], 80))
-        self.mean_thickness = np.append(self.mean_thickness,
-                                        np.mean(self.h[self.h > 0]))
-        print(self.max_thickness[-1])
-        print(self.mean_thickness[-1])
+        # Mass, only consider pixels with ice
+        self.mass = np.append(self.mass, np.mean(self.h[self.h > 0]))
+
+        # Difference mass 'mass balance'
+        self.mass_balance = np.append(self.mass_balance,
+                                      (self.mass[-1] -
+                                       self.mass[-2]))
+
+        # Calculate trend of mass balance (take last 20 and 100 elements)
+        # Short term trend (20)
+        if self.i < 20:
+            self.mass_balance_s_trend = np.append(self.mass_balance_s_trend,
+                                                  np.mean(self.mass_balance))
+        else:
+            self.mass_balance_s_trend = np.append(
+                self.mass_balance_s_trend, np.mean(self.mass_balance[-20:]))
+        # Long term trend (100)
+        if self.i < 100:
+            self.mass_balance_l_trend = np.append(self.mass_balance_l_trend,
+                                                  np.mean(self.mass_balance))
+        else:
+            self.mass_balance_l_trend = np.append(
+                self.mass_balance_l_trend, np.mean(self.mass_balance[-100:]))
+
+        print(self.mass[-1])
+        print(self.mass_balance[-1])
+        print(self.mass_balance_s_trend[-1])
+        print(self.mass_balance_l_trend[-1])
 
     @staticmethod
     def setup_plot(x=15, y=5):
@@ -222,6 +266,10 @@ class GlacierFlowModel(object):
         ax = plt.subplot(121, axisbg='black')
         ax.tick_params(axis='x', colors='w')
         ax.tick_params(axis='y', colors='w')
+        plt.xlabel('X-coordinate [m]')
+        ax.xaxis.label.set_color('w')
+        plt.ylabel('Y-coordinate [m]')
+        ax.yaxis.label.set_color('w')
         title_text = 'Year: ' + str(self.i) + '   ELA: ' + str(int(self.ELA))
         ax.set_title(title_text, color='white', size=20)
 
@@ -233,14 +281,20 @@ class GlacierFlowModel(object):
 
         # Plot mean velocity
         ax1 = plt.subplot(222, axisbg='black')
-        plt.plot(self.mean_velocity, color='w')
+        plt.plot(self.mass_balance, color='w')
+        plt.plot(self.mass_balance_s_trend, color='r')
+        plt.ylabel('Mass balance [m]')
+        ax1.yaxis.label.set_color('w')
         plt.setp(ax1.get_xticklabels(), visible=False)
         ax1.tick_params(axis='y', colors='w')
 
         # Plot maximum thickness
         ax2 = plt.subplot(224, sharex=ax1, axisbg='black')
-        plt.plot(self.max_thickness, color='r')
-        plt.plot(self.mean_thickness, color='w')
+        plt.plot(self.mass, color='w')
+        plt.xlabel('Year [a]')
+        ax2.xaxis.label.set_color('w')
+        plt.ylabel('Mean thickness [m]')
+        ax2.yaxis.label.set_color('w')
         ax2.tick_params(axis='x', colors='w')
         ax2.tick_params(axis='y', colors='w')
 
@@ -275,5 +329,6 @@ class GlacierFlowModel(object):
 GFM = GlacierFlowModel(
     '/Users/Merlin/Documents/Projekte/glacier-flow-model/data/DEM.tif')
 
-GFM.reach_steady_state(3000)
-GFM.simulate(3000, 5)
+GFM.reach_steady_state()
+print(GFM.steady_state)
+GFM.simulate(5)
