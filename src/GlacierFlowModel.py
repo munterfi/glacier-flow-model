@@ -77,11 +77,14 @@ class GlacierFlowModel(object):
 
             # Check if mass balance is constantly around zero; steady state
             if -0.0001 <= self.mass_balance_l_trend[-1] <= 0.0001:
-                print('Steady state reached after ' + str(self.i) + ' years.')
-                break
+                # Set steady variable to True
+                self.steady_state = True
+                return ('Steady state reached after ' + str(self.i) +
+                ' years (ELA: ' + str(self.ELA) + ').')
 
         # Set steady variable to True
         self.steady_state = True
+        return "Steady State was not reached after 10'000 years"
 
     def simulate(self, temp_change, years=10000):
         if self.steady_state:
@@ -109,15 +112,16 @@ class GlacierFlowModel(object):
 
                 # Check if mass balance is constantly around zero; steady state
                 if -0.0001 <= self.mass_balance_l_trend[-1] <= 0.0001:
-                    print('Steady state reached after ' +
-                          str(self.i) + ' years.')
-                    break
+                    self.steady_state = True
+                    return ('Steady state reached after ' + str(self.i) +
+                    ' years (ELA: ' + str(self.ELA) + ', dT = ' +
+                            str(temp_change)+ ').')
 
-            # Set steady variable to True
-            self.steady_state = True
+            return "Steady State was not reached after 10'000 years"
+
         # If steady state is not reached yet, exit the method
         else:
-            print("Model is not yet in steady state. "
+            return("Model is not yet in steady state. " +
                   "Please call 'reach_steady_state()' method first.")
 
     def add_mass_balance(self):
@@ -320,12 +324,3 @@ class GlacierFlowModel(object):
                    * np.cos(azimuthrad - aspect)
 
         return 255 * (shaded + 1) / 2
-
-
-
-# GFM = GlacierFlowModel(
-#     '/Users/Merlin/Documents/Projekte/glacier-flow-model/data/DEM.tif')
-#
-# GFM.reach_steady_state()
-# print(GFM.steady_state)
-# GFM.simulate(5)
