@@ -121,6 +121,8 @@ class App():
     def load_dem(self):
         # Close eventually excising plots
         plt.close()
+
+        # Create new instance of GlacierFlowModel
         self.GFM = GlacierFlowModel(self.filename)
         Label(self.master, text='DEM loaded.').grid(row=3,
                                                     column=0,
@@ -128,6 +130,7 @@ class App():
                                                     padx=120)
 
     def steady_state(self):
+        # Reach steady state and print message
         message = self.GFM.reach_steady_state()
         Label(self.master, text=message).grid(row=4,
                                               column=0,
@@ -135,18 +138,21 @@ class App():
                                               padx=120)
 
     def simulate(self):
+        # Simulate and print message
         message = self.GFM.simulate(temp_change=self.w.get())
         Label(self.master, text=message).grid(row=8,
                                               column=0,
                                               sticky=W,
                                               padx=120)
 
-
 root = Tk()
 root.lift()
+
 # Separators
 ttk.Separator(root, orient=HORIZONTAL).grid(row=2, columnspan=3, sticky="ew")
 ttk.Separator(root, orient=HORIZONTAL).grid(row=5, columnspan=3, sticky="ew")
 ttk.Separator(root, orient=HORIZONTAL).grid(row=9, columnspan=3, sticky="ew")
+
+# Start app mainloop
 app = App(root)
 root.mainloop()
