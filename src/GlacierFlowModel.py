@@ -45,9 +45,9 @@ class GlacierFlowModel(object):
         self.newrow = np.zeros((1, ele.shape[1]))
 
         # Save statisticsw
-        self.mean_velocity = [0]
-        self.max_thickness = [0]
-        self.mean_thickness = [0]
+        self.mean_velocity = np.array([0])
+        self.max_thickness = np.array([0])
+        self.mean_thickness = np.array([0])
 
         # Setup plot ----------------------------------------------------------
         self.fig = self.setup_plot()
@@ -193,12 +193,14 @@ class GlacierFlowModel(object):
 
     def update_stats(self):
         # Velocity
-        self.mean_velocity.append(np.mean(self.u))
+        self.mean_velocity = np.append(self.mean_velocity, np.mean(self.u))
         # Thickness
-        self.max_thickness.append(np.percentile(self.h[self.h > 0], 80))
-        self.mean_thickness.append(np.mean(self.h[self.h > 0]))
-        print(np.mean(self.h[self.h > 0]))
-        print(np.percentile(self.h[self.h > 0], 90))
+        self.max_thickness = np.append(self.max_thickness,
+                                       np.percentile(self.h[self.h > 0], 80))
+        self.mean_thickness = np.append(self.mean_thickness,
+                                        np.mean(self.h[self.h > 0]))
+        print(self.max_thickness[-1])
+        print(self.mean_thickness[-1])
 
     @staticmethod
     def setup_plot(x=15, y=5):
