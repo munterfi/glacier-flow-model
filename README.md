@@ -1,10 +1,12 @@
 # Glacier Flow Model
 
-Modelling glaciers flow, based on mass bilance and digital eleveation model (DEM).
+Modelling glaciers flow, based on the glaciers mass balance and a digital elevation model (DEM).
 
 ## Installation
 
-Clone the project and open in PyCharm or any other python compatible IDE.
+1. Install python 2.7
+2. Get the needed libraries: `pip install library-name`
+3. Clone the project and open in PyCharm or any other python compatible IDE.
 
 ## Usage
 
@@ -20,15 +22,16 @@ Clone the project and open in PyCharm or any other python compatible IDE.
 
 ## Authors
 
-* **Merlin Unterfinger** - *Initial work* - [munterfinger](http://munterfinger.ch)
+* **Merlin Unterfinger** - *Initial work and further development* - [munterfinger](https://github.com/munterfinger)
+* **Manuel Luck** - *Initial work*
 
 ## Built With
 
 * [PyCharm](https://www.jetbrains.com) -  Integrated Development Environment (IDE), specifically for the Python language
 * [Python 2.7](https://www.python.org) - Python is a high-level programming language for general-purpose programming
 * [Gdal](http://www.gdal.org) - Geospatial Data Abstraction Library
-* [Matplotlib](http://unfoldingmaps.org) - ...
-* [SciPy](http://unfoldingmaps.org) - ...
+* [Matplotlib](https://matplotlib.org) - Python plotting library
+* [SciPy](https://www.scipy.org) - Python libraries for mathematics, science, and engineering
 
 ## License
 
