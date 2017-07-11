@@ -173,7 +173,7 @@ class GlacierFlowModel(object):
         # Change of ice per pixel that changes
         change = (self.u / self.res) * self.h
 
-        # Calculate the flow per direction 'F8' -------------------------------
+        # Calculate the flow per direction 'D8' -------------------------------
         change_1 = change * (asp == 8)
         change_1 = np.concatenate((change_1, self.newrow), axis=0)
         change_1 = np.delete(change_1, (0), axis=0)

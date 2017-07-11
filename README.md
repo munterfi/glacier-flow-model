@@ -1,6 +1,17 @@
 # Glacier Flow Model
 
-Modelling glaciers flow, based on the glaciers mass balance and a digital elevation model (DEM).
+Modelling glaciers flow, grounded on the glaciers mass balance and a digital elevation model (DEM).
+
+The modelling is based on a linear relationship between altitude and mass balance, called the gradient. 
+For alpine glaciers this gradient is around 0.006m/m. Continental glaciers are 
+more around 0.003 and maritime glaciers 0.01m/m. The alpine gradient is set by default.
+To model the glaciers flow, yearly steps are calculated. First the mass balance 
+for the area is added to the glacial layer and in a next step to flow is simulated
+by applying the D8 technique, which is well-known for modelling water flows over terrain.
+To avoid pure convergence of the flow a random nudging of the flow is added. Afterwards
+the surface is smoothed slightly and plotted to the screen. The simulation stops 
+if the difference observed in the mass balance for a smoothed curve (n=-100) 
+is below 0.0001m
 
 ## Installation
 
@@ -14,7 +25,8 @@ Alternatively:
 ## Usage
 
 To use the GlacierFlowModel, first a digital elevation model (DEM) in the GeoTiff
-file format has to be specified. Then hit the `Load dem` button to open the DEM.
+file format has to be specified. Keep the input file size small, otherwise 
+the program may be slowed down remarkably. Then hit the `Load dem` button to open the DEM.
 Afterwards the model needs to accumulate the initial ice mass with the mass 
 balance parameters for the year 2000, which are set by default. 
 The first steady state of the model is calculated by hitting the `Steady state` button.
