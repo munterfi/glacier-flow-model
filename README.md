@@ -43,7 +43,7 @@ to simulate the further development of the glaciers.
 * [Gdal](http://www.gdal.org) - Geospatial Data Abstraction Library
 * [Matplotlib](https://matplotlib.org) - Python plotting library
 * [SciPy](https://www.scipy.org) - Python libraries for mathematics, science, and engineering
-* [Tkinter](https://wiki.python.org/moin/TkInter) - Graphical User Interface (GUI) package.
+* [Tkinter](https://wiki.python.org/moin/TkInter) - Graphical User Interface (GUI) package
 
 ## License
 
