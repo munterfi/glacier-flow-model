@@ -241,11 +241,6 @@ class GlacierFlowModel(object):
             self.mass_balance_l_trend = np.append(
                 self.mass_balance_l_trend, np.mean(self.mass_balance[-100:]))
 
-        print(self.mass[-1])
-        print(self.mass_balance[-1])
-        print(self.mass_balance_s_trend[-1])
-        print(self.mass_balance_l_trend[-1])
-
     @staticmethod
     def setup_plot(x=15, y=5):
         plt.ion()
