@@ -10,7 +10,8 @@ sys.setrecursionlimit(1500)
 
 APP = ['src/GFM.py']
 OPTIONS = {
-    'iconfile':'docs/GFM.icns'}
+    'iconfile':'docs/GFM.icns'
+    }
 
 setup(
     app = APP,
