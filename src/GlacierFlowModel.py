@@ -4,6 +4,8 @@
 # Date:             11.07.2017
 ###############################################################################
 
+import matplotlib as mpl
+mpl.rcParams['toolbar'] = 'None'
 import matplotlib.pyplot as plt
 import numpy as np
 from osgeo import gdal
@@ -65,7 +67,7 @@ class GlacierFlowModel(object):
 
         # Loop through years
         for i in xrange(years):
-            print '----------Year: ', i, ' -----------'
+            # print '----------Year: ', i, ' -----------'
             self.i = i
             self.add_mass_balance()
             self.flow()
@@ -89,7 +91,7 @@ class GlacierFlowModel(object):
 
             # Loop through years
             for i in xrange(years):
-                print '----------Year: ', i, ' -----------'
+                # print '----------Year: ', i, ' -----------'
                 self.i = i
                 self.add_mass_balance()
                 self.flow()
@@ -321,9 +323,9 @@ class GlacierFlowModel(object):
 
 
 
-GFM = GlacierFlowModel(
-    '/Users/Merlin/Documents/Projekte/glacier-flow-model/data/DEM.tif')
-
-GFM.reach_steady_state()
-print(GFM.steady_state)
-GFM.simulate(5)
+# GFM = GlacierFlowModel(
+#     '/Users/Merlin/Documents/Projekte/glacier-flow-model/data/DEM.tif')
+#
+# GFM.reach_steady_state()
+# print(GFM.steady_state)
+# GFM.simulate(5)
