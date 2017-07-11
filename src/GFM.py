@@ -1,7 +1,12 @@
+###############################################################################
+# Glacier Flow Model - GUI
+# Authors:          Merlin Unterfinger
+# Date:             11.07.2017
+###############################################################################
+
 from Tkinter import *
-import ttk
 import tkFileDialog, tkMessageBox
-# import datetime
+import ttk
 from GlacierFlowModel import *
 
 
@@ -15,8 +20,6 @@ class App():
 
     def start(self):
         self.master.title('Glacier Flow Model')
-
-        # self.now = datetime.datetime.now()
 
         # CREATE A TEXT/LABEL
         # Create a variable with text
