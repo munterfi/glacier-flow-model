@@ -32,16 +32,16 @@ class GlacierFlowModel(object):
         x0, dx, dxdy, y0, dydx, dy = dem.GetGeoTransform()
         x1 = x0 + dx * ncols
         y1 = y0 + dy * nrows
-        self.extent = [x0, x1, y1, y0] # Geographical extent of file
+        self.extent = [x0, x1, y1, y0]  # Geographical extent of file
 
         # Define empty row and column for later F8 Shift
         self.newcolumn = np.zeros((ele.shape[0], 1))
         self.newrow = np.zeros((1, ele.shape[1]))
 
         # Save statisticsw
-        self.mean_velocity = list()
-        self.max_thickness = list()
-        self.mean_thickness = list()
+        self.mean_velocity = [0]
+        self.max_thickness = [0]
+        self.mean_thickness = [0]
 
         # Setup plot ----------------------------------------------------------
         self.fig = self.setup_plot()
@@ -130,7 +130,7 @@ class GlacierFlowModel(object):
         # Calculate ice flow velocity 'u'
         ud = (2 * A * ((f * p * g * np.sin(slp)) ** 3.0) * self.h ** 4.0) / 4
         self.u = ud / 100
-        self.u[self.u > self.res] = self.res
+        #self.u[self.u > self.res] = self.res
         self.u[self.u > 0.99 * self.res] = 0.99 * self.res
 
         # Change of ice per pixel that changes
@@ -186,14 +186,13 @@ class GlacierFlowModel(object):
         self.h[h_new_index] = 0
 
     def update_stats(self):
-        self.mean_velocity.append(np.mean(self.u[self.u > 0]))
-        #self.max_thickness.append(np.amax(self.h))
+        # Velocity
+        self.mean_velocity.append(np.mean(self.u))
+        # Thickness
         self.max_thickness.append(np.percentile(self.h[self.h > 0], 80))
+        self.mean_thickness.append(np.mean(self.h[self.h > 0]))
         print(np.mean(self.h[self.h > 0]))
         print(np.percentile(self.h[self.h > 0], 90))
-
-        self.mean_thickness.append(np.mean(self.h[self.h > 2]))
-
 
     @staticmethod
     def setup_plot(x=15, y=5):
@@ -268,5 +267,5 @@ class GlacierFlowModel(object):
 GFM = GlacierFlowModel(
     '/Users/Merlin/Documents/Projekte/glacier-flow-model/data/DEM.tif')
 
-GFM.reach_steady_state(1000)
-GFM.simulate(1000, 5)
+GFM.reach_steady_state(3000)
+GFM.simulate(3000, 5)
