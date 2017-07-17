@@ -39,10 +39,12 @@ the slider to choose the temperature change and press `Simulation`,
 to simulate the further development of the glaciers.
 
 Heating 4.5°C after steady state:
+
 |![Screen03](docs/Screens/Screen03.png ) | ![Screen04](docs/Screens/Screen04.png)|
 |---|---|
 
 Cooling -1°C after steady state:
+
 |![Screen05](docs/Screens/Screen05.png ) | ![Screen06](docs/Screens/Screen06.png)|
 |---|---|
 
