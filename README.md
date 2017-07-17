@@ -15,16 +15,25 @@ is below 0.0001m
 
 ## Installation
 
-[Download](https://www.dropbox.com/s/kvajtncb1wb8y2t/GFM.zip?dl=0) the GFM app and start it by double clicking (only tested under Mac OSX).
+[Download](https://www.swisstopo.admin.ch) the GFM app and start it by double clicking (only tested under Mac OSX).
 
 Alternatively:
 1. Install python 2.7
 2. Get the needed libraries: `pip install library-name`
 3. Clone the project and open in PyCharm or any other python compatible IDE.
 
+## Data
+
+The DEM provided in this repository is from[swisstopo](https://www.swisstopo.admin.ch/en/home.html)and 
+can be[downloaded](https://shop.swisstopo.admin.ch/en/products/height_models/dhm25200)for free. 
+It covers the area of Switzerland and has a resolution of 200m. In order to speed up 
+the calculations, the DEM provided here was cut to a smaller extent around the Aletsch glacial arena. 
+But the simulation can also be run on the original file of swisstopo, just follow
+the download link above, unzip the directory and open the `DHM200.asc` file with the GFM.
+
 ## Usage
 
-To use the GlacierFlowModel, first a DEM in the GeoTiff
+To use the GlacierFlowModel, first a DEM in the GeoTiff (or .asc)
 file format has to be specified. Keep the input file size small, otherwise 
 the program may be slowed down remarkably. Then hit the `Load dem` button to open the DEM.
 Afterwards the model needs to accumulate the initial ice mass with the mass 
