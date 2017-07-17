@@ -15,7 +15,7 @@ is below 0.0001m
 
 ## Installation
 
-[Download](https://www.swisstopo.admin.ch) the GFM app and start it by double clicking (only tested under Mac OSX).
+[Download](https://www.dropbox.com/s/oi83yutqugi9fg2/GFM.zip?dl=0) the GFM app and start it by double clicking (only tested under Mac OSX).
 
 Alternatively:
 1. Install python 2.7
@@ -24,8 +24,8 @@ Alternatively:
 
 ## Data
 
-The DEM provided in this repository is from[swisstopo](https://www.swisstopo.admin.ch/en/home.html)and 
-can be[downloaded](https://shop.swisstopo.admin.ch/en/products/height_models/dhm25200)for free. 
+The DEM provided in this repository is from [swisstopo](https://www.swisstopo.admin.ch/en/home.html) and 
+can be [downloaded](https://shop.swisstopo.admin.ch/en/products/height_models/dhm25200) for free. 
 It covers the area of Switzerland and has a resolution of 200m. In order to speed up 
 the calculations, the DEM provided here was cut to a smaller extent around the Aletsch glacial arena. 
 But the simulation can also be run on the original file of swisstopo, just follow
