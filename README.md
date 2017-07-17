@@ -1,13 +1,13 @@
 # Glacier Flow Model
 
-Modelling glaciers flow, grounded on the glaciers mass balance and a digital elevation model (DEM).
+Modeling glaciers flow, grounded on the glaciers mass balance and a digital elevation model (DEM).
 
-The modelling is based on a linear relationship between altitude and mass balance, called the gradient. 
+The modeling is based on a linear relationship between altitude and mass balance, called the gradient. 
 For alpine glaciers this gradient is around 0.006m/m. Continental glaciers are 
 more around 0.003 and maritime glaciers 0.01m/m. The alpine gradient is set by default.
 To model the glaciers flow, yearly steps are calculated. First the mass balance 
 for the area is added to the glacial layer and in a next step to flow is simulated
-by applying the D8 technique, which is well-known for modelling water flows over terrain.
+by applying the D8 technique, which is well-known for modeling water flows over terrain.
 To avoid pure convergence of the flow a random nudging of the flow is added. Afterwards
 the surface is smoothed slightly and plotted to the screen. The simulation stops 
 if the difference observed in the mass balance for a smoothed curve (n=-100) 
@@ -15,7 +15,7 @@ is below 0.0001m
 
 ## Installation
 
-Download the GFM app and start it by double clicking (only tested under Mac OSX).
+[Download](https://www.dropbox.com/s/kvajtncb1wb8y2t/GFM.zip?dl=0) the GFM app and start it by double clicking (only tested under Mac OSX).
 
 Alternatively:
 1. Install python 2.7
@@ -24,24 +24,25 @@ Alternatively:
 
 ## Usage
 
-To use the GlacierFlowModel, first a digital elevation model (DEM) in the GeoTiff
+To use the GlacierFlowModel, first a DEM in the GeoTiff
 file format has to be specified. Keep the input file size small, otherwise 
 the program may be slowed down remarkably. Then hit the `Load dem` button to open the DEM.
-
-|![Screen01](docs/Screens/Screen01.png) | ![Screen02](docs/Screens/Screen02.png)|
-|---|---|
-
 Afterwards the model needs to accumulate the initial ice mass with the mass 
 balance parameters for the year 2000, which are set by default.
 The first steady state of the model is calculated by hitting the `Steady state` button.
 
-|![Screen03](docs/Screens/Screen03.png ) | ![Screen04](docs/Screens/Screen04.png)|
+|![Screen01](docs/Screens/Screen01.png) | ![Screen02](docs/Screens/Screen02.png)|
 |---|---|
 
 After reaching steady state a change in temperature can be simulated. Simply use 
 the slider to choose the temperature change and press `Simulation`, 
 to simulate the further development of the glaciers.
 
+Heating 4.5°C after steady state:
+|![Screen03](docs/Screens/Screen03.png ) | ![Screen04](docs/Screens/Screen04.png)|
+|---|---|
+
+Cooling -1°C after steady state:
 |![Screen05](docs/Screens/Screen05.png ) | ![Screen06](docs/Screens/Screen06.png)|
 |---|---|
 
