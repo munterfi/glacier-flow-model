@@ -27,6 +27,8 @@ Alternatively:
 To use the GlacierFlowModel, first a digital elevation model (DEM) in the GeoTiff
 file format has to be specified. Keep the input file size small, otherwise 
 the program may be slowed down remarkably. Then hit the `Load dem` button to open the DEM.
+![Screen01](docs/Screens/Screen01.png "Open DEM.")
+![Screen02](docs/Screens/Screen02.png "OPened DEM")
 Afterwards the model needs to accumulate the initial ice mass with the mass 
 balance parameters for the year 2000, which are set by default. 
 The first steady state of the model is calculated by hitting the `Steady state` button.
