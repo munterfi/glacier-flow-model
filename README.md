@@ -28,21 +28,21 @@ To use the GlacierFlowModel, first a digital elevation model (DEM) in the GeoTif
 file format has to be specified. Keep the input file size small, otherwise 
 the program may be slowed down remarkably. Then hit the `Load dem` button to open the DEM.
 
-Solarized dark             |  Solarized Ocean
-:-------------------------:|:-------------------------:
-![Screen01](docs/Screens/Screen01.png) | ![Screen02](docs/Screens/Screen02.png)
+| | |
+|:-:|:-:|
+|![Screen01](docs/Screens/Screen01.png) | ![Screen02](docs/Screens/Screen02.png)|
 
 Afterwards the model needs to accumulate the initial ice mass with the mass 
 balance parameters for the year 2000, which are set by default.
 The first steady state of the model is calculated by hitting the `Steady state` button.
 
-![Screen03](docs/Screens/Screen03.png ) | ![Screen04](docs/Screens/Screen04.png)
+![Screen03](docs/Screens/Screen03.png ) ![Screen04](docs/Screens/Screen04.png)
 
 After reaching steady state a change in temperature can be simulated. Simply use 
 the slider to choose the temperature change and press `Simulation`, 
 to simulate the further development of the glaciers.
 
-![Screen05](docs/Screens/Screen05.png ) | ![Screen06](docs/Screens/Screen06.png)
+![Screen05](docs/Screens/Screen05.png ) ![Screen06](docs/Screens/Screen06.png)
 
 
 ## Contributing
