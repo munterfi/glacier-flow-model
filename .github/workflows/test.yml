@@ -24,8 +24,8 @@ jobs:
         sudo apt-get install libgdal-dev
         export CPLUS_INCLUDE_PATH=/usr/include/gdal
         export C_INCLUDE_PATH=/usr/include/gdal
-        pip install --upgrade pip
-        pip install GDAL
+        python3 -m pip install --upgrade pip
+        python3 -m pip install --global-option=build_ext --global-option="-I/usr/include/gdal" GDAL==`gdal-config --version`
 
     - name: Install poetry
       run: |
