@@ -19,7 +19,7 @@ jobs:
     - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y python-gdal python-sphinx
+        sudo apt-get install -y libgdal-dev python-gdal python-sphinx
 
     - name: Install poetry
       run: |
@@ -34,6 +34,8 @@ jobs:
 
     - name: Install dependencies
       run: |
+        export CPLUS_INCLUDE_PATH=/usr/include/gdal
+        export C_INCLUDE_PATH=/usr/include/gdal
         source "$HOME/.poetry/env"
         poetry config virtualenvs.in-project true
         poetry install
