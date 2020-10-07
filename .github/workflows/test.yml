@@ -39,15 +39,15 @@ jobs:
         source "$HOME/.poetry/env"
         poetry config virtualenvs.in-project true
 
+        # Pip install without GDAL
+        poetry export -f requirements.txt --without-hashes | grep -v gdal > requirements.txt
+        python3 -m pip install -r requirements.txt
+
         # GDAL
         export CPLUS_INCLUDE_PATH=/usr/include/gdal
         export C_INCLUDE_PATH=/usr/include/gdal
         python3 -m pip install --upgrade pip
         python3 -m pip install --global-option=build_ext --global-option="-I/usr/include/gdal" GDAL==`gdal-config --version`
-
-        # Pip install without requirements
-        poetry export -f requirements.txt --without-hashes | grep -v gdal > requirements.txt
-        python3 -m pip install -r requirements.txt
 
     - name: Run checks
       run: |
