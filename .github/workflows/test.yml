@@ -19,7 +19,7 @@ jobs:
     - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y libgdal-dev g++
+        sudo apt-get install -y python-gdal
 
     - name: Install poetry
       run: |
