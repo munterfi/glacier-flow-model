@@ -22,10 +22,6 @@ jobs:
         sudo apt-get update
         sudo apt-get install gdal-bin
         sudo apt-get install libgdal-dev
-        export CPLUS_INCLUDE_PATH=/usr/include/gdal
-        export C_INCLUDE_PATH=/usr/include/gdal
-        python3 -m pip install --upgrade pip
-        python3 -m pip install --global-option=build_ext --global-option="-I/usr/include/gdal" GDAL==`gdal-config --version`
 
     - name: Install poetry
       run: |
@@ -42,13 +38,22 @@ jobs:
       run: |
         source "$HOME/.poetry/env"
         poetry config virtualenvs.in-project true
-        poetry install
+
+        # GDAL
+        export CPLUS_INCLUDE_PATH=/usr/include/gdal
+        export C_INCLUDE_PATH=/usr/include/gdal
+        python3 -m pip install --upgrade pip
+        python3 -m pip install --global-option=build_ext --global-option="-I/usr/include/gdal" GDAL==`gdal-config --version`
+
+        # Pip install without requirements
+        poetry export -f requirements.txt --without-hashes | grep -v gdal > requirements.txt
+        python3 -m pip install requirements.txt
 
     - name: Run checks
       run: |
-        source "$HOME/.poetry/env"
-        export PATH="$(pwd)/.venv/bin:$PATH"
-        make test
+        # flake8
+        # mypy
+        pytest
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
