@@ -1,4 +1,4 @@
-.. image:: https://raw.githubusercontent.com/munterfinger/glacier-flow-model/develop/docs/source/_static/logo.svg
+.. image:: https://raw.githubusercontent.com/munterfinger/glacier-flow-model/develop/docs/source/_static/logo.png
    :width: 120 px
    :alt: zeitsprung.fm
    :align: right
