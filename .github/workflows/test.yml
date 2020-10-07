@@ -47,7 +47,7 @@ jobs:
 
         # Pip install without requirements
         poetry export -f requirements.txt --without-hashes | grep -v gdal > requirements.txt
-        python3 -m pip install requirements.txt
+        python3 -m pip install -r requirements.txt
 
     - name: Run checks
       run: |
