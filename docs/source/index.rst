@@ -3,17 +3,21 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to glacier-flow-model's documentation!
-==============================================
+glacier-flow-model |release|
+============================
+
+Modeling glaciers flow, grounded on the glaciers mass balance and a digital elevation model (DEM).
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
+   readme.rst
+   contributing.rst
+   changelog.rst
 
-
-Indices and tables
-==================
+Package
+=======
 
 * :ref:`genindex`
 * :ref:`modindex`

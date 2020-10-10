@@ -2,4 +2,4 @@
 
 from glacier_flow_model.model import GlacierFlowModel
 
-__all__ = [GlacierFlowModel]
+__all__ = ['GlacierFlowModel']

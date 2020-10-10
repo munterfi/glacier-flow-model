@@ -25,6 +25,7 @@ pytest = "^6.1.1"
 mypy = "^0.782"
 Sphinx = "^3.2.1"
 flake8 = "^3.8.4"
+tomlkit = "^0.7.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
