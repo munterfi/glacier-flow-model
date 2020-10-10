@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     strategy:
       matrix:
         python-version: [3.8]
@@ -18,9 +18,7 @@ jobs:
 
     - name: Install system dependencies
       run: |
-        sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable && sudo apt-get update
-        sudo apt-get install gdal-bin
-        sudo apt-get install libgdal-dev
+        brew install gdal
 
     - name: Install poetry
       run: |
@@ -39,8 +37,8 @@ jobs:
         poetry config virtualenvs.in-project true
 
         # GDAL
-        export CPLUS_INCLUDE_PATH=/usr/include/gdal
-        export C_INCLUDE_PATH=/usr/include/gdal
+        #export CPLUS_INCLUDE_PATH=/usr/include/gdal
+        #export C_INCLUDE_PATH=/usr/include/gdal
 
         # Install
         poetry install
