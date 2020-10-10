@@ -1,4 +1,4 @@
-name: test-gdal-stable
+name: gdal-stable-test
 
 on: [push, pull_request]
 
@@ -51,10 +51,4 @@ jobs:
 
     - name: Run checks
       run: |
-        # flake8
-        # mypy
         pytest --cov=glacier_flow_model
-
-    - name: Upload coverage reports to Codecov
-      run: |
-        codecov

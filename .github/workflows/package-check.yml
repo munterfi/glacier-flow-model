@@ -1,10 +1,10 @@
-name: test-gdal-unstable
+name: package-check
 
 on: [push, pull_request]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     strategy:
       matrix:
         python-version: [3.8]
@@ -18,9 +18,7 @@ jobs:
 
     - name: Install system dependencies
       run: |
-        sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable && sudo apt-get update
-        sudo apt-get install gdal-bin
-        sudo apt-get install libgdal-dev
+        brew install gdal
 
     - name: Install poetry
       run: |
@@ -38,18 +36,17 @@ jobs:
         source "$HOME/.poetry/env"
         poetry config virtualenvs.in-project true
 
-        # Pip install without GDAL
-        poetry export -f requirements.txt --dev --without-hashes | grep -v gdal > requirements.txt
-        python3 -m pip install -r requirements.txt
-
-        # GDAL
-        export CPLUS_INCLUDE_PATH=/usr/include/gdal
-        export C_INCLUDE_PATH=/usr/include/gdal
-        python3 -m pip install --upgrade pip
-        python3 -m pip install --global-option=build_ext --global-option="-I/usr/include/gdal" GDAL==`gdal-config --version`
+        # Install
+        poetry install
 
     - name: Run checks
       run: |
+        source "$HOME/.poetry/env"
         # flake8
         # mypy
-        pytest --cov=glacier_flow_model
+        poetry run pytest --cov=glacier_flow_model
+
+    - name: Upload coverage reports to Codecov
+      run: |
+        source "$HOME/.poetry/env"
+        poetry run codecov

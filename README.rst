@@ -7,8 +7,8 @@
 Glacier flow model
 ==================
 
-.. image:: https://github.com/munterfinger/glacier-flow-model/workflows/test/badge.svg
-        :target: https://github.com/munterfinger/glacier-flow-model/actions?query=workflow%3Atest
+.. image:: https://github.com/munterfinger/glacier-flow-model/workflows/package-check/badge.svg
+        :target: https://github.com/munterfinger/glacier-flow-model/actions?query=workflow%3Apackage-check
 
 .. image:: https://readthedocs.org/projects/glacier-flow-model/badge/?version=latest
         :target: https://glacier-flow-model.readthedocs.io/en/latest/?badge=latest
