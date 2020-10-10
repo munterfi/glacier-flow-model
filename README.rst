@@ -45,15 +45,27 @@ Linux (using aptitude):
 
 .. code-block:: shell
 
-    apt-get install gdal-bin libgdal-dev
+    sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable \
+        && sudo apt-get update \
+        && sudo apt-get install -y gdal-bin libgdal-dev
 
-Install the stable release of **glacier-flow-model** from pypi:
+    export CPLUS_INCLUDE_PATH=/usr/include/gdal
+    export C_INCLUDE_PATH=/usr/include/gdal
+
+    python3 -m pip install --upgrade pip \
+        && python3 -m pip install numpy \
+        && python3 -m pip install \
+            --global-option=build_ext \
+            --global-option="-I/usr/include/gdal" \
+            GDAL==`gdal-config --version`
+
+After installing GDAL, get the stable release of **glacier-flow-model** from pypi:
 
 .. code-block:: shell
 
-    pip install glacier-flow-model
+    python3 -m pip install glacier-flow-model
 
-Install the development version from `Github <https://github.com/munterfinger/glacier-flow-model>`_:
+Or install the development version from `Github <https://github.com/munterfinger/glacier-flow-model>`_:
 
 .. code-block:: shell
 
