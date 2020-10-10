@@ -126,7 +126,7 @@ Cooling -1°C after initial steady state:
 Limitations
 -----------
 
-The model has some important limitations:
+The model has some limitations that need to be considered:
 
 - The flow velocity of the ice per year is limited by the resolution of the grid cells. Therefore, a too high resolution should not be chosen for the simulation.
 - The modeling of ice flow is done with D8, a technique for modeling surface flow in hydrology. Water behaves fundamentally different from ice, which is neglected by the model (e.g. influence of crevasses).

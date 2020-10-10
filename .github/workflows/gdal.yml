@@ -1,0 +1,59 @@
+name: test
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install system dependencies
+      run: |
+        sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable && sudo apt-get update
+        sudo apt-get install gdal-bin
+        sudo apt-get install libgdal-dev
+
+    - name: Install poetry
+      run: |
+        curl -sSL \
+          "https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py" | python
+
+    - name: Set up cache
+      uses: actions/cache@v1
+      with:
+        path: .venv
+        key: venv-${{ matrix.python-version }}-${{ hashFiles('poetry.lock') }}
+
+    - name: Install dependencies
+      run: |
+        source "$HOME/.poetry/env"
+        poetry config virtualenvs.in-project true
+
+        # Pip install without GDAL
+        poetry export -f requirements.txt --dev --without-hashes | grep -v gdal > requirements.txt
+        python3 -m pip install -r requirements.txt
+
+        # GDAL
+        export CPLUS_INCLUDE_PATH=/usr/include/gdal
+        export C_INCLUDE_PATH=/usr/include/gdal
+        python3 -m pip install --upgrade pip
+        python3 -m pip install --global-option=build_ext --global-option="-I/usr/include/gdal" GDAL==`gdal-config --version`
+
+    - name: Run checks
+      run: |
+        # flake8
+        # mypy
+        pytest --cov=glacier_flow_model
+
+    - name: Upload coverage reports to Codecov
+      run: |
+        codecov
