@@ -6,7 +6,7 @@ sphinx-autodoc-typehints
 recommonmark
 tomlkit
 
-gdal
-matplotlib
-numpy
-scipy
+#gdal
+#matplotlib
+#numpy
+#scipy
