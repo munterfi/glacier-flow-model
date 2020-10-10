@@ -100,7 +100,7 @@ class GlacierFlowModel(Base):
             if -0.0001 <= self.mass_balance_l_trend[-1] <= 0.0001:
                 # Set steady variable to True
                 self.steady_state = True
-                return f'Steady state reached after {self.i} years (ela: {self.ela}).'
+                return f'Steady state reached after {self.i} years (ELA: {self.ela}).'
 
         # Set steady variable to True
         self.steady_state = True
@@ -133,7 +133,7 @@ class GlacierFlowModel(Base):
                 # Check if mass balance is constantly around zero; steady state
                 if -0.0001 <= self.mass_balance_l_trend[-1] <= 0.0001:
                     self.steady_state = True
-                    return f'Steady state reached after {self.i} years (ela: {self.ela}, dT = {temp_change})'
+                    return f'Steady state reached after {self.i} years (ELA: {self.ela}, dT = {temp_change})'
 
             return "Steady State was not reached after 10'000 years"
 
@@ -184,7 +184,7 @@ class GlacierFlowModel(Base):
         # Calculate ice flow velocity 'u'
         ud = (2 * A * ((f * p * g * np.sin(slp)) ** 3.0) * self.h ** 4.0) / 4
         self.u = ud / 100
-        #self.u[self.u > self.res] = self.res
+        # self.u[self.u > self.res] = self.res
         self.u[self.u > 0.99 * self.res] = 0.99 * self.res
 
         # Change of ice per pixel that changes
@@ -288,7 +288,7 @@ class GlacierFlowModel(Base):
         ax.xaxis.label.set_color('w')
         plt.ylabel('Y-coordinate [m]')
         ax.yaxis.label.set_color('w')
-        title_text = 'Year: ' + str(self.i) + '   ela: ' + str(int(self.ela))
+        title_text = f'Year: {str(self.i)}  ELA: {str(int(self.ela))}'
         ax.set_title(title_text, color='white', size=20)
 
         # Draw new image layers
