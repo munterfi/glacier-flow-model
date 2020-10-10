@@ -1,4 +1,4 @@
-name: test
+name: test-gdal-unstable
 
 on: [push, pull_request]
 
@@ -18,8 +18,7 @@ jobs:
 
     - name: Install system dependencies
       run: |
-        sudo add-apt-repository ppa:ubuntugis/ppa && sudo apt-get update
-        sudo apt-get update
+        sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable && sudo apt-get update
         sudo apt-get install gdal-bin
         sudo apt-get install libgdal-dev
 
@@ -54,7 +53,3 @@ jobs:
         # flake8
         # mypy
         pytest --cov=glacier_flow_model
-
-    - name: Upload coverage reports to Codecov
-      run: |
-        codecov
