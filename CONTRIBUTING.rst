@@ -25,7 +25,7 @@ Ready to contribute? Here's how to set up **glacier-flow-model** for local devel
         poetry run flake8 .                             # Code linting
         cd docs && poetry run make html && cd ..        # Build documentation
 
-   Alternatively the script :code:`check.sh` automates the steps above.
+Alternatively the script :code:`check.sh` automates the steps above.
 
 6. If tests are passed commit and push the changes:
 

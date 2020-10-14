@@ -3,9 +3,11 @@
 """Tests for the GlacierFlowModel class."""
 
 from glacier_flow_model.model import GlacierFlowModel
+from glacier_flow_model.data import PkgDataAccess
 
 max_iter = 10
-gfm = GlacierFlowModel('data/dem.tif')
+pkg = PkgDataAccess()
+gfm = GlacierFlowModel(pkg.locate_dem())
 
 
 def test_type():

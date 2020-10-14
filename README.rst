@@ -93,8 +93,9 @@ the model may be slowed down remarkably:
 
 .. code-block:: python
 
-    from glacier_flow_model import GlacierFlowModel
-    gfm = GlacierFlowModel('data/dem.tif')
+    from glacier_flow_model import GlacierFlowModel, PkgDataAccess
+    pkg = PkgDataAccess()
+    gfm = GlacierFlowModel(pkg.locate_dem())
 
 After initialization, the model needs to accumulate the initial ice mass until it reaches a steady state.
 By default the mass balance parameters for the year 2000 are set. Calling the :code:`reach_steady_state`
