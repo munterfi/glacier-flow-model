@@ -28,7 +28,7 @@ by applying the D8 technique, which is well-known for modeling water flows over 
 To avoid pure convergence of the flow a random nudging of the flow is added. Afterwards
 the surface is smoothed slightly and plotted to the screen. The simulation stops
 if the difference observed in the mass balance for a smoothed curve (n=-100)
-is below 0.0001m
+is below 0.0001m.
 
 Installation
 ------------

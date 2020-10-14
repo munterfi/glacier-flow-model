@@ -16,13 +16,20 @@ Ready to contribute? Here's how to set up **glacier-flow-model** for local devel
     - docstrings
     - tests for the feature
     - documentation
-5. When finished with the feature, check that the changes pass::
+5. When finished with the feature, check that the changes pass:
+
+.. code-block:: shell
 
         poetry run pytest                               # Running tests
         poetry run mypy --config-file pyproject.toml .  # Static type checks
         poetry run flake8 .                             # Code linting
+        cd docs && poetry run make html && cd ..        # Build documentation
 
-6. If tests are passed commit and push the changes::
+   Alternatively the script :code:`check.sh` automates the steps above.
+
+6. If tests are passed commit and push the changes:
+
+.. code-block:: shell
 
         git add .
         git commit -m "Description of the changes."
@@ -75,7 +82,9 @@ _________________
 Create python documentation with docstrings in
 `numpydoc <https://numpydoc.readthedocs.io/en/latest/format.html>`_ convention.
 
-Example::
+Example:
+
+.. code-block:: python
 
     def function_with_types_in_docstring(param1, param2):
         """Example function with types documented in the docstring.
@@ -104,7 +113,9 @@ Example::
 Script header template
 ______________________
 
-Add a header to CLI scripts according to the following template::
+Add a header to CLI scripts according to the following template:
+
+.. code-block:: shell
 
     #!/usr/bin/env bash
     # -----------------------------------------------------------------------------

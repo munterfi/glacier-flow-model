@@ -12,6 +12,11 @@ Version 0.1.0
     - :code:`pytest`: Framework for testing.
     - :code:`mypy`: Static type checking.
     - :code:`flake8`: Code linting.
+    - :code:`sphinx`: Documentation of the package using :code:`numpydoc` docstring style.
 - Submodules:
     - model: The :code:`GlacierFlowModel` class.
     - internal: Base class and internals.
+    - data: Stores example data.
+- Scripts:
+    - :code:`install.sh`: Builds the package and installs it to the global python version.
+    - :code:`check.sh`: Automates checks and documentation build.
