@@ -42,8 +42,8 @@ jobs:
     - name: Run checks
       run: |
         source "$HOME/.poetry/env"
-        # flake8
-        # mypy
+        poetry run flake8 .
+        poetry run mypy --config-file pyproject.toml .
         poetry run pytest --cov=glacier_flow_model
 
     - name: Upload coverage reports to Codecov

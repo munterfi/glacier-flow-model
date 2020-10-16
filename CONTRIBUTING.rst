@@ -86,7 +86,7 @@ Example:
 
 .. code-block:: python
 
-    def function_with_types_in_docstring(param1, param2):
+    def function_with_types_in_docstring(param1: str, param2: int = 10):
         """Example function with types documented in the docstring.
 
         `PEP 484`_ type annotations are supported. If attribute, parameter, and
@@ -95,9 +95,9 @@ Example:
 
         Parameters
         ----------
-        param1 : int
+        param1 : str
             The first parameter.
-        param2 : str
+        param2 : int, default 10
             The second parameter.
 
         Returns
