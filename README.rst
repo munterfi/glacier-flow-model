@@ -10,8 +10,8 @@ Glacier flow model
 .. image:: https://img.shields.io/pypi/v/glacier-flow-model.svg
         :target: https://pypi.python.org/pypi/glacier-flow-model
 
-.. image:: https://github.com/munterfinger/glacier-flow-model/workflows/package-check/badge.svg
-        :target: https://github.com/munterfinger/glacier-flow-model/actions?query=workflow%3Apackage-check
+.. image:: https://github.com/munterfinger/glacier-flow-model/workflows/check/badge.svg
+        :target: https://github.com/munterfinger/glacier-flow-model/actions?query=workflow%3Acheck
 
 .. image:: https://readthedocs.org/projects/glacier-flow-model/badge/?version=latest
         :target: https://glacier-flow-model.readthedocs.io/en/latest/?badge=latest
@@ -36,9 +36,6 @@ Getting started
 ---------------
 
 The **glacier-flow-model** package depends on GDAL, which needs to be installed on the system.
-
-Installation
-____________
 
 Get the stable release from pypi:
 
