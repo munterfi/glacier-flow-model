@@ -25,6 +25,7 @@ Sphinx = "^3.2.1"
 flake8 = "^3.8.4"
 tomlkit = "^0.7.0"
 codecov = "^2.1.10"
+pydata-sphinx-theme = "^0.4.1"
 
 [mypy]
 ignore_missing_imports = true

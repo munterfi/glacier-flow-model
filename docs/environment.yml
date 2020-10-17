@@ -1,0 +1,12 @@
+name: gfm_docs
+channels:
+- conda-forge
+dependencies:
+- scipy
+- numpy
+- gdal
+- libgdal
+- matplotlib
+- sphinx
+- tomlkit
+- pydata-sphinx-theme

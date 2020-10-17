@@ -1,4 +1,4 @@
-.. image:: https://raw.githubusercontent.com/munterfinger/glacier-flow-model/develop/docs/source/_static/logo.svg
+.. image:: https://raw.githubusercontent.com/munterfinger/glacier-flow-model/master/docs/source/_static/logo.svg
    :width: 120 px
    :alt: https://github.com/munterfinger/glacier-flow-model
    :align: right
@@ -10,8 +10,8 @@ Glacier flow model
 .. image:: https://img.shields.io/pypi/v/glacier-flow-model.svg
         :target: https://pypi.python.org/pypi/glacier-flow-model
 
-.. image:: https://github.com/munterfinger/glacier-flow-model/workflows/package-check/badge.svg
-        :target: https://github.com/munterfinger/glacier-flow-model/actions?query=workflow%3Apackage-check
+.. image:: https://github.com/munterfinger/glacier-flow-model/workflows/check/badge.svg
+        :target: https://github.com/munterfinger/glacier-flow-model/actions?query=workflow%3Acheck
 
 .. image:: https://readthedocs.org/projects/glacier-flow-model/badge/?version=latest
         :target: https://glacier-flow-model.readthedocs.io/en/latest/?badge=latest
@@ -36,9 +36,6 @@ Getting started
 ---------------
 
 The **glacier-flow-model** package depends on GDAL, which needs to be installed on the system.
-
-Installation
-____________
 
 Get the stable release from pypi:
 
@@ -80,7 +77,7 @@ After initialization, the model needs to accumulate the initial ice mass until i
 
     gfm.reach_steady_state()
 
-.. image:: https://raw.githubusercontent.com/munterfinger/glacier-flow-model/develop/docs/source/_static/steady_state_initial.png
+.. image:: https://raw.githubusercontent.com/munterfinger/glacier-flow-model/master/docs/source/_static/steady_state_initial.png
    :width: 120 px
    :alt: https://github.com/munterfinger/glacier-flow-model
    :align: center
@@ -95,7 +92,7 @@ Heating 4.5°C after initial steady state:
 
     gfm.simulate(4.5)
 
-.. image:: https://raw.githubusercontent.com/munterfinger/glacier-flow-model/develop/docs/source/_static/steady_state_heating.png
+.. image:: https://raw.githubusercontent.com/munterfinger/glacier-flow-model/master/docs/source/_static/steady_state_heating.png
    :width: 120 px
    :alt: https://github.com/munterfinger/glacier-flow-model
    :align: center
@@ -106,7 +103,7 @@ Cooling -1°C after initial steady state:
 
     gfm.simulate(-1)
 
-.. image:: https://raw.githubusercontent.com/munterfinger/glacier-flow-model/develop/docs/source/_static/steady_state_cooling.png
+.. image:: https://raw.githubusercontent.com/munterfinger/glacier-flow-model/master/docs/source/_static/steady_state_cooling.png
    :width: 120 px
    :alt: https://github.com/munterfinger/glacier-flow-model
    :align: center

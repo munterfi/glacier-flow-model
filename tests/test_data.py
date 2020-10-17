@@ -5,7 +5,7 @@
 from glacier_flow_model.data import PkgDataAccess
 from osgeo.gdal import Dataset
 
-pkg = PkgDataAccess()
+pkg = PkgDataAccess(verbose=True)
 
 
 def test_example_class():
