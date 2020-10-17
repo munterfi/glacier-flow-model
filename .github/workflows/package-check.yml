@@ -1,4 +1,4 @@
-name: package-check
+name: check
 
 on: [push, pull_request]
 
@@ -45,6 +45,7 @@ jobs:
         poetry run flake8 glacier_flow_model tests --count --max-complexity=10
         poetry run mypy --config-file pyproject.toml .
         poetry run pytest --cov=glacier_flow_model
+        cd docs && poetry run make html && cd ..
 
     - name: Upload coverage reports to Codecov
       run: |
