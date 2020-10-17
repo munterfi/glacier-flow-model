@@ -42,7 +42,8 @@ jobs:
     - name: Run checks
       run: |
         source "$HOME/.poetry/env"
-        poetry run flake8 glacier_flow_model tests
+        poetry run flake8 . --count --exit-zero --max-complexity=10 --statistics
+        #poetry run flake8 glacier_flow_model tests
         poetry run mypy --config-file pyproject.toml .
         poetry run pytest --cov=glacier_flow_model
 
