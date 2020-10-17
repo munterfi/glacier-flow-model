@@ -1,0 +1,53 @@
+name: publish
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install system dependencies
+      run: |
+        brew install gdal
+
+    - name: Install poetry
+      run: |
+        curl -sSL \
+          "https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py" | python
+
+    - name: Install dependencies
+      run: |
+        source "$HOME/.poetry/env"
+        poetry config virtualenvs.in-project true
+
+        # Install
+        poetry install
+
+    - name: Run checks
+      run: |
+        source "$HOME/.poetry/env"
+        poetry run flake8 glacier_flow_model tests --count --max-complexity=10
+        poetry run mypy --config-file pyproject.toml .
+        poetry run pytest --cov=glacier_flow_model
+
+    - name: Build and publish
+      env:
+        TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+        TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+      run: |
+        source "$HOME/.poetry/env"
+        poetry build
+        python3 -m pip install --upgrade twine
+        python3 -m twine upload dist/*

@@ -20,79 +20,51 @@ Glacier flow model
 .. image:: https://codecov.io/gh/munterfinger/glacier-flow-model/branch/master/graph/badge.svg
         :target: https://codecov.io/gh/munterfinger/glacier-flow-model
 
-Modeling glaciers flow, grounded on the glaciers mass balance and a digital elevation model (DEM).
+Modeling glaciers on a digital elevation model (DEM) based on the mass balance of the glaciers
+and the D8 flow algorithm applied to the ice.
 
-The modeling is based on a linear relationship between altitude and mass balance, called the gradient.
-For alpine glaciers this gradient is around 0.006m/m. Continental glaciers are
-more around 0.003 and maritime glaciers 0.01m/m. The alpine gradient is set by default.
-To model the glaciers flow, yearly steps are calculated. First the mass balance
-for the area is added to the glacial layer and in a next step to flow is simulated
-by applying the D8 technique, which is well-known for modeling water flows over terrain.
-To avoid pure convergence of the flow a random nudging of the flow is added. Afterwards
-the surface is smoothed slightly and plotted to the screen. The simulation stops
-if the difference observed in the mass balance for a smoothed curve (n=-100)
-is below 0.0001m.
+The modeling is based on the linear relationship between altitude and mass balance, the so-called mass balance gradient.
+For alpine glaciers this gradient is about 0.006 m/m. Continental glaciers tend to be at 0.003 and maritime glaciers
+at 0.01 m/m. The alpine gradient is set by default in the model.
+To model the glaciers, annual steps are calculated. First the mass balance (accumulation and ablation) for the area
+is added to the glacier layer and in a second step the glacier flow is simulated by using the D8 technique,
+which is known for modeling surface water flows over the terrain. In order to avoid pure convergence of the flow,
+a random impulse ("nudging") is added to the flow. Then the surface of the glaciers is slightly smoothed.
+The simulation stops when the observed difference in mass balance for a smoothed curve (n=-100) is less than 0.0001 m.
+
+Getting started
+---------------
 
 Installation
-------------
+____________
 
-The **glacier-flow-model** package depends on GDAL, which needs to be installed on the system.
-
-macOS (using homebrew):
-
-.. code-block:: shell
-
-    brew install gdal
-
-Linux (using aptitude):
+The **glacier-flow-model** package depends on GDAL, which needs to be installed on the system (see :ref:`install`).
+Get the stable release from pypi:
 
 .. code-block:: shell
 
-    sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable \
-        && sudo apt-get update \
-        && sudo apt-get install -y gdal-bin libgdal-dev
+    pip install glacier-flow-model
 
-    export CPLUS_INCLUDE_PATH=/usr/include/gdal
-    export C_INCLUDE_PATH=/usr/include/gdal
+Example data
+____________
 
-    python3 -m pip install --upgrade pip \
-        && python3 -m pip install numpy \
-        && python3 -m pip install \
-            --global-option=build_ext \
-            --global-option="-I/usr/include/gdal" \
-            GDAL==`gdal-config --version`
+The package includes an example DEM from `swisstopo <https://www.swisstopo.admin.ch/en/home.html>`_.
+It covers a smaller extent around the Aletsch glacial arena in Switzerland with a raster cell resolution of 200m.
 
-After installing GDAL, get the stable release of **glacier-flow-model** from pypi:
+.. code-block:: python
 
-.. code-block:: shell
+    from glacier_flow_model import PkgDataAccess
+    pkg = PkgDataAccess()
+    dem = pkg.load_dem()
 
-    python3 -m pip install glacier-flow-model
-
-Or install the development version from `Github <https://github.com/munterfinger/glacier-flow-model>`_:
-
-.. code-block:: shell
-
-    git clone git://github.com/munterfinger/glacier-flow-model.git
-    cd glacier-flow-model
-    poetry install && poetry build
-    python3 -m pip install dist/*
-
-Data
-----
-
-The example DEM provided in this package is from `swisstopo <https://www.swisstopo.admin.ch/en/home.html>`_ and
-can be downloaded `here <https://shop.swisstopo.admin.ch/en/products/height_models/dhm25200>`_.
-It covers the area of Switzerland and has a resolution of 200m. In order to speed up
-the calculations, the DEM provided here was cut to a smaller extent around the Aletsch glacial arena.
-But the simulation can also be run on the original file of swisstopo, just follow
-the download link above, unzip the directory and open the :code:`DHM200.asc` file with the glacier flow model.
+The original DEM can be downloaded `here <https://shop.swisstopo.admin.ch/en/products/height_models/dhm25200>`_.
 
 Usage
------
+_____
 
-To set up a glacier flow model, a DEM in the GeoTiff (or .asc)
-file format has to passed to the model class constructor. Keep the input file size small, otherwise
-the model may be slowed down remarkably:
+To set up a glacier flow model, a path to a DEM in the GeoTiff (:code:`.tif` or :code:`.asc`)
+file format has to passed to the model class constructor. By default the mass balance parameters for alpine glaciers
+in the year 2000 are set.  Keep the input file size small, otherwise the model may be slowed down remarkably:
 
 .. code-block:: python
 
@@ -100,9 +72,8 @@ the model may be slowed down remarkably:
     pkg = PkgDataAccess()
     gfm = GlacierFlowModel(pkg.locate_dem())
 
-After initialization, the model needs to accumulate the initial ice mass until it reaches a steady state.
-By default the mass balance parameters for the year 2000 are set. Calling the :code:`reach_steady_state`
-method to do so:
+After initialization, the model needs to accumulate the initial ice mass until it reaches a steady state, call the
+:code:`reach_steady_state` method to do so:
 
 .. code-block:: python
 
@@ -113,7 +84,7 @@ method to do so:
    :alt: https://github.com/munterfinger/glacier-flow-model
    :align: center
 
-After reaching steady state a change in temperature can be simulated. Simply use
+After reaching steady state, a temperature change of the climate can be simulated. Simply use
 the :code:`simulate` method with a positive or negative temperature change in degrees.
 The model changes the temperature gradually and simulates years until it reaches a steady state again.
 

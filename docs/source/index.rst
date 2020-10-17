@@ -13,6 +13,7 @@ Modeling glaciers flow, grounded on the glaciers mass balance and a digital elev
    :caption: Contents:
 
    readme.rst
+   installation.rst
    contributing.rst
    changelog.rst
 
