@@ -35,10 +35,11 @@ The simulation stops when the observed difference in mass balance for a smoothed
 Getting started
 ---------------
 
+The **glacier-flow-model** package depends on GDAL, which needs to be installed on the system.
+
 Installation
 ____________
 
-The **glacier-flow-model** package depends on GDAL, which needs to be installed on the system (see :ref:`install`).
 Get the stable release from pypi:
 
 .. code-block:: shell
