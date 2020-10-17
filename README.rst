@@ -7,6 +7,9 @@
 Glacier flow model
 ==================
 
+.. image:: https://img.shields.io/pypi/v/glacier-flow-model.svg
+        :target: https://pypi.python.org/pypi/glacier-flow-model
+
 .. image:: https://github.com/munterfinger/glacier-flow-model/workflows/package-check/badge.svg
         :target: https://github.com/munterfinger/glacier-flow-model/actions?query=workflow%3Apackage-check
 
