@@ -16,7 +16,7 @@ Version 0.1.0
 - Submodules:
     - model: The :code:`GlacierFlowModel` class.
     - internal: Base class and internals.
-    - data: Stores example data.
+    - data: Stores example data, which can be accessed using the :code:`PkgDataAccess` class.
 - Scripts:
     - :code:`install.sh`: Builds the package and installs it to the global python version.
     - :code:`check.sh`: Automates checks and documentation build.
