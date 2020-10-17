@@ -1,0 +1,12 @@
+# This file is used to setup env
+# to generate documentation.
+
+sphinx
+sphinx-autodoc-typehints
+recommonmark
+tomlkit
+
+#gdal
+#matplotlib
+#numpy
+#scipy
