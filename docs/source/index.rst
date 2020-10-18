@@ -17,8 +17,8 @@ Modeling glaciers flow, grounded on the glaciers mass balance and a digital elev
    contributing.rst
    changelog.rst
 
-Package
-=======
+Indices and tables
+==================
 
 * :ref:`genindex`
 * :ref:`modindex`

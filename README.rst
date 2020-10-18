@@ -13,7 +13,7 @@ Glacier flow model
 .. image:: https://github.com/munterfinger/glacier-flow-model/workflows/check/badge.svg
         :target: https://github.com/munterfinger/glacier-flow-model/actions?query=workflow%3Acheck
 
-.. image:: https://readthedocs.org/projects/glacier-flow-model/badge/?version=latest
+.. image:: https://glacier-flow-model.readthedocs.io/en/latest/
         :target: https://glacier-flow-model.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
@@ -37,7 +37,7 @@ Getting started
 
 The **glacier-flow-model** package depends on GDAL, which needs to be installed on the system.
 
-Get the stable release from pypi:
+Get the stable release of the package from pypi:
 
 .. code-block:: shell
 
@@ -82,7 +82,7 @@ After initialization, the model needs to accumulate the initial ice mass until i
    :alt: https://github.com/munterfinger/glacier-flow-model
    :align: center
 
-After reaching steady state, a temperature change of the climate can be simulated. Simply use
+When the model is in a steady state, a temperature change of the climate can be simulated. Simply use
 the :code:`simulate` method with a positive or negative temperature change in degrees.
 The model changes the temperature gradually and simulates years until it reaches a steady state again.
 
@@ -107,6 +107,9 @@ Cooling -1°C after initial steady state:
    :width: 120 px
    :alt: https://github.com/munterfinger/glacier-flow-model
    :align: center
+
+Check out the `video <https://munterfinger.ch/media/film/gfm.mp4>`_ of the scenario simulation in the Aletsch
+glacial arena in Switzerland
 
 Limitations
 -----------
