@@ -8,6 +8,7 @@ from glacier_flow_model.data import PkgDataAccess
 max_iter = 10
 pkg = PkgDataAccess()
 gfm = GlacierFlowModel(pkg.locate_dem())
+print(gfm)
 
 
 def test_type():

@@ -82,6 +82,27 @@ class GlacierFlowModel(Base):
         self.fig = self.setup_plot()
         self.update_plot()
 
+    def __str__(self) -> str:
+        """
+        Print method of the GlacierFlowModel class.
+
+        Returns
+        -------
+        str
+            Information about the model state and parameters.
+
+        """
+        return f"GlacierFlowModel {'' if self.steady_state else 'not '}" \
+               f"in steady state with:" \
+               f"\n - m:          {self.m:20.5f} [m/m]" \
+               f"\n - ela:        {self.ela:20.2f} [m MSL]" \
+               f"\n - resolution: {self.res:20.2f} [m]" \
+               f"\n - extent:           min        max" \
+               f"\n              {self.extent[0]:10.1f} " \
+               f"{self.extent[1]:10.1f} [x]" \
+               f"\n              {self.extent[2]:10.1f} " \
+               f"{self.extent[3]:10.1f} [y]"
+
     def reach_steady_state(self, max_years: int = 10000) -> str:
         """
         Iterates the model until a steady state in the mass balance is
