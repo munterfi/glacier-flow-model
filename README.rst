@@ -13,8 +13,8 @@ Glacier flow model
 .. image:: https://github.com/munterfinger/glacier-flow-model/workflows/check/badge.svg
         :target: https://github.com/munterfinger/glacier-flow-model/actions?query=workflow%3Acheck
 
-.. image:: https://glacier-flow-model.readthedocs.io/en/latest/
-        :target: https://glacier-flow-model.readthedocs.io/en/latest/?badge=latest
+.. image:: https://readthedocs.org/projects/glacier-flow-model/badge/?version=latest
+        :target: https://glacier-flow-model.readthedocs.io/en/latest/
         :alt: Documentation Status
 
 .. image:: https://codecov.io/gh/munterfinger/glacier-flow-model/branch/master/graph/badge.svg
