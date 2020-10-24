@@ -1,7 +1,7 @@
 ---
 name: Bug report
 about: Create a report to help improving the package
-title: ''
+title: 'Bug: <Title>'
 labels: 'bug'
 assignees: 'munterfinger'
 
