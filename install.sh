@@ -17,6 +17,6 @@ poetry install
 echo -e '\n*** Building wheel ***'
 rm -rf dist && poetry build
 
-echo -e "\n*** Installing globally ($(which python)) ***"
-python3 -m pip install --upgrade dist/*
+echo -e "\n*** Installing globally ($(which python3)) ***"
+cd dist && python3 -m pip install --upgrade *.whl
 

@@ -3,7 +3,7 @@ name: gdal-unstable-test
 on: [push, pull_request]
 
 jobs:
-  build:
+  gdal-unstable-test:
     runs-on: ubuntu-latest
     strategy:
       matrix:

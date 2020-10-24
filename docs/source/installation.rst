@@ -56,4 +56,4 @@ Or install the development version from `Github <https://github.com/munterfinger
     git clone git://github.com/munterfinger/glacier-flow-model.git
     cd glacier-flow-model
     poetry install && poetry build
-    python3 -m pip install dist/*
+    cd dist && python3 -m pip install --upgrade *.whl

@@ -5,7 +5,7 @@ on:
     types: [created]
 
 jobs:
-  build:
+  publish:
     runs-on: macos-latest
     strategy:
       matrix:
