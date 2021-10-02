@@ -1,6 +1,6 @@
-.. image:: https://raw.githubusercontent.com/munterfinger/glacier-flow-model/master/docs/source/_static/logo.svg
+.. image:: https://raw.githubusercontent.com/munterfi/glacier-flow-model/master/docs/source/_static/logo.svg
    :width: 120 px
-   :alt: https://github.com/munterfinger/glacier-flow-model
+   :alt: https://github.com/munterfi/glacier-flow-model
    :align: right
 
 ==================
@@ -10,15 +10,15 @@ Glacier flow model
 .. image:: https://img.shields.io/pypi/v/glacier-flow-model.svg
         :target: https://pypi.python.org/pypi/glacier-flow-model
 
-.. image:: https://github.com/munterfinger/glacier-flow-model/workflows/check/badge.svg
-        :target: https://github.com/munterfinger/glacier-flow-model/actions?query=workflow%3Acheck
+.. image:: https://github.com/munterfi/glacier-flow-model/workflows/check/badge.svg
+        :target: https://github.com/munterfi/glacier-flow-model/actions?query=workflow%3Acheck
 
 .. image:: https://readthedocs.org/projects/glacier-flow-model/badge/?version=latest
         :target: https://glacier-flow-model.readthedocs.io/en/latest/
         :alt: Documentation Status
 
-.. image:: https://codecov.io/gh/munterfinger/glacier-flow-model/branch/master/graph/badge.svg
-        :target: https://codecov.io/gh/munterfinger/glacier-flow-model
+.. image:: https://codecov.io/gh/munterfi/glacier-flow-model/branch/master/graph/badge.svg
+        :target: https://codecov.io/gh/munterfi/glacier-flow-model
 
 Modeling glaciers on a digital elevation model (DEM) based on the mass balance of the glaciers
 and the D8 flow algorithm applied to the ice.
@@ -77,9 +77,9 @@ After initialization, the model needs to accumulate the initial ice mass until i
 
     gfm.reach_steady_state()
 
-.. image:: https://raw.githubusercontent.com/munterfinger/glacier-flow-model/master/docs/source/_static/steady_state_initial.png
+.. image:: https://raw.githubusercontent.com/munterfi/glacier-flow-model/master/docs/source/_static/steady_state_initial.png
    :width: 120 px
-   :alt: https://github.com/munterfinger/glacier-flow-model
+   :alt: https://github.com/munterfi/glacier-flow-model
    :align: center
 
 When the model is in a steady state, a temperature change of the climate can be simulated. Simply use
@@ -92,9 +92,9 @@ Heating 4.5°C after initial steady state:
 
     gfm.simulate(4.5)
 
-.. image:: https://raw.githubusercontent.com/munterfinger/glacier-flow-model/master/docs/source/_static/steady_state_heating.png
+.. image:: https://raw.githubusercontent.com/munterfi/glacier-flow-model/master/docs/source/_static/steady_state_heating.png
    :width: 120 px
-   :alt: https://github.com/munterfinger/glacier-flow-model
+   :alt: https://github.com/munterfi/glacier-flow-model
    :align: center
 
 Cooling -1°C after initial steady state:
@@ -103,12 +103,12 @@ Cooling -1°C after initial steady state:
 
     gfm.simulate(-1)
 
-.. image:: https://raw.githubusercontent.com/munterfinger/glacier-flow-model/master/docs/source/_static/steady_state_cooling.png
+.. image:: https://raw.githubusercontent.com/munterfi/glacier-flow-model/master/docs/source/_static/steady_state_cooling.png
    :width: 120 px
-   :alt: https://github.com/munterfinger/glacier-flow-model
+   :alt: https://github.com/munterfi/glacier-flow-model
    :align: center
 
-Check out the `video <https://munterfinger.ch/media/film/gfm.mp4>`_ of the scenario simulation in the Aletsch
+Check out the `video <https://munterfi.ch/media/film/gfm.mp4>`_ of the scenario simulation in the Aletsch
 glacial arena in Switzerland
 
 Limitations
