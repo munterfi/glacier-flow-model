@@ -235,7 +235,7 @@ class GlacierFlowModel(Base):
         # Add new accumulation / ablation on the layer ------------------------
         # Surface mass balance
         b = self.m * (self.ele_orig - self.ela)
-        self.h += b
+        self.h += b  # type: ignore
         self.h = self.h * (self.h > 0)
 
         # Update elevation with new glacier geometry
