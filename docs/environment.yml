@@ -7,6 +7,6 @@ dependencies:
 - gdal
 - libgdal
 - matplotlib
-- sphinx=3.2.1
+- sphinx
 - tomlkit
-- pydata-sphinx-theme=0.4.1
+- pydata-sphinx-theme
