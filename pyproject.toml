@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "glacier-flow-model"
-version = "0.1.1"
+version = "0.1.2"
 description = "Modeling glaciers flow, grounded on the glaciers mass balance and a digital elevation model (DEM)."
 maintainers = ["Merlin Unterfinger <info@munterfinger.ch>"]
 authors = [
@@ -10,7 +10,7 @@ license = "MIT"
 readme = "README.rst"
 homepage = "https://pypi.org/project/glacier-flow-model/"
 documentation = "https://glacier-flow-model.readthedocs.io/en/latest/"
-repository = "https://github.com/munterfinger/glacier-flow-model"
+repository = "https://github.com/munterfi/glacier-flow-model"
 
 [tool.poetry.dependencies]
 python = "^3.8"
