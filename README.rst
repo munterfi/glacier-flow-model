@@ -108,7 +108,7 @@ Cooling -1°C after initial steady state:
    :alt: https://github.com/munterfi/glacier-flow-model
    :align: center
 
-Check out the `video <https://munterfi.ch/media/film/gfm.mp4>`_ of the scenario simulation in the Aletsch
+Check out the `video <https://munterfinger.ch/media/film/gfm.mp4>`_ of the scenario simulation in the Aletsch
 glacial arena in Switzerland
 
 Limitations
