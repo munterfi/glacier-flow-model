@@ -8,9 +8,11 @@ Version 0.1.2.9000
 
 - Features:
     - Use of the :code:`.flake8` config file.
+    - Configured Dependabot.
 - Bugfixes:
     - Fix failing CI: Update package dependencies, set GitHub actions to
     python 3.10, set GDAL version to 3.4.1 and remove shebang from tests.
+    - Updated mypy configuration.
 
 Version 0.1.2
 -------------
