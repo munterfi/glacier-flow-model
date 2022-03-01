@@ -7,7 +7,7 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: ["3.10"]
 
     steps:
     - uses: actions/checkout@v2
@@ -42,8 +42,8 @@ jobs:
     - name: Run checks
       run: |
         source "$HOME/.poetry/env"
-        poetry run flake8 glacier_flow_model tests --count --max-complexity=10
-        poetry run mypy --config-file pyproject.toml .
+        poetry run flake8 glacier_flow_model tests --count
+        poetry run mypy .
         poetry run pytest --cov=glacier_flow_model
         cd docs && poetry run make html && cd ..
 

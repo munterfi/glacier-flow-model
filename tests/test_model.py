@@ -1,9 +1,6 @@
-#!/usr/bin/env python
-
 """Tests for the GlacierFlowModel class."""
-
-from glacier_flow_model.model import GlacierFlowModel
 from glacier_flow_model.data import PkgDataAccess
+from glacier_flow_model.model import GlacierFlowModel
 
 max_iter = 10
 pkg = PkgDataAccess()

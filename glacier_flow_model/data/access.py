@@ -1,6 +1,9 @@
-from glacier_flow_model.base import Base
-from osgeo.gdal import Open, Dataset
 import importlib.resources as resources
+
+from osgeo.gdal import Dataset
+from osgeo.gdal import Open
+
+from glacier_flow_model.base import Base
 
 
 class PkgDataAccess(Base):
@@ -34,7 +37,7 @@ class PkgDataAccess(Base):
             The path to the file on the system.
 
         """
-        with resources.path('glacier_flow_model.data', 'dem.tif') as file_path:
+        with resources.path("glacier_flow_model.data", "dem.tif") as file_path:
             self._print(f"Example located at '{file_path}' ...")
             return str(file_path)
 

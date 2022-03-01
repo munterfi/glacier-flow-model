@@ -1,4 +1,5 @@
-from datetime import datetime, timezone
+from datetime import datetime
+from datetime import timezone
 
 
 class Base:
@@ -23,4 +24,4 @@ class Base:
     def _print(self, message: str) -> None:
         if self.verbose:
             dt = datetime.now(timezone.utc).replace(microsecond=0).isoformat()
-            print(f'{dt} {message}')
+            print(f"{dt} {message}")
