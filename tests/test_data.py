@@ -1,9 +1,8 @@
 #!/usr/bin/env python
-
 """Tests for `glacier_flow_model.data` module."""
+from osgeo.gdal import Dataset
 
 from glacier_flow_model.data import PkgDataAccess
-from osgeo.gdal import Dataset
 
 pkg = PkgDataAccess(verbose=True)
 
