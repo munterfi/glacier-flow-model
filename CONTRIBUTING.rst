@@ -35,31 +35,31 @@ Alternatively the script :code:`check.sh` automates the steps above.
         git commit -m "Description of the changes."
         git push origin feature/<the-feature-name>
 
-7. Submit a pull request of the feature into the :code:`develop` branch on GitHub.
+7. Submit a pull request of the feature into the :code:`master` branch on GitHub.
 
-Gitflow workflow
-----------------
-
-Master and develop
-__________________
-
-The `gitflow workflow <https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow>`_ uses two branches to
-record the history of the project. The :code:`master` branch stores the official release history, and the :code:`develop` branch serves
-as an integration branch for features. It's also convenient to tag all commits in the :code:`master` branch with a version number.
+Trunk-based Development Workflow
+--------------------------------
+The `trunk-based development workflow <https://trunkbaseddevelopment.com>`_ uses one branch :code:`master` to record the history of the project.
+In addition to the mainline short-lived feature or bugfix branches are used to develop new features or fix bugs.
 
 Features
 ________
 
-Each new feature should reside in its own branch. But, instead of branching off of :code:`master`, feature branches use
-:code:`develop` as their parent branch. When a feature is complete, it gets merged back into :code:`develop`. Features`
-should never interact directly with :code:`master`.
+Each new feature should reside in its own short-lived branch. Branch off of a :code:`feature/<feature-description>` branch from :code:`master`.
+When a feature is complete, it gets merged back into :code:`master` and the feature branch is deleted.
+
+Bugfix
+______
+
+Each bugfix should reside in its own short-lived branch. Branch off of a :code:`bugfix/<bugfix-description>` branch from :code:`master`.
+When the fix is complete, it gets merged back into :code:`master` and the bugfix branch is deleted.
 
 Release
 _______
-
-Once :code:`develop` has acquired enough features for a release, fork a release branch off of :code:`develop`. When it's ready to ship,
-the release branch gets merged into :code:`master` and tagged with a version number. In addition, it should be merged back into :code:`develop`,
-which may have progressed since the release was initiated.
+This packages uses `semantic versioning <https://semver.org/>`_. Once :code:`master` has aquired enough features for a release,
+set the new version number of the in the :code:`pyproject.toml` and the :code:`CHANGELOG:rst` file. Commit and push to :code:`master`
+and publish a new release on `GitHub <https://github.com/munterfi/glacier-flow-model/releases>`_, which will trigger an action to build
+and publish the package to PyPi.
 
 Dependencies
 ------------

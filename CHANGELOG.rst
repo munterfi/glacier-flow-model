@@ -1,7 +1,7 @@
 Changelog
 =========
 
-This packages uses `semantic versions <https://semver.org/>`_.
+This packages uses `semantic versioning <https://semver.org/>`_.
 
 Version 0.1.2
 -------------

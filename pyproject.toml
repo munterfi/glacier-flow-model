@@ -28,6 +28,7 @@ flake8 = "^3.8.4"
 tomlkit = "^0.7.0"
 codecov = "^2.1.10"
 pydata-sphinx-theme = "^0.7.0"
+black = {version = "^22.1.0", allow-prereleases = true}
 
 [mypy]
 ignore_missing_imports = true
