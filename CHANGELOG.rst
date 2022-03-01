@@ -3,6 +3,15 @@ Changelog
 
 This packages uses `semantic versioning <https://semver.org/>`_.
 
+Version 0.1.2.9000
+------------------
+
+- Features:
+    - Use of the :code:`.flake8` config file.
+- Bugfixes:
+    - Fix failing CI: Update package dependencies, set GitHub actions to
+    python 3.10, set GDAL version to 3.4.1 and remove shebang from tests.
+
 Version 0.1.2
 -------------
 
