@@ -13,21 +13,21 @@ documentation = "https://glacier-flow-model.readthedocs.io/en/latest/"
 repository = "https://github.com/munterfi/glacier-flow-model"
 
 [tool.poetry.dependencies]
-python = "^3.9"
-scipy = "^1.5.2"
-numpy = "^1.19.2"
-GDAL = "^3.1.3"
-matplotlib = "^3.3.2"
+python = ">=3.9,<3.11"
+scipy = "^1.8.0"
+numpy = "^1.22.2"
+GDAL = "^3.4.1"
+matplotlib = "^3.5.1"
 
 [tool.poetry.dev-dependencies]
-pytest = "^6.1.1"
-pytest-cov = "^2.10.1"
-mypy = "^0.782"
-Sphinx = "^4.2.0"
-flake8 = "^3.8.4"
-tomlkit = "^0.7.0"
-codecov = "^2.1.10"
-pydata-sphinx-theme = "^0.7.0"
+pytest = "^7.0.1"
+pytest-cov = "^3.0.0"
+mypy = "^0.931"
+Sphinx = "^4.4.0"
+flake8 = "^4.0.1"
+tomlkit = "^0.10.0"
+codecov = "^2.1.12"
+pydata-sphinx-theme = "^0.8.0"
 black = {version = "^22.1.0", allow-prereleases = true}
 
 [mypy]
