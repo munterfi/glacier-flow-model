@@ -43,7 +43,7 @@ jobs:
       run: |
         source "$HOME/.poetry/env"
         poetry run flake8 glacier_flow_model tests --count
-        poetry run mypy --config-file pyproject.toml .
+        poetry run mypy .
         poetry run pytest --cov=glacier_flow_model
         cd docs && poetry run make html && cd ..
 
