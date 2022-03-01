@@ -2,18 +2,21 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 from osgeo.gdal import Open
-from scipy.ndimage.filters import gaussian_filter, uniform_filter
+from scipy.ndimage import gaussian_filter
+from scipy.ndimage import uniform_filter
+
 from glacier_flow_model.base import Base
 
 # Disable toolbar
-mpl.rcParams['toolbar'] = 'None'
+mpl.rcParams["toolbar"] = "None"
 
 
 class GlacierFlowModel(Base):
     """Class for modeling glacier flow."""
 
-    def __init__(self, dem_path: str, ela: int = 2850, m: float = 0.0006,
-                 verbose: bool = True) -> None:
+    def __init__(
+        self, dem_path: str, ela: int = 2850, m: float = 0.0006, verbose: bool = True
+    ) -> None:
         """
         Class constructor for the GlacierFlowModel class.
 
@@ -47,18 +50,18 @@ class GlacierFlowModel(Base):
         self.verbose = verbose
 
         # 2D arrays
-        self.ele_orig = np.array(ele)   # Original topography
-        self.ele = np.array(ele)        # Elevation including glaciers
-        self.h = self.ele_orig * 0      # Glacier geometry
-        self.u = self.ele_orig * 0      # Glacier velocity
+        self.ele_orig = np.array(ele)  # Original topography
+        self.ele = np.array(ele)  # Elevation including glaciers
+        self.h = self.ele_orig * 0  # Glacier geometry
+        self.u = self.ele_orig * 0  # Glacier velocity
         self.hs = self.hillshade(ele, azimuth=315, angle_altitude=45)  # HS
 
         # Mass balance parameters
-        self.m = m                      # Gradient
-        self.ela = ela                  # Equilibrium line altitude
-        self.ela_start = ela            # Equilibrium line altitude
-        self.i = 0                      # Year
-        self.steady_state = False       # Control variable for steady state
+        self.m = m  # Gradient
+        self.ela = ela  # Equilibrium line altitude
+        self.ela_start = ela  # Equilibrium line altitude
+        self.i = 0  # Year
+        self.steady_state = False  # Control variable for steady state
 
         # Geo coordinates
         self.res = dem.GetGeoTransform()[1]  # Resolution
@@ -92,16 +95,18 @@ class GlacierFlowModel(Base):
             Information about the model state and parameters.
 
         """
-        return f"GlacierFlowModel {'' if self.steady_state else 'not '}" \
-               f"in steady state with:" \
-               f"\n - m:          {self.m:20.5f} [m/m]" \
-               f"\n - ela:        {self.ela:20.2f} [m MSL]" \
-               f"\n - resolution: {self.res:20.2f} [m]" \
-               f"\n - extent:           min        max" \
-               f"\n              {self.extent[0]:10.1f} " \
-               f"{self.extent[1]:10.1f} [x]" \
-               f"\n              {self.extent[2]:10.1f} " \
-               f"{self.extent[3]:10.1f} [y]"
+        return (
+            f"GlacierFlowModel {'' if self.steady_state else 'not '}"
+            f"in steady state with:"
+            f"\n - m:          {self.m:20.5f} [m/m]"
+            f"\n - ela:        {self.ela:20.2f} [m MSL]"
+            f"\n - resolution: {self.res:20.2f} [m]"
+            f"\n - extent:           min        max"
+            f"\n              {self.extent[0]:10.1f} "
+            f"{self.extent[1]:10.1f} [x]"
+            f"\n              {self.extent[2]:10.1f} "
+            f"{self.extent[3]:10.1f} [y]"
+        )
 
     def reach_steady_state(self, max_years: int = 10000) -> str:
         """
@@ -151,8 +156,9 @@ class GlacierFlowModel(Base):
             if -0.0001 <= self.mass_balance_l_trend[-1] <= 0.0001:
                 # Set steady variable to True
                 self.steady_state = True
-                return f'Steady state reached after {self.i} ' \
-                       f'years (ELA: {self.ela}).'
+                return (
+                    f"Steady state reached after {self.i} " f"years (ELA: {self.ela})."
+                )
 
         # Set steady variable to True
         self.steady_state = True
@@ -207,15 +213,19 @@ class GlacierFlowModel(Base):
                 # Check if mass balance is constantly around zero; steady state
                 if -0.0001 <= self.mass_balance_l_trend[-1] <= 0.0001:
                     self.steady_state = True
-                    return f'Steady state reached after {self.i} ' \
-                           f'years (ELA: {self.ela}, dT = {temp_change})'
+                    return (
+                        f"Steady state reached after {self.i} "
+                        f"years (ELA: {self.ela}, dT = {temp_change})"
+                    )
 
             return "Steady State was not reached after 10'000 years"
 
         # If steady state is not reached yet, exit the method
         else:
-            return "Model is not yet in steady state. " \
-                   "Please press 'Steady state' first."
+            return (
+                "Model is not yet in steady state. "
+                "Please press 'Steady state' first."
+            )
 
     def add_mass_balance(self) -> None:
         """
@@ -243,8 +253,9 @@ class GlacierFlowModel(Base):
         ele = gaussian_filter(self.ele, sigma=5)
         self.ele = self.ele_orig * (self.h == 0) + ele * (self.h > 0)
 
-    def flow(self, A: float = 1.4, f: float = 1, p: float = 918,
-             g: float = 9.81) -> None:
+    def flow(
+        self, A: float = 1.4, f: float = 1, p: float = 918, g: float = 9.81
+    ) -> None:
         """
         Simulates the flow of the ice for one year.
 
@@ -294,7 +305,7 @@ class GlacierFlowModel(Base):
 
         # Ice flow ------------------------------------------------------------
         # Calculate ice flow velocity 'u'
-        ud = (2 * A * ((f * p * g * np.sin(slp)) ** 3.0) * self.h ** 4.0) / 4
+        ud = (2 * A * ((f * p * g * np.sin(slp)) ** 3.0) * self.h**4.0) / 4
         self.u = ud / 100
         # self.u[self.u > self.res] = self.res
         self.u[self.u > 0.99 * self.res] = 0.99 * self.res
@@ -344,8 +355,20 @@ class GlacierFlowModel(Base):
         change_8 = np.delete(change_8, (0), axis=1)
 
         # Calculate new glacier height 'h_new' after flow ---------------------
-        self.h = self.h - change + (change_1 + change_2 + change_3 + change_4 +
-                                    change_5 + change_6 + change_7 + change_8)
+        self.h = (
+            self.h
+            - change
+            + (
+                change_1
+                + change_2
+                + change_3
+                + change_4
+                + change_5
+                + change_6
+                + change_7
+                + change_8
+            )
+        )
 
         h_new_index = np.copy((self.h < self.m))
         self.h = uniform_filter(self.h, size=5)
@@ -367,25 +390,29 @@ class GlacierFlowModel(Base):
         self.mass = np.append(self.mass, np.mean(self.h[self.h > 0]))
 
         # Difference mass 'mass balance'
-        self.mass_balance = np.append(self.mass_balance,
-                                      (self.mass[-1] -
-                                       self.mass[-2]))
+        self.mass_balance = np.append(
+            self.mass_balance, (self.mass[-1] - self.mass[-2])
+        )
 
         # Calculate trend of mass balance (take last 20 and 100 elements)
         # Short term trend (20)
         if self.i < 20:
-            self.mass_balance_s_trend = np.append(self.mass_balance_s_trend,
-                                                  np.mean(self.mass_balance))
+            self.mass_balance_s_trend = np.append(
+                self.mass_balance_s_trend, np.mean(self.mass_balance)
+            )
         else:
             self.mass_balance_s_trend = np.append(
-                self.mass_balance_s_trend, np.mean(self.mass_balance[-20:]))
+                self.mass_balance_s_trend, np.mean(self.mass_balance[-20:])
+            )
         # Long term trend (100)
         if self.i < 100:
-            self.mass_balance_l_trend = np.append(self.mass_balance_l_trend,
-                                                  np.mean(self.mass_balance))
+            self.mass_balance_l_trend = np.append(
+                self.mass_balance_l_trend, np.mean(self.mass_balance)
+            )
         else:
             self.mass_balance_l_trend = np.append(
-                self.mass_balance_l_trend, np.mean(self.mass_balance[-100:]))
+                self.mass_balance_l_trend, np.mean(self.mass_balance[-100:])
+            )
 
     @staticmethod
     def setup_plot(x: float = 15, y: float = 5) -> plt.figure:
@@ -409,8 +436,8 @@ class GlacierFlowModel(Base):
 
         """
         plt.ion()
-        fig = plt.figure(figsize=(x, y), num='GlacierFlowModel')
-        fig.patch.set_facecolor('black')
+        fig = plt.figure(figsize=(x, y), num="GlacierFlowModel")
+        fig.patch.set_facecolor("black")
         return fig
 
     def update_plot(self) -> None:
@@ -426,56 +453,52 @@ class GlacierFlowModel(Base):
 
         """
         # Extract glaciated area
-        hs_back = np.ma.masked_where(self.h <= 1,
-                                     self.hillshade(self.ele,
-                                                    azimuth=315,
-                                                    angle_altitude=45))
+        hs_back = np.ma.masked_where(
+            self.h <= 1, self.hillshade(self.ele, azimuth=315, angle_altitude=45)
+        )
         # h = np.ma.masked_where(self.h <= 1, self.h)
 
         # Clear plot and draw axes
         self.fig.clear()
-        ax = plt.subplot(121, facecolor='black')
-        ax.tick_params(axis='x', colors='w')
-        ax.tick_params(axis='y', colors='w')
-        plt.xlabel('X-coordinate [m]')
-        ax.xaxis.label.set_color('w')
-        plt.ylabel('Y-coordinate [m]')
-        ax.yaxis.label.set_color('w')
-        title_text = f'Year: {str(self.i)}  ELA: {str(int(self.ela))}'
-        ax.set_title(title_text, color='white', size=20)
+        ax = plt.subplot(121, facecolor="black")
+        ax.tick_params(axis="x", colors="w")
+        ax.tick_params(axis="y", colors="w")
+        plt.xlabel("X-coordinate [m]")
+        ax.xaxis.label.set_color("w")
+        plt.ylabel("Y-coordinate [m]")
+        ax.yaxis.label.set_color("w")
+        title_text = f"Year: {str(self.i)}  ELA: {str(int(self.ela))}"
+        ax.set_title(title_text, color="white", size=20)
 
         # Draw new image layers
-        plt.imshow(self.hs, vmin=90, vmax=345, cmap='copper',
-                   extent=self.extent)
-        plt.imshow(255 - hs_back, vmin=1, vmax=150, cmap='Greys',
-                   extent=self.extent)
+        plt.imshow(self.hs, vmin=90, vmax=345, cmap="copper", extent=self.extent)
+        plt.imshow(255 - hs_back, vmin=1, vmax=150, cmap="Greys", extent=self.extent)
 
         # Plot mean velocity
-        ax1 = plt.subplot(222, facecolor='black')
-        plt.plot(self.mass_balance, color='w')
-        plt.plot(self.mass_balance_s_trend, color='r')
-        plt.ylabel('Mass balance [m]')
-        ax1.yaxis.label.set_color('w')
+        ax1 = plt.subplot(222, facecolor="black")
+        plt.plot(self.mass_balance, color="w")
+        plt.plot(self.mass_balance_s_trend, color="r")
+        plt.ylabel("Mass balance [m]")
+        ax1.yaxis.label.set_color("w")
         plt.setp(ax1.get_xticklabels(), visible=False)
-        ax1.tick_params(axis='y', colors='w')
+        ax1.tick_params(axis="y", colors="w")
 
         # Plot maximum thickness
-        ax2 = plt.subplot(224, sharex=ax1, facecolor='black')
-        plt.plot(self.mass, color='w')
-        plt.xlabel('Year [a]')
-        ax2.xaxis.label.set_color('w')
-        plt.ylabel('Mean thickness [m]')
-        ax2.yaxis.label.set_color('w')
-        ax2.tick_params(axis='x', colors='w')
-        ax2.tick_params(axis='y', colors='w')
+        ax2 = plt.subplot(224, sharex=ax1, facecolor="black")
+        plt.plot(self.mass, color="w")
+        plt.xlabel("Year [a]")
+        ax2.xaxis.label.set_color("w")
+        plt.ylabel("Mean thickness [m]")
+        ax2.yaxis.label.set_color("w")
+        ax2.tick_params(axis="x", colors="w")
+        ax2.tick_params(axis="y", colors="w")
 
         # Draw new plot
         self.fig.canvas.draw()
         plt.pause(0.05)
 
     @staticmethod
-    def hillshade(array: np.ndarray, azimuth: int,
-                  angle_altitude: int) -> np.ndarray:
+    def hillshade(array: np.ndarray, azimuth: int, angle_altitude: int) -> np.ndarray:
         """
         Render hillshade
 
@@ -497,14 +520,14 @@ class GlacierFlowModel(Base):
 
         """
         x, y = np.gradient(array, 22, 22)
-        slope = np.pi / 2. - np.arctan(np.sqrt(x * x + y * y))
+        slope = np.pi / 2.0 - np.arctan(np.sqrt(x * x + y * y))
         x, y = np.gradient(array, 3, 3)
         aspect = np.arctan2(-y, x)
-        azimuth_rad = azimuth * np.pi / 180.
-        altitude_rad = angle_altitude * np.pi / 180.
+        azimuth_rad = azimuth * np.pi / 180.0
+        altitude_rad = angle_altitude * np.pi / 180.0
 
-        shaded = np.sin(altitude_rad) * np.sin(slope) + \
-            np.cos(altitude_rad) * np.cos(slope) *\
-            np.cos(azimuth_rad - aspect)
+        shaded = np.sin(altitude_rad) * np.sin(slope) + np.cos(altitude_rad) * np.cos(
+            slope
+        ) * np.cos(azimuth_rad - aspect)
 
         return 255 * (shaded + 1) / 2
