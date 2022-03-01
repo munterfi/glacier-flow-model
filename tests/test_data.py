@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """Tests for `glacier_flow_model.data` module."""
 from osgeo.gdal import Dataset
 
