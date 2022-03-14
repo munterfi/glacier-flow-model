@@ -20,7 +20,7 @@ GDAL = "^3.4.1"
 matplotlib = "^3.5.1"
 
 [tool.poetry.dev-dependencies]
-pytest = "^7.0.1"
+pytest = "^7.1.0"
 pytest-cov = "^3.0.0"
 mypy = "^0.940"
 Sphinx = "^4.4.0"
