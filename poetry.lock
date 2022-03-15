@@ -192,7 +192,7 @@ woff = ["zopfli (>=0.1.4)", "brotlicffi (>=0.8.0)", "brotli (>=1.0.1)"]
 
 [[package]]
 name = "gdal"
-version = "3.4.1"
+version = "3.4.2"
 description = "GDAL: Geospatial Data Abstraction Library"
 category = "main"
 optional = false
@@ -853,7 +853,7 @@ fonttools = [
     {file = "fonttools-4.29.1.zip", hash = "sha256:2b18a172120e32128a80efee04cff487d5d140fe7d817deb648b2eee023a40e4"},
 ]
 gdal = [
-    {file = "GDAL-3.4.1.tar.gz", hash = "sha256:b19e8143bc2c0d3e222789a465d82b6874236eb78801aec608bf5c8c44d20fcf"},
+    {file = "GDAL-3.4.2.tar.gz", hash = "sha256:ccf65f4d798217914fb3df9be46efc97d057831d0f97626e537b56168c585215"},
 ]
 idna = [
     {file = "idna-3.3-py3-none-any.whl", hash = "sha256:84d9dd047ffa80596e0f246e2eab0b391788b0503584e8945f2368256d2735ff"},
