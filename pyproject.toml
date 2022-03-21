@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "glacier-flow-model"
 version = "0.1.2"
-description = "Modeling glaciers flow, grounded on the glaciers mass balance and a digital elevation model (DEM)."
+description = "Modeling glaciers on a digital elevation model based on the mass balance of the glaciers and the D8 flow algorithm applied to the ice."
 maintainers = ["Merlin Unterfinger <info@munterfinger.ch>"]
 authors = [
     "Merlin Unterfinger <info@munterfinger.ch>",
