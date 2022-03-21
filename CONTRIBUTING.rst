@@ -10,7 +10,7 @@ Ready to contribute? Here's how to set up **glacier-flow-model** for local devel
 
 1. Clone the repository: :code:`git clone https://github.com/munterfi/glacier-flow-model.git`
 2. Install the dependencies: :code:`poetry install`
-3. Create a feature branch for local development: :code:`git checkout -b feature/<the-feature-name> develop`
+3. Create a feature branch for local development: :code:`git checkout -b feature/<the-feature-name> master`
 4. Work locally on the feature, make sure to add or adjust:
     - entries in CHANGELOG.md
     - docstrings

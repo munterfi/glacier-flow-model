@@ -5,7 +5,7 @@ description = "Modeling glaciers flow, grounded on the glaciers mass balance and
 maintainers = ["Merlin Unterfinger <info@munterfinger.ch>"]
 authors = [
     "Merlin Unterfinger <info@munterfinger.ch>",
-    "Manuel Luck <admin@geoluck.ch>"]
+    "Manuel Andreas Luck <admin@geoluck.ch>"]
 license = "MIT"
 readme = "README.rst"
 homepage = "https://pypi.org/project/glacier-flow-model/"
