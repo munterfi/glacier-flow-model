@@ -3,8 +3,8 @@ Changelog
 
 This packages uses `semantic versioning <https://semver.org/>`_.
 
-Version 0.1.2.9000
-------------------
+Version 0.1.3
+-------------
 
 - Features:
     - Use of the :code:`.flake8` config file.
