@@ -4,14 +4,6 @@ glacier\_flow\_model package
 Submodules
 ----------
 
-glacier\_flow\_model.base module
---------------------------------
-
-.. automodule:: glacier_flow_model.base
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 glacier\_flow\_model.model module
 ---------------------------------
 

@@ -3,7 +3,7 @@ from osgeo.gdal import Dataset
 
 from glacier_flow_model.data import PkgDataAccess
 
-pkg = PkgDataAccess(verbose=True)
+pkg = PkgDataAccess()
 
 
 def test_example_class():
@@ -11,5 +11,5 @@ def test_example_class():
 
 
 def test_dem_example():
-    assert isinstance(pkg.locate_dem(), str)
-    assert isinstance(pkg.load_dem(), Dataset)
+    assert isinstance(PkgDataAccess.locate_dem(), str)
+    assert isinstance(PkgDataAccess.load_dem(), Dataset)

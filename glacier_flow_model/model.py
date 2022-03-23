@@ -1,3 +1,6 @@
+from logging import getLogger
+from re import search
+
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
@@ -5,17 +8,26 @@ from osgeo.gdal import Open
 from scipy.ndimage import gaussian_filter
 from scipy.ndimage import uniform_filter
 
-from glacier_flow_model.base import Base
+LOG = getLogger(__name__)
 
 # Disable toolbar
 mpl.rcParams["toolbar"] = "None"
 
 
-class GlacierFlowModel(Base):
+class GlacierFlowModel:
     """Class for modeling glacier flow."""
 
+    PLOT_FRAME_RATE = 5
+    PLOT_AZIMUTH = 315
+    PLOT_ALTITUDE = 45
+
     def __init__(
-        self, dem_path: str, ela: int = 2850, m: float = 0.0006, verbose: bool = True
+        self,
+        dem_path: str,
+        ela: int = 2850,
+        m: float = 0.0006,
+        tolerance: float = 0.0001,
+        plot: bool = True,
     ) -> None:
         """
         Class constructor for the GlacierFlowModel class.
@@ -31,8 +43,9 @@ class GlacierFlowModel(Base):
         m : float, default 0.0006
             Glacier mass balance gradient [m/m], the linear relationship
             between altitude and mass balance.
-        verbose : bool, default True
-            Print messages about the activities of the class instance.
+        tolerance : float 0.0001
+            Tolerance to check if mass balance is constantly around zero and
+            therefore a steady state is reached.
 
         Returns
         -------
@@ -46,15 +59,24 @@ class GlacierFlowModel(Base):
         ele = band.ReadAsArray()
 
         # Instance variables --------------------------------------------------
-        super().__init__(verbose)
-        self.verbose = verbose
+        self.dem_path = dem_path
+        self.tolerance = tolerance
+        self.precision = (
+            len(search("\\d+\\.(0*)", str(tolerance)).group(1)) + 1  # type: ignore
+        )
+        self._log_string = (
+            "Simulating year %s (ELA: %.0f, "
+            + f"mass balance long-term trend: %.{self.precision}f) ..."
+        )
 
         # 2D arrays
         self.ele_orig = np.array(ele)  # Original topography
         self.ele = np.array(ele)  # Elevation including glaciers
         self.h = self.ele_orig * 0  # Glacier geometry
         self.u = self.ele_orig * 0  # Glacier velocity
-        self.hs = self.hillshade(ele, azimuth=315, angle_altitude=45)  # HS
+        self.hs = self._hillshade(
+            ele, azimuth=self.PLOT_AZIMUTH, altitude=self.PLOT_ALTITUDE
+        )  # HS
 
         # Mass balance parameters
         self.m = m  # Gradient
@@ -82,8 +104,32 @@ class GlacierFlowModel(Base):
         self.mass_balance_l_trend = np.array([0])
 
         # Setup plot ----------------------------------------------------------
-        self.fig = self.setup_plot()
-        self.update_plot()
+        self.plot = plot
+        # self.update_plot()
+        # self.fig = self.setup_plot()
+        # self.update_plot()
+
+    @property
+    def plot(self) -> bool:
+        LOG.debug("Access plot via getter method; masking value to boolean.")
+        if self._fig is None:
+            return False
+        return True
+
+    @plot.setter
+    def plot(self, value: bool) -> None:
+        if value:
+            self._fig = self._setup_plot()
+            self._update_plot()
+        else:
+            self._destroy_plot()
+
+    def __repr__(self):
+        return (
+            f"GlacierFlowModel({self.dem_path}, "
+            + f"{self.ela_start}, {self.m}, "
+            + f"{self.tolerance}, {self.plot})"
+        )
 
     def __str__(self) -> str:
         """
@@ -108,7 +154,7 @@ class GlacierFlowModel(Base):
             f"{self.extent[3]:10.1f} [y]"
         )
 
-    def reach_steady_state(self, max_years: int = 10000) -> str:
+    def reach_steady_state(self, max_years: int = 10000) -> None:
         """
         Iterates the model until a steady state in the mass balance is
         reached.
@@ -117,11 +163,11 @@ class GlacierFlowModel(Base):
         mass. This is done by iterating through years, where every year
         contains two steps:
 
-         - Add the local mass balance (accumulation and ablation).
-         - Let the ice flow.
+        - Add the local mass balance (accumulation and ablation).
+        - Let the ice flow.
 
-         This steps are repeated until the change in mass balance is
-         constantly low (dm_trend < 0.0001).
+        This steps are repeated until the change in mass balance is
+        constantly low (mass_balance_l_trend < tolerance, default 0.0001).
 
         Parameters
         ----------
@@ -144,27 +190,9 @@ class GlacierFlowModel(Base):
         self.mass_balance_l_trend = np.array([0])
 
         # Loop through years
-        for i in range(max_years):
-            self.i = i
-            self.add_mass_balance()
-            self.flow()
-            self.update_stats()
-            if i % 5 == 0:
-                self.update_plot()
+        _ = self._iterate(temp_change=0, max_years=max_years)
 
-            # Check if mass balance is constantly around zero; steady state
-            if -0.0001 <= self.mass_balance_l_trend[-1] <= 0.0001:
-                # Set steady variable to True
-                self.steady_state = True
-                return (
-                    f"Steady state reached after {self.i} " f"years (ELA: {self.ela})."
-                )
-
-        # Set steady variable to True
-        self.steady_state = True
-        return "Steady State was not reached after 10'000 years"
-
-    def simulate(self, temp_change: float, max_years: int = 10000) -> str:
+    def simulate(self, temp_change: float, max_years: int = 10000) -> None:
         """
         Simulate a temperature change.
 
@@ -172,7 +200,7 @@ class GlacierFlowModel(Base):
         temperature change can be simulated. This method applies the
         temperature change (negative or positive) to the initially set
         parameters (ela) and iterates the model until a steady state is reached
-        again.
+        again (mass_balance_l_trend < tolerance, default 0.0001).
 
         Parameters
         ----------
@@ -187,45 +215,55 @@ class GlacierFlowModel(Base):
             The model state changes internally.
 
         """
-        if self.steady_state:
-            # Reset year and state of model
-            self.i = 0
-            self.steady_state = False
-
-            # Loop through years
-            for i in range(max_years):
-                # print '----------Year: ', i, ' -----------'
-                self.i = i
-                self.add_mass_balance()
-                self.flow()
-                self.update_stats()
-                if i % 5 == 0:
-                    self.update_plot()
-
-                # Adjust temperature change
-                if temp_change > 0:
-                    if self.ela < (self.ela_start + 100 * temp_change):
-                        self.ela += 1
-                elif temp_change < 0:
-                    if self.ela > (self.ela_start + 100 * temp_change):
-                        self.ela -= 1
-
-                # Check if mass balance is constantly around zero; steady state
-                if -0.0001 <= self.mass_balance_l_trend[-1] <= 0.0001:
-                    self.steady_state = True
-                    return (
-                        f"Steady state reached after {self.i} "
-                        f"years (ELA: {self.ela}, dT = {temp_change})"
-                    )
-
-            return "Steady State was not reached after 10'000 years"
 
         # If steady state is not reached yet, exit the method
-        else:
-            return (
-                "Model is not yet in steady state. "
-                "Please press 'Steady state' first."
+        if not self.steady_state:
+            LOG.warning(
+                "Model is not yet in steady state, "
+                "call reach_steady_state() method on the model object first."
             )
+            return None
+
+        # Reset year and state of model
+        self.i = 0
+        self.steady_state = False
+
+        # Loop through years
+        _ = self._iterate(temp_change=temp_change, max_years=max_years)
+
+    def _iterate(self, temp_change: float, max_years: int) -> bool:
+
+        # Iterate years until steady state or abort
+        for i in range(max_years):
+            LOG.info(self._log_string, i, self.ela, self.mass_balance_l_trend[-1])
+            self.i = i
+            self.add_mass_balance()
+            self.flow()
+            self.update_stats()
+            if i % self.PLOT_FRAME_RATE == 0:
+                self._update_plot()
+
+            # Adjust temperature change
+            if temp_change > 0:
+                if self.ela < (self.ela_start + 100 * temp_change):
+                    self.ela += 1
+            elif temp_change < 0:
+                if self.ela > (self.ela_start + 100 * temp_change):
+                    self.ela -= 1
+
+            # Check if mass balance is constantly around zero; steady state
+            if -self.tolerance <= self.mass_balance_l_trend[-1] <= self.tolerance:
+                self.steady_state = True
+                LOG.info(
+                    "Steady state reached after %s years (ELA: %s, dT = %s).",
+                    self.i,
+                    self.ela,
+                    temp_change,
+                )
+                return True
+
+        LOG.warning("Steady state was not reached after %s years.", max_years)
+        return False
 
     def add_mass_balance(self) -> None:
         """
@@ -415,12 +453,12 @@ class GlacierFlowModel(Base):
             )
 
     @staticmethod
-    def setup_plot(x: float = 15, y: float = 5) -> plt.figure:
+    def _setup_plot(x: float = 15, y: float = 5) -> plt.figure:
         """
         Setup empty model plot
 
         Sets up an empty plot for the model. The plot can be updated with the
-        current model state using the 'update_plot()' method.
+        current model state using the '_update_plot()' method.
 
         Parameters
         ----------
@@ -435,31 +473,40 @@ class GlacierFlowModel(Base):
             An empty plot of the model.
 
         """
+        LOG.debug("Initializing plot.")
         plt.ion()
         fig = plt.figure(figsize=(x, y), num="GlacierFlowModel")
         fig.patch.set_facecolor("black")
         return fig
 
-    def update_plot(self) -> None:
+    def _update_plot(self) -> None:
         """
         Update model plot
 
         Updates the plot of the model with the new ice layer.
-        Call 'setup_plot()' first.
+        Call '_setup_plot()' first.
 
         Returns
         -------
         None
 
         """
+
+        # Check if plotting is active
+        if self._fig is None:
+            return None
+        LOG.debug("Updating plot.")
+
         # Extract glaciated area
         hs_back = np.ma.masked_where(
-            self.h <= 1, self.hillshade(self.ele, azimuth=315, angle_altitude=45)
+            self.h <= 1,
+            self._hillshade(
+                self.ele, azimuth=self.PLOT_AZIMUTH, altitude=self.PLOT_ALTITUDE
+            ),
         )
-        # h = np.ma.masked_where(self.h <= 1, self.h)
 
         # Clear plot and draw axes
-        self.fig.clear()
+        self._fig.clear()
         ax = plt.subplot(121, facecolor="black")
         ax.tick_params(axis="x", colors="w")
         ax.tick_params(axis="y", colors="w")
@@ -494,11 +541,26 @@ class GlacierFlowModel(Base):
         ax2.tick_params(axis="y", colors="w")
 
         # Draw new plot
-        self.fig.canvas.draw()
+        self._fig.canvas.draw()
         plt.pause(0.05)
 
+    def _destroy_plot(self) -> None:
+        """Destroy plot instance
+
+        Returns
+        -------
+        None
+
+        """
+        LOG.debug("Destroying plot.")
+        try:
+            plt.close(self._fig)
+        except AttributeError:
+            pass
+        self._fig = None
+
     @staticmethod
-    def hillshade(array: np.ndarray, azimuth: int, angle_altitude: int) -> np.ndarray:
+    def _hillshade(array: np.ndarray, azimuth: int, altitude: int) -> np.ndarray:
         """
         Render hillshade
 
@@ -510,7 +572,7 @@ class GlacierFlowModel(Base):
             Digital elevation model.
         azimuth : int
             Direction of the illumination source.
-        angle_altitude : int
+        altitude : int
             Altitude of illumination source
 
         Returns
@@ -524,7 +586,7 @@ class GlacierFlowModel(Base):
         x, y = np.gradient(array, 3, 3)
         aspect = np.arctan2(-y, x)
         azimuth_rad = azimuth * np.pi / 180.0
-        altitude_rad = angle_altitude * np.pi / 180.0
+        altitude_rad = altitude * np.pi / 180.0
 
         shaded = np.sin(altitude_rad) * np.sin(slope) + np.cos(altitude_rad) * np.cos(
             slope

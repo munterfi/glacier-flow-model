@@ -52,8 +52,7 @@ It covers a smaller extent around the Aletsch glacial arena in Switzerland with 
 .. code-block:: python
 
     from glacier_flow_model import PkgDataAccess
-    pkg = PkgDataAccess()
-    dem = pkg.load_dem()
+    dem = PkgDataAccess.load_dem()
 
 The original DEM can be downloaded `here <https://shop.swisstopo.admin.ch/en/products/height_models/dhm25200>`_.
 
@@ -66,9 +65,13 @@ in the year 2000 are set.  Keep the input file size small, otherwise the model m
 
 .. code-block:: python
 
+    import logging
     from glacier_flow_model import GlacierFlowModel, PkgDataAccess
-    pkg = PkgDataAccess()
-    gfm = GlacierFlowModel(pkg.locate_dem())
+
+    LOG_FORMAT = "[%(asctime)s %(levelname)s] %(message)s (%(name)s)"
+    logging.basicConfig(format=LOG_FORMAT, level=logging.INFO)
+
+    gfm = GlacierFlowModel(PkgDataAccess.locate_dem())
 
 After initialization, the model needs to accumulate the initial ice mass until it reaches a steady state, call the
 :code:`reach_steady_state` method to do so:

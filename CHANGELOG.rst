@@ -3,16 +3,19 @@ Changelog
 
 This packages uses `semantic versioning <https://semver.org/>`_.
 
-Version 0.1.3
+Version 0.2.0
 -------------
 
 - Features:
     - Use of the :code:`.flake8` config file.
     - Configured Dependabot.
     - Add :code:`CITATION.cff` file for citing the repository and linking to zenodo for DOI generation.
+    - Use python :code:`logging` module and remove inheritance from :code:`Base` class.
+    - Added :code:`tolerance` as class instance variable of the :code:`GlacierFowModel` class.
+    - Use internal method :code:`self._iterate` to simluate years in order to reduce duplicate code.
+    - Getter and setter methods for the :code:`plot` instance variable, which initializes or destroys the :code:`matplotlib.pyplot.figure`.
 - Bugfixes:
-    - Fix failing CI: Update package dependencies, set GitHub actions to
-    python 3.10, set GDAL version to 3.4.1 and remove shebang from tests.
+    - Fix failing CI: Update package dependencies, set GitHub actions to python 3.10, set GDAL version to 3.4.1 and remove shebang from tests.
     - Updated mypy configuration.
 
 Version 0.1.2
