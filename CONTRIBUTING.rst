@@ -21,7 +21,7 @@ Ready to contribute? Here's how to set up **glacier-flow-model** for local devel
 .. code-block:: shell
 
         poetry run pytest                               # Running tests
-        poetry run mypy --config-file pyproject.toml .  # Static type checks
+        poetry run mypy .                               # Static type checks
         poetry run flake8 glacier_flow_model tests      # Code linting
         cd docs && poetry run make html && cd ..        # Build documentation
 
