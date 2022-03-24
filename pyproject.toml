@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "glacier-flow-model"
 version = "0.2.0"
-description = "Modeling glaciers on a digital elevation model based on the mass balance of the glaciers and the D8 flow algorithm applied to the ice."
+description = "Modeling glaciers on a digital elevation model based on mass balance and the D8 flow algorithm applied to ice."
 maintainers = ["Merlin Unterfinger <info@munterfinger.ch>"]
 authors = [
     "Merlin Unterfinger <info@munterfinger.ch>",
@@ -29,6 +29,8 @@ tomlkit = "^0.10.0"
 codecov = "^2.1.12"
 pydata-sphinx-theme = "^0.8.0"
 black = {version = "^22.1.0", allow-prereleases = true}
+rstcheck = "^3.3.1"
+doc8 = "^0.10.1"
 
 [tool.mypy]
 ignore_missing_imports = true

@@ -1,7 +1,8 @@
 Contributing
 ============
 
-This document contains guidelines for the collaboration in the **glacier-flow-model** python package.
+This document contains guidelines for the collaboration in the
+**glacier-flow-model** python package.
 
 Getting started
 ---------------

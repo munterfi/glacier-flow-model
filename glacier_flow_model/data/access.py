@@ -1,3 +1,4 @@
+"""Helper for example data access, shipped with the package."""
 import importlib.resources as resources
 from logging import getLogger
 
