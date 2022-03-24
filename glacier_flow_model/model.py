@@ -18,6 +18,8 @@ class GlacierFlowModel:
     """Class for modeling glacier flow."""
 
     PLOT_FRAME_RATE = 5
+    PLOT_WIDTH = 15
+    PLOT_HEIGHT = 5
     PLOT_AZIMUTH = 315
     PLOT_ALTITUDE = 45
 
@@ -43,9 +45,11 @@ class GlacierFlowModel:
         m : float, default 0.0006
             Glacier mass balance gradient [m/m], the linear relationship
             between altitude and mass balance.
-        tolerance : float 0.0001
+        tolerance : float, default 0.0001
             Tolerance to check if mass balance is constantly around zero and
             therefore a steady state is reached.
+        plot : bool, default True
+            Visualization of the simulation process.
 
         Returns
         -------
@@ -74,9 +78,7 @@ class GlacierFlowModel:
         self.ele = np.array(ele)  # Elevation including glaciers
         self.h = self.ele_orig * 0  # Glacier geometry
         self.u = self.ele_orig * 0  # Glacier velocity
-        self.hs = self._hillshade(
-            ele, azimuth=self.PLOT_AZIMUTH, altitude=self.PLOT_ALTITUDE
-        )  # HS
+        self.hs = self._hillshade(ele)  # HS
 
         # Mass balance parameters
         self.m = m  # Gradient
@@ -105,9 +107,6 @@ class GlacierFlowModel:
 
         # Setup plot ----------------------------------------------------------
         self.plot = plot
-        # self.update_plot()
-        # self.fig = self.setup_plot()
-        # self.update_plot()
 
     @property
     def plot(self) -> bool:
@@ -453,7 +452,7 @@ class GlacierFlowModel:
             )
 
     @staticmethod
-    def _setup_plot(x: float = 15, y: float = 5) -> plt.figure:
+    def _setup_plot(x: float = PLOT_WIDTH, y: float = PLOT_HEIGHT) -> plt.figure:
         """
         Setup empty model plot
 
@@ -500,9 +499,7 @@ class GlacierFlowModel:
         # Extract glaciated area
         hs_back = np.ma.masked_where(
             self.h <= 1,
-            self._hillshade(
-                self.ele, azimuth=self.PLOT_AZIMUTH, altitude=self.PLOT_ALTITUDE
-            ),
+            self._hillshade(self.ele),
         )
 
         # Clear plot and draw axes
@@ -552,15 +549,17 @@ class GlacierFlowModel:
         None
 
         """
-        LOG.debug("Destroying plot.")
         try:
             plt.close(self._fig)
+            LOG.debug("Destroying plot.")
         except AttributeError:
             pass
         self._fig = None
 
     @staticmethod
-    def _hillshade(array: np.ndarray, azimuth: int, altitude: int) -> np.ndarray:
+    def _hillshade(
+        array: np.ndarray, azimuth: int = PLOT_AZIMUTH, altitude: int = PLOT_ALTITUDE
+    ) -> np.ndarray:
         """
         Render hillshade
 
