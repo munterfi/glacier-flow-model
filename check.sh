@@ -12,13 +12,13 @@
 # =============================================================================
 
 echo '*** pytest: Tests and coverage ***'
-poetry run pytest --cov=glacier_flow_model tests/
+poetry run pytest --cov=glacier_flow_model
 
 echo -e '\n*** mypy: Static type checks ***'
-poetry run mypy --config-file pyproject.toml .
+poetry run mypy .
 
 echo -e '\n*** flake8: Code linting ***'
-poetry run flake8 . --count --exit-zero --max-complexity=10 --statistics
+poetry run flake8 glacier_flow_model tests --count
 
 echo -e '\n*** Building documentation ***'
 cd docs && poetry run make html && cd ..

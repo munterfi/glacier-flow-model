@@ -1,7 +1,8 @@
 Contributing
 ============
 
-This document contains guidelines for the collaboration in the **glacier-flow-model** python package.
+This document contains guidelines for the collaboration in the
+**glacier-flow-model** python package.
 
 Getting started
 ---------------
@@ -10,7 +11,7 @@ Ready to contribute? Here's how to set up **glacier-flow-model** for local devel
 
 1. Clone the repository: :code:`git clone https://github.com/munterfi/glacier-flow-model.git`
 2. Install the dependencies: :code:`poetry install`
-3. Create a feature branch for local development: :code:`git checkout -b feature/<the-feature-name> develop`
+3. Create a feature branch for local development: :code:`git checkout -b feature/<the-feature-name> master`
 4. Work locally on the feature, make sure to add or adjust:
     - entries in CHANGELOG.md
     - docstrings
@@ -21,7 +22,7 @@ Ready to contribute? Here's how to set up **glacier-flow-model** for local devel
 .. code-block:: shell
 
         poetry run pytest                               # Running tests
-        poetry run mypy --config-file pyproject.toml .  # Static type checks
+        poetry run mypy .                               # Static type checks
         poetry run flake8 glacier_flow_model tests      # Code linting
         cd docs && poetry run make html && cd ..        # Build documentation
 

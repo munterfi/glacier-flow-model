@@ -1,22 +1,19 @@
+"""Helper for example data access, shipped with the package."""
 import importlib.resources as resources
+from logging import getLogger
 
 from osgeo.gdal import Dataset
 from osgeo.gdal import Open
 
-from glacier_flow_model.base import Base
+LOG = getLogger(__name__)
 
 
-class PkgDataAccess(Base):
+class PkgDataAccess:
     """Package example data bindings."""
 
-    def __init__(self, verbose: bool = False) -> None:
+    def __init__(self) -> None:
         """
         Initializes an instance of the PkgDataAccess class.
-
-        Parameters
-        ----------
-        verbose : bool
-            Should information be printed?
 
         Returns
         -------
@@ -24,10 +21,10 @@ class PkgDataAccess(Base):
             Constructor of the PkgDataAccess class.
 
         """
-        super().__init__(verbose)
-        self.verbose = verbose
+        pass
 
-    def locate_dem(self) -> str:
+    @staticmethod
+    def locate_dem() -> str:
         """
         Locates the file 'dem.tif' on the current system.
 
@@ -38,10 +35,11 @@ class PkgDataAccess(Base):
 
         """
         with resources.path("glacier_flow_model.data", "dem.tif") as file_path:
-            self._print(f"Example located at '{file_path}' ...")
+            LOG.info("Example DEM at '%s' ...", file_path)
             return str(file_path)
 
-    def load_dem(self) -> Dataset:
+    @staticmethod
+    def load_dem() -> Dataset:
         """
         Loads the file 'dem.tif' on the current system.
 
@@ -51,7 +49,7 @@ class PkgDataAccess(Base):
             The example digital elevation model.
 
         """
-        file_path = self.locate_dem()
-        self._print(f"Reading example from '{file_path}' ...")
+        file_path = PkgDataAccess.locate_dem()
+        LOG.info("Reading DEM from '%s' ...", file_path)
         dem = Open(file_path)
         return dem

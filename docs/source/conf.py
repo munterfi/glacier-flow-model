@@ -13,27 +13,28 @@
 import os
 import sys
 import tomlkit
-sys.path.insert(0, os.path.abspath('..'))
-sys.path.insert(0, os.path.abspath('../glacier_flow_model/'))
+
+sys.path.insert(0, os.path.abspath(".."))
+sys.path.insert(0, os.path.abspath("../glacier_flow_model/"))
 
 
 # -- Project information -----------------------------------------------------
 
 
 def _get_project_meta():
-    with open('../../pyproject.toml') as pyproject:
+    with open("../../pyproject.toml") as pyproject:
         file_contents = pyproject.read()
 
-    return tomlkit.parse(file_contents)['tool']['poetry']
+    return tomlkit.parse(file_contents)["tool"]["poetry"]
 
 
 pkg_meta = _get_project_meta()
-project = str(pkg_meta['name'])
-author = str(pkg_meta['authors'][0])
-copyright = f'2020, {author}'
+project = str(pkg_meta["name"])
+author = str(pkg_meta["authors"][0])
+copyright = f"2020, {author}"
 
 # The short X.Y version
-version = str(pkg_meta['version'])
+version = str(pkg_meta["version"])
 # The full version, including alpha/beta/rc tags
 release = version
 
@@ -44,14 +45,14 @@ release = version
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.coverage',
-    'sphinx.ext.napoleon',
-    'sphinx.ext.intersphinx'
+    "sphinx.ext.autodoc",
+    "sphinx.ext.coverage",
+    "sphinx.ext.napoleon",
+    "sphinx.ext.intersphinx",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ["_templates"]
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -59,7 +60,7 @@ templates_path = ['_templates']
 exclude_patterns = []
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+pygments_style = "sphinx"
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -68,20 +69,20 @@ pygments_style = 'sphinx'
 # a list of builtin themes.
 # html_theme = 'alabaster'
 # html_theme = 'sphinx_rtd_theme'
-html_theme = 'pydata_sphinx_theme'
+html_theme = "pydata_sphinx_theme"
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
     "github_url": "https://github.com/munterfi/glacier-flow-model",
-    "twitter_url": "https://twitter.com/munterfi1"
+    "twitter_url": "https://twitter.com/munterfi1",
 }
 
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ["_static"]
 html_logo = "_static/logo-text.svg"
 html_favicon = "_static/favicon/apple-touch-icon.png"
