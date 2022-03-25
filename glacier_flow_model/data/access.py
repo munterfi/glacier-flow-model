@@ -34,7 +34,7 @@ class PkgDataAccess:
             The path to the file on the system.
 
         """
-        with resources.path("glacier_flow_model.data", "dem.tif") as file_path:
+        with resources.path("glacier_flow_model.data", "aletsch.tif") as file_path:
             LOG.info("Example DEM at '%s' ...", file_path)
             return str(file_path)
 

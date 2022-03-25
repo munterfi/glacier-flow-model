@@ -134,6 +134,8 @@ The model has some limitations that need to be considered:
 - The modeling of ice flow is done with D8, a technique for modeling surface
   flow in hydrology. Water behaves fundamentally different from ice, which is
   neglected by the model (e.g. influence of crevasses).
+- The flow velocity only considers internal ice deformation (creep). Basal
+  sliding, and soft bed deformation are ignored.
 - No distinction is made between snow and ice. The density of the snow or ice
   mass is also neglected in the vertical column.
 

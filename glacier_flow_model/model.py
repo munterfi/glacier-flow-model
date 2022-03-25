@@ -1,10 +1,15 @@
 """The glacier flow model and visualization."""
+from ast import Str
 from logging import getLogger
+from pathlib import Path
 from re import search
+from typing import Optional
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
+from osgeo.gdal import GDT_Float32
+from osgeo.gdal import GetDriverByName
 from osgeo.gdal import Open
 from scipy.ndimage import gaussian_filter
 from scipy.ndimage import uniform_filter
@@ -18,6 +23,7 @@ mpl.rcParams["toolbar"] = "None"
 class GlacierFlowModel:
     """Class for modeling glacier flow."""
 
+    MODEL_RANDOM_NUDGING = True
     PLOT_FRAME_RATE = 5
     PLOT_WIDTH = 15
     PLOT_HEIGHT = 5
@@ -27,8 +33,9 @@ class GlacierFlowModel:
     def __init__(
         self,
         dem_path: str,
+        model_name: Optional[str] = None,
         ela: int = 2850,
-        m: float = 0.0006,
+        m: float = 0.006,
         tolerance: float = 0.0001,
         plot: bool = True,
     ) -> None:
@@ -39,11 +46,14 @@ class GlacierFlowModel:
         ----------
         dem_path : str
             Path to the file that holds the DEM.
+        model_name: Optional[str]
+            Name of the model, if not provided the name of the input dem file
+            without extension is set.
         ela : int, default 2850
             The equilibrium-line altitude (ELA) marks the area or zone on
             a glacier where accumulation is balanced by ablation over a 1-year
             period.
-        m : float, default 0.0006
+        m : float, default 0.006
             Glacier mass balance gradient [m/m], the linear relationship
             between altitude and mass balance.
         tolerance : float, default 0.0001
@@ -64,6 +74,7 @@ class GlacierFlowModel:
         ele = band.ReadAsArray()
 
         # Instance variables --------------------------------------------------
+        self.model_name = Path(dem_path).stem if model_name is None else model_name
         self.dem_path = dem_path
         self.tolerance = tolerance
         self.precision = (
@@ -84,6 +95,8 @@ class GlacierFlowModel:
         self._setup_arrays()  # Variable arrays (ele, h, u ,hs)
 
         # Coordinates
+        self._geo_trans = dem.GetGeoTransform()
+        self._geo_proj = dem.GetProjection()
         self.res = dem.GetGeoTransform()[1]  # Resolution
         nrows, ncols = ele.shape
         x0, dx, dxdy, y0, dydx, dy = dem.GetGeoTransform()
@@ -155,7 +168,8 @@ class GlacierFlowModel:
 
     def __repr__(self) -> str:
         return (
-            f"GlacierFlowModel({self.dem_path}, "
+            "GlacierFlowModel("
+            + f"{self.dem_path}, {self.model_name},"
             + f"{self.ela_start}, {self.m}, "
             + f"{self.tolerance}, {self.plot})"
         )
@@ -171,8 +185,8 @@ class GlacierFlowModel:
 
         """
         return (
-            f"GlacierFlowModel {'' if self.steady_state else 'not '}"
-            f"in steady state with:"
+            f"GlacierFlowModel '{self.model_name}' "
+            f"{'' if self.steady_state else 'not '}in steady state with:"
             f"\n - m:          {self.m:20.5f} [m/m]"
             f"\n - ela:        {self.ela:20.2f} [m MSL]"
             f"\n - resolution: {self.res:20.2f} [m]"
@@ -250,7 +264,7 @@ class GlacierFlowModel:
         if not self.steady_state:
             LOG.warning(
                 "Model is not yet in steady state, "
-                "call reach_steady_state() method on the model object first."
+                "call 'reach_steady_state()' method on the model object first."
             )
             return None
 
@@ -364,15 +378,16 @@ class GlacierFlowModel:
         asp[asp == -1] = 7
 
         # Random nudging the flow
-        asp = asp + np.clip(
-            np.random.normal(loc=0.0, scale=1.0, size=asp.shape).astype(int), -1, 1
-        )
-        asp[asp == 9] = 1
-        asp[asp == 0] = 8
+        if self.MODEL_RANDOM_NUDGING:
+            asp = asp + np.clip(
+                np.random.normal(loc=0.0, scale=1.0, size=asp.shape).astype(int), -1, 1
+            )
+            asp[asp == 9] = 1
+            asp[asp == 0] = 8
 
         # Ice flow ------------------------------------------------------------
         # Calculate ice flow velocity 'u'
-        ud = (2 * a * ((f * p * g * np.sin(slp)) ** 3.0) * self.h**4.0) / 4
+        ud = (2 * a * ((f * p * g * np.sin(slp)) ** 3.0) * self.h ** 4.0) / 4
         self.u = ud / 100
         self.u[self.u > 0.99 * self.res] = 0.99 * self.res
 
@@ -438,6 +453,70 @@ class GlacierFlowModel:
         h_new_index = np.copy((self.h < self.m))
         self.h = uniform_filter(self.h, size=5)
         self.h[h_new_index] = 0
+
+    # Export ------------------------------------------------------------------
+    def export(self, folder_path: Optional[str] = None) -> None:
+        """
+        Export model data
+
+        Export the glacier layer and statistics of the model as '.csv' and
+        '.tif' into a new folder with the name of the model.
+
+        Parameters
+        ----------
+        folder_path : Optional[str]
+            Location to create a new folder and export the files.
+
+        Returns
+        -------
+        None
+
+        """
+        if folder_path is None:
+            folder_path = Path.cwd()
+        else:
+            folder_path = Path(folder_path)
+
+        # Append model name and create folder
+        folder_path = folder_path / self.model_name
+        folder_path.mkdir(parents=True, exist_ok=True)
+
+        # File names
+        dst_csv = f"{self.model_name}_ela{self.ela}_m{self.m}.csv"
+        dst_tif = f"{self.model_name}_ela{self.ela}_m{self.m}.tif"
+
+        # Export
+        self._export_csv(folder_path / dst_csv)
+        self._export_tif(folder_path / dst_tif)
+
+    def _export_csv(self, file_path: Path) -> None:
+        header = "mass,mass_balance,mass_balance_s_trend,mass_balance_l_trend"
+        statistics = np.asarray(
+            np.c_[
+                self.mass,
+                self.mass_balance,
+                self.mass_balance_s_trend,
+                self.mass_balance_l_trend,
+            ]
+        )
+        np.savetxt(
+            file_path,
+            statistics,
+            delimiter=",",
+            comments="",
+            newline="\n",
+            header=header,
+        )
+
+    def _export_tif(self, file_path: Path) -> None:
+        driver = GetDriverByName("GTiff")
+        data_set = driver.Create(
+            str(file_path), self.h.shape[1], self.h.shape[0], 1, GDT_Float32
+        )
+        data_set.GetRasterBand(1).WriteArray(self.h)
+        data_set.SetGeoTransform(self._geo_trans)
+        data_set.SetProjection(self._geo_proj)
+        data_set.FlushCache()
 
     # Statistics --------------------------------------------------------------
     def _setup_stats(self) -> None:

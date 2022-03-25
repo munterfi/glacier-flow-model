@@ -19,6 +19,8 @@ Version 0.2.0
       reduce duplicate code.
     - Getter and setter methods for the :code:`plot` instance variable, which
       initializes or destroys the :code:`matplotlib.pyplot.figure`.
+    - Functionality to export the glacier layer and statistics of the model as
+      :code:`.csv` and :code:`.tif` using the :code:`self.export()` method.
 - Bugfixes:
     - Fix failing CI: Update package dependencies, set GitHub actions to python
       3.10, set GDAL version to 3.4.1 and remove shebang from tests.
@@ -27,6 +29,8 @@ Version 0.2.0
       will now perform a clean reset of the model.
     - A model destructor ensures closing the model figure, when the model is
       deleted or garbage collected.
+    - Random nudging had no effect, now the layer is considered if class
+      variable :code:`MODEL_RANDOM_NUDGING` is set to :code:`True` (default).
 
 Version 0.1.2
 -------------
