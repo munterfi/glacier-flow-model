@@ -1,5 +1,4 @@
 """The glacier flow model and visualization."""
-from ast import Str
 from logging import getLogger
 from pathlib import Path
 from re import search
@@ -387,7 +386,7 @@ class GlacierFlowModel:
 
         # Ice flow ------------------------------------------------------------
         # Calculate ice flow velocity 'u'
-        ud = (2 * a * ((f * p * g * np.sin(slp)) ** 3.0) * self.h ** 4.0) / 4
+        ud = (2 * a * ((f * p * g * np.sin(slp)) ** 3.0) * self.h**4.0) / 4
         self.u = ud / 100
         self.u[self.u > 0.99 * self.res] = 0.99 * self.res
 
@@ -473,23 +472,30 @@ class GlacierFlowModel:
 
         """
         if folder_path is None:
-            folder_path = Path.cwd()
+            export_folder_path = Path.cwd()
         else:
-            folder_path = Path(folder_path)
+            export_folder_path = Path(folder_path)
 
         # Append model name and create folder
-        folder_path = folder_path / self.model_name
-        folder_path.mkdir(parents=True, exist_ok=True)
+        export_folder_path = export_folder_path / self.model_name
+        export_folder_path.mkdir(parents=True, exist_ok=True)
 
         # File names
         dst_csv = f"{self.model_name}_ela{self.ela}_m{self.m}.csv"
         dst_tif = f"{self.model_name}_ela{self.ela}_m{self.m}.tif"
 
         # Export
-        self._export_csv(folder_path / dst_csv)
-        self._export_tif(folder_path / dst_tif)
+        LOG.info(
+            "Exporting files '%s' and '%s' to '%s'.",
+            dst_csv,
+            dst_tif,
+            export_folder_path,
+        )
+        self._export_csv(export_folder_path / dst_csv)
+        self._export_tif(export_folder_path / dst_tif)
 
     def _export_csv(self, file_path: Path) -> None:
+        LOG.debug("Writing %i lines to '%s' ...", self.mass.shape[0], file_path)
         header = "mass,mass_balance,mass_balance_s_trend,mass_balance_l_trend"
         statistics = np.asarray(
             np.c_[
@@ -509,6 +515,12 @@ class GlacierFlowModel:
         )
 
     def _export_tif(self, file_path: Path) -> None:
+        LOG.debug(
+            "Writing (%ix%i) array to '%s' ...",
+            self.h.shape[0],
+            self.h.shape[1],
+            file_path,
+        )
         driver = GetDriverByName("GTiff")
         data_set = driver.Create(
             str(file_path), self.h.shape[1], self.h.shape[0], 1, GDT_Float32

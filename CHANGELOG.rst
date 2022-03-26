@@ -21,6 +21,8 @@ Version 0.2.0
       initializes or destroys the :code:`matplotlib.pyplot.figure`.
     - Functionality to export the glacier layer and statistics of the model as
       :code:`.csv` and :code:`.tif` using the :code:`self.export()` method.
+    - Reproject example DEM :code:`aletsch.tif` from Swiss CH1903 / LV03
+      (EPSG:21781) to Swiss CH1903+ / LV95 (EPSG:2056).
 - Bugfixes:
     - Fix failing CI: Update package dependencies, set GitHub actions to python
       3.10, set GDAL version to 3.4.1 and remove shebang from tests.
