@@ -511,6 +511,7 @@ class GlacierFlowModel:
             delimiter=",",
             comments="",
             newline="\n",
+            fmt=f"%.{self.precision}f",
             header=header,
         )
 
