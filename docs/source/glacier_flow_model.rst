@@ -12,8 +12,16 @@ glacier\_flow\_model.model module
    :undoc-members:
    :show-inheritance:
 
+glacier\_flow\_model.fracd8 module
+----------------------------------
+
+.. automodule:: glacier_flow_model.fracd8
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 glacier\_flow\_model.data module
----------------------------------
+--------------------------------
 
 .. automodule:: glacier_flow_model.data
    :members:

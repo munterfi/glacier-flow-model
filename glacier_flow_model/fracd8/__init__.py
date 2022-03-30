@@ -21,5 +21,9 @@ has a velocity of the resolution that must be considered.
 distances.
 - fracd8: Decides after a check of the maxium velocity, which version to choose.
 
-https://pro.arcgis.com/en/pro-app/2.7/tool-reference/raster-analysis/flow-direction.htm
 """
+from .flow import fracd8
+from .infinite import fracd8_inf
+from .limited import fracd8_lim
+
+__all__ = ["fracd8", "fracd8_lim", "fracd8_inf"]

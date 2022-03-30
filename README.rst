@@ -21,7 +21,7 @@ Glacier flow model
         :target: https://codecov.io/gh/munterfi/glacier-flow-model
 
 Modeling glaciers on a digital elevation model (DEM) based on mass balance and
-the D8 flow algorithm applied to ice.
+a modified D8 flow algorithm applied to ice.
 
 The modeling is based on a linear relationship between altitude and mass
 balance, the so-called mass balance gradient. For alpine glaciers this gradient
@@ -29,12 +29,15 @@ is about 0.006 m/m. Continental glaciers tend to be at 0.003 and maritime
 glaciers at 0.01 m/m. The alpine gradient is set by default in the model.
 To model the glaciers, annual steps are calculated. First the mass balance
 (accumulation and ablation) for the area is added to the glacier layer and in a
-second step the glacier flow is simulated by using a modified D8 technique,
-which is known for modeling surface water flows over the terrain. In order to
-avoid pure convergence of the flow, a random impulse ("nudging") is added to
-the flow. Then the surface of the glaciers is slightly smoothed. The simulation
-stops when the observed difference in mass balance for a smoothed curve
-(n=-100) is less than 0.0001 m.
+second step the glacier flow is simulated by using a modified D8 technique
+(fracd8).
+Since the prupose of the D8 flow direction algorithm is modeling surface water
+flows over terrain, the D8 algorithm was modified to be able to consider the
+fraction of ice that is flowing out of each cell based on the glaciers
+velocity. In order to avoid pure convergence of the flow, a random impulse
+("nudging") is added to the flow. Then the surface of the glaciers is slightly
+smoothed. The simulation stops when the observed difference in mass balance for
+a smoothed curve (n=-100) is less than 0.0001 m.
 
 Getting started
 ---------------
@@ -130,7 +133,9 @@ The GeoTiff contains the following bands:
 
 1. Glacier thickness [m].
 2. Velocity at medium height [m/a].
-3. Mass balance of most recent simulation year [m]
+3. Mass balance of most recent simulation year [m].
+4. Slope with glacier geometry [rad].
+5. Classified aspect with glacier geometry (D8 directions, 0 = undefined).
 
 Check out the `video <https://munterfinger.ch/media/film/gfm.mp4>`_ of the scenario simulation in the Aletsch
 glacial arena in Switzerland

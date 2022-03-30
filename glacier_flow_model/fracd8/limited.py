@@ -8,6 +8,30 @@ from numba import njit
 def fracd8_lim(
     ele: np.ndarray, u: np.ndarray, h: np.ndarray, res: float
 ) -> Tuple[np.ndarray, np.ndarray]:
+    """
+    Fraction D8 flow direction (limited)
+
+    A modified version of the D8 algorithm for the flow direction of the water
+    surface algorithm, which is able to determine the fraction of a cell that
+    is moving based on an input velocity layer.
+
+    Parameters
+    ----------
+    ele : np.ndarray
+        Elevation array.
+    u : np.ndarray
+        Velocity array (v_max must be smaller than grid resolution).
+    h : np.ndarray
+        Height of the mass to flow.
+    res : float
+        Grid resolution, same unit range as u (e.g. meters).
+
+    Returns
+    -------
+    Tuple[np.ndarray, np.ndarray, str]
+        New elevation of flow and the aspect D8 directions.
+
+    """
 
     # Setup arrays
     asp = np.zeros_like(ele, dtype=np.uint8)
@@ -53,9 +77,9 @@ def fracd8_lim(
                 h_flow[pos_0] += h_0
                 continue
 
-            # Velocity defines fraction that stays in pixel
+            # Velocity defines fraction that stays in pixel (limited u!)
             u_0 = u[pos_0]
-            fraction = u_0 / res
+            fraction = min(u_0, 0.9999 * res) / res
             pos_i = pos[asp_0]
             h_flow[pos_0] += h_0 * (1 - fraction)
             h_flow[pos_i] += h_0 * fraction

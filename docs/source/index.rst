@@ -6,8 +6,8 @@
 glacier-flow-model |release|
 ============================
 
-Modeling glaciers on a digital elevation model based on mass balance and the D8
-flow algorithm applied to ice.
+Modeling glaciers on a digital elevation model based on mass balance and a
+modified D8 flow algorithm applied to ice.
 
 .. toctree::
    :maxdepth: 2

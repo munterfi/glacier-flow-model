@@ -38,7 +38,7 @@ def test_fracd8_inf():
     h = np.copy(H)
     for _ in range(MAX_ITER):
         ele = ELE + h
-        h, asp = fracd8_inf(ele, u, h, CELL_RES)
+        h, asp = fracd8_inf(ele, u, h, CELL_RES, 5)
     h_sum_inf = h.sum()
     diff = abs(H_SUM - h_sum_inf)
     assert (diff / H_SUM) < TOLERANCE
