@@ -49,16 +49,14 @@ def position(x: int, y: int, n: int) -> Tuple[int, int]:
     pos_n = pos[n]
     return pos_n
 
-    """
-    DO NOT USE d8_position() for performance reasons!
-    """
-
 
 @njit
 def aspect(ele: np.ndarray) -> np.ndarray:
     """Classified aspect
 
     Calculates the steepest dz and returns the result as D8 direction.
+    Note: Do not use position() inside this function for performance reasons!
+    Seems the JIT compiler is better in optimizing the solution below.
 
     Parameters
     ----------
@@ -79,6 +77,8 @@ def aspect(ele: np.ndarray) -> np.ndarray:
     rows, cols = ele.shape
     for y in range(1, rows - 1):
         for x in range(1, cols - 1):
+
+            # Replace position function
             pos = [
                 (y, x),  # 0
                 (y + 1, x + 1),  # 1
