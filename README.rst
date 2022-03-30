@@ -29,12 +29,12 @@ is about 0.006 m/m. Continental glaciers tend to be at 0.003 and maritime
 glaciers at 0.01 m/m. The alpine gradient is set by default in the model.
 To model the glaciers, annual steps are calculated. First the mass balance
 (accumulation and ablation) for the area is added to the glacier layer and in a
-second step the glacier flow is simulated by using the D8 technique, which is
-known for modeling surface water flows over the terrain. In order to avoid pure
-convergence of the flow, a random impulse ("nudging") is added to the flow.
-Then the surface of the glaciers is slightly smoothed. The simulation stops
-when the observed difference in mass balance for a smoothed curve (n=-100) is
-less than 0.0001 m.
+second step the glacier flow is simulated by using a modified D8 technique,
+which is known for modeling surface water flows over the terrain. In order to
+avoid pure convergence of the flow, a random impulse ("nudging") is added to
+the flow. Then the surface of the glaciers is slightly smoothed. The simulation
+stops when the observed difference in mass balance for a smoothed curve
+(n=-100) is less than 0.0001 m.
 
 Getting started
 ---------------
