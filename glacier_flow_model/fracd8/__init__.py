@@ -1,7 +1,7 @@
 """
 Sub-level module 'fracd8' of the glacier-flow-model package.
 
-The name "fracd8" represents a modified version of the D8 algorithm for the
+The name 'fracd8' represents a modified version of the D8 algorithm for the
 flow direction of the water surface algorithm, which is able to determine the
 fraction of a cell that is moving based on an input velocity layer.
 
@@ -16,9 +16,9 @@ aspect and thereby the direction of flow. In addition, the performance is
 worse. Therefore there are two versions in this submodule:
 
 - fracd8_lim: Neglects the case described above (more performant) and thereby
-has a velocity of the resolution that must be considered.
+  has a velocity of the resolution that must be considered.
 - fracd8_inf: Follows the cells (in theory 'infinitely') in the case of large
-distances.
+  distances.
 - fracd8: Decides after a check of the maxium velocity, which version to choose.
 
 """
