@@ -23,7 +23,7 @@ Glacier flow model
 Modeling glaciers on a digital elevation model (DEM) based on mass balance and
 the D8 flow algorithm applied to ice.
 
-The modeling is based on the linear relationship between altitude and mass
+The modeling is based on a linear relationship between altitude and mass
 balance, the so-called mass balance gradient. For alpine glaciers this gradient
 is about 0.006 m/m. Continental glaciers tend to be at 0.003 and maritime
 glaciers at 0.01 m/m. The alpine gradient is set by default in the model.
@@ -119,6 +119,18 @@ Cooling -1°C after initial steady state:
    :width: 120 px
    :alt: https://github.com/munterfi/glacier-flow-model
    :align: center
+
+Export the results of the model into :code:`.csv` and :code:`.tif` files:
+
+.. code-block:: python
+
+    gfm.export()
+
+The GeoTiff contains the following bands:
+
+1. Glacier thickness [m].
+2. Velocity at medium height [m/a].
+3. Mass balance of most recent simulation year [m]
 
 Check out the `video <https://munterfinger.ch/media/film/gfm.mp4>`_ of the scenario simulation in the Aletsch
 glacial arena in Switzerland
