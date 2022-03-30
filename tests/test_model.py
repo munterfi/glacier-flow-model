@@ -35,3 +35,9 @@ def test_plot_destroy():
 def test_plot_setup():
     gfm.plot = True
     assert gfm.plot is True
+
+
+def test_export(tmp_path):
+    gfm.simulate(temp_change=-4, max_years=max_iter)
+    gfm.export(tmp_path)
+    assert True
