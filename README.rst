@@ -30,7 +30,7 @@ glaciers at 0.01 m/m. The alpine gradient is set by default in the model.
 To model the glaciers, annual steps are calculated. First the mass balance
 (accumulation and ablation) for the area is added to the glacier layer and in a
 second step the glacier flow is simulated by using a modified D8 technique
-(fracd8).
+("fracd8").
 Since the prupose of the D8 flow direction algorithm is modeling surface water
 flows over terrain, the D8 algorithm was modified to be able to consider the
 fraction of ice that is flowing out of each cell based on the glaciers
@@ -134,8 +134,8 @@ The GeoTiff contains the following bands:
 1. Glacier thickness [m].
 2. Velocity at medium height [m/a].
 3. Mass balance of most recent simulation year [m].
-4. Slope with glacier geometry [rad].
-5. Classified aspect with glacier geometry (D8 directions, 0 = undefined).
+4. Slope of DEM with glacier geometry [rad].
+5. Classified aspect of of DEM with glacier geometry (D8 directions, 0 = flat).
 
 Check out the `video <https://munterfinger.ch/media/film/gfm.mp4>`_ of the scenario simulation in the Aletsch
 glacial arena in Switzerland
