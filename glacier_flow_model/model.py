@@ -27,8 +27,6 @@ class GlacierFlowModel:
 
     Attributes
     ----------
-    MODEL_RANDOM_NUDGING : bool
-        Random nudging of the aspect of the flow to avoid pure convergence.
     MODEL_TOLERANCE : float
         The fluctuation tolerance for the long-term trend of the mass balance
         to achieve a steady state of the model.
@@ -58,7 +56,6 @@ class GlacierFlowModel:
         hillshade calculation.
     """
 
-    MODEL_RANDOM_NUDGING = True
     MODEL_TOLERANCE = 0.0001
 
     FLOW_ICE_RATE_FACTOR = 1.4e-16
