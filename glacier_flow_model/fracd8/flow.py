@@ -9,7 +9,7 @@ from .limited import fracd8_lim
 
 @njit
 def fracd8(
-    ele: np.ndarray, u: np.ndarray, h: np.ndarray, res: float, max_offset: int = 3
+    ele: np.ndarray, u: np.ndarray, h: np.ndarray, res: float, max_offset: int = 5
 ) -> Tuple[np.ndarray, np.ndarray, str]:
     """
     Fraction D8 flow direction
@@ -34,7 +34,7 @@ def fracd8(
         Grid resolution, same unit range as u (e.g. meters).
     max_offset : int, optional
         Maximum number of steps to follow the flow in cells with u > res,
-        by default 3
+        by default 5
 
     Returns
     -------
