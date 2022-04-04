@@ -34,10 +34,9 @@ second step the glacier flow is simulated by using a modified D8 technique
 Since the prupose of the D8 flow direction algorithm is modeling surface water
 flows over terrain, the D8 algorithm was modified to be able to consider the
 fraction of ice that is flowing out of each cell based on the glaciers
-velocity. In order to avoid pure convergence of the flow, a random impulse
-("nudging") is added to the flow. Then the surface of the glaciers is slightly
-smoothed. The simulation stops when the observed difference in mass balance for
-a smoothed curve (n=-100) is less than 0.0001 m.
+velocity. In order to avoid pure convergence of the flow, the surface of the
+glaciers is slightly smoothed. The simulation stops when the observed
+difference in mass balance for a smoothed curve (n=-100) is less than 0.0001 m.
 
 Getting started
 ---------------
