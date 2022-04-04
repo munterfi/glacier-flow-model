@@ -183,8 +183,8 @@ def fracd8_inf(
                 y_i, x_i = position(x_i, y_i, asp_step)
 
             # Add flow to destination-1 and destination cell
-            frac = frac - offset
-            h_flow[y_i, x_i] += h_0 * (1 - frac)
-            h_flow[position(x_i, y_i, asp[y_i, x_i])] += h_0 * frac
+            frac_share = frac - int(frac)
+            h_flow[y_i, x_i] += h_0 * (1 - frac_share)
+            h_flow[position(x_i, y_i, asp[y_i, x_i])] += h_0 * frac_share
 
     return h_flow, asp
