@@ -13,7 +13,7 @@ from osgeo.gdal import Open
 from scipy.ndimage import gaussian_filter
 from scipy.ndimage import uniform_filter
 
-from .fracd8.limited import fracd8_lim
+from .fracd8.flow import fracd8
 
 LOG = getLogger(__name__)
 
@@ -30,6 +30,10 @@ class GlacierFlowModel:
     MODEL_TOLERANCE : float
         The fluctuation tolerance for the long-term trend of the mass balance
         to achieve a steady state of the model.
+    MODEL_FRACD8_OFFSET : float
+        Maximum number of steps to follow the flow in cells with u > res. Since
+        this is an experimental feature the default value is set to 0, which
+        always chooses the limited version of fracd8, by default 0.
     FLOW_ICE_RATE_FACTOR : float
         The rate factor describes the deformability of the ice (default is
         tempered ice; 0°C: 1.4e-16, -5°C: 0.4e-16, -10°C: 0.05e-16).
@@ -57,6 +61,7 @@ class GlacierFlowModel:
     """
 
     MODEL_TOLERANCE = 0.0001
+    MODEL_FRACD8_OFFSET = 0
 
     FLOW_ICE_RATE_FACTOR = 1.4e-16
     FLOW_ICE_DENSITY = 917.0
@@ -179,6 +184,7 @@ class GlacierFlowModel:
         self.i = 0  # Year
         self.ela = self.ela_start  # Equilibrium line altitude
         self.steady_state = False  # Control variable for steady state
+        self.fracd8_mode = "limited"  # Mode of the fracd8 algorithm
 
     def _setup_arrays(self) -> None:
         """
@@ -319,12 +325,18 @@ class GlacierFlowModel:
         # Format logs
         log_template = (
             "Simulating year %s (ELA: %.0f, "
-            + f"mass balance long-term trend: %.{self.precision}f) ..."
+            + f"mass balance trend: %.{self.precision}f, fracd8: %s) ..."
         )
 
         # Iterate years until steady state or abort
         for i in range(max_years):
-            LOG.info(log_template, i, self.ela, self.mass_balance_l_trend[-1])
+            LOG.info(
+                log_template,
+                i,
+                self.ela,
+                self.mass_balance_l_trend[-1],
+                self.fracd8_mode,
+            )
             self.i = i
             self.h_diff = np.copy(self.h)
             self._add_mass_balance()
@@ -434,8 +446,10 @@ class GlacierFlowModel:
         # velocity at medium height. Set u = ud, 'ub' and 'us' are ignored.
         self.u = ud * 0.5
 
-        # Use limited 'fracd8' algorithm to simulate flow
-        h_new, self.asp = fracd8_lim(self.ele, self.u, self.h, self.res)
+        # Use limited or infnite 'fracd8' algorithm to simulate flow
+        h_new, self.asp, self.fracd8_mode = fracd8(
+            self.ele, self.u, self.h, self.res, self.MODEL_FRACD8_OFFSET
+        )
 
         # Calculate new glacier height 'h_new' after flow ---------------------
         self.h = h_new

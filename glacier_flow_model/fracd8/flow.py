@@ -43,7 +43,7 @@ def fracd8(
 
     """
     mode = "limited"
-    if u.max() < res:
+    if max_offset < 1 or u.max() < res:
         h_flow, asp = fracd8_lim(ele, u, h, res)
     else:
         mode = "infinite"
