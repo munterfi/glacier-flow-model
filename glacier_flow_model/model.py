@@ -36,6 +36,12 @@ class GlacierFlowModel:
         Maximum number of steps to follow the flow in cells with u > res. Since
         this is an experimental feature the default value is set to 0, which
         always chooses the limited version of fracd8, by default 0.
+    MODEL_RECORD_SIZE : int
+        Number of iterations to keep record of the ndarrays in the ArrayStore
+        (h and u) for the export.
+    MODEL_ITERATION_MIN : int
+        Minimum number of iterations to simulate after calling
+        'reach_steady_state' or 'simulate'.
     FLOW_ICE_RATE_FACTOR : float
         The rate factor describes the deformability of the ice (default is
         tempered ice; 0°C: 1.4e-16, -5°C: 0.4e-16, -10°C: 0.05e-16).
@@ -65,6 +71,7 @@ class GlacierFlowModel:
     MODEL_TOLERANCE = 0.0001
     MODEL_FRACD8_OFFSET = 0
     MODEL_RECORD_SIZE = 10
+    MODEL_ITERATION_MIN = 50
 
     FLOW_ICE_RATE_FACTOR = 1.4e-16
     FLOW_ICE_DENSITY = 917.0
@@ -222,9 +229,9 @@ class GlacierFlowModel:
     def __repr__(self) -> str:
         return (
             "GlacierFlowModel("
-            + f"{self.dem_path}, {self.model_name},"
-            + f"{self.ela_start}, {self.m}, "
-            + f"{self.plot})"
+            + f"dem_path={self.dem_path!r}, model_name={self.model_name!r}, "
+            + f"ela={self.ela_start}, m={self.m}, "
+            + f"plot={self.plot})"
         )
 
     def __str__(self) -> str:
@@ -368,7 +375,7 @@ class GlacierFlowModel:
                 self.ela -= 1
 
             # Check if mass balance is constantly around zero; steady state
-            if (
+            if (self.i >= self.MODEL_ITERATION_MIN) and (
                 -self.MODEL_TOLERANCE
                 <= self.mass_balance_l_trend[-1]
                 <= self.MODEL_TOLERANCE
@@ -512,23 +519,13 @@ class GlacierFlowModel:
 
         # Calculate trend of mass balance (take last 20 and 100 elements)
         # Short term trend (20)
-        if self.i < 20:
-            self.mass_balance_s_trend = np.append(
-                self.mass_balance_s_trend, np.mean(self.mass_balance)
-            )
-        else:
-            self.mass_balance_s_trend = np.append(
-                self.mass_balance_s_trend, np.mean(self.mass_balance[-20:])
-            )
+        self.mass_balance_s_trend = np.append(
+            self.mass_balance_s_trend, np.mean(self.mass_balance[-20:])
+        )
         # Long term trend (100)
-        if self.i < 100:
-            self.mass_balance_l_trend = np.append(
-                self.mass_balance_l_trend, np.mean(self.mass_balance)
-            )
-        else:
-            self.mass_balance_l_trend = np.append(
-                self.mass_balance_l_trend, np.mean(self.mass_balance[-100:])
-            )
+        self.mass_balance_l_trend = np.append(
+            self.mass_balance_l_trend, np.mean(self.mass_balance[-100:])
+        )
 
     # Export ------------------------------------------------------------------
     def export(self, folder_path: Optional[str] = None) -> None:

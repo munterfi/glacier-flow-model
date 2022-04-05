@@ -39,6 +39,8 @@ Version 0.2.0
     - Clarify the velocity variable :code:`ud` as surface ice deformation
       velocity (at medium height), and point out that basal sliding and soft
       bed deformation are ignored.
+    - Fix mass balance long-term trend line in plot, when calling simulate on a
+      model in steady state.
 
 Version 0.1.2
 -------------
