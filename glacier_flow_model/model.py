@@ -15,6 +15,7 @@ from scipy.ndimage import uniform_filter
 
 from .fracd8.flow import fracd8
 from .utils.hillshade import hillshade
+from .utils.store import ArrayStore
 
 LOG = getLogger(__name__)
 
@@ -31,7 +32,7 @@ class GlacierFlowModel:
     MODEL_TOLERANCE : float
         The fluctuation tolerance for the long-term trend of the mass balance
         to achieve a steady state of the model.
-    MODEL_FRACD8_OFFSET : float
+    MODEL_FRACD8_OFFSET : int
         Maximum number of steps to follow the flow in cells with u > res. Since
         this is an experimental feature the default value is set to 0, which
         always chooses the limited version of fracd8, by default 0.
@@ -203,13 +204,17 @@ class GlacierFlowModel:
         self.slp = np.copy(empty)  # Slope with glacier geometry
         self.asp = np.copy(empty)  # Classified aspect with glacier geometry
         self.h = np.copy(empty)  # Local glacier height
-        self.h_diff = np.copy(empty)  # Local glacier mass balance
         self.u = np.copy(empty)  # Local glacier velocity
         self.hs = hillshade(
             self.ele_orig,
             self.PLOT_HILLSHADE_AZIMUTH,
             self.PLOT_HILLSHADE_ALTITUDE,
         )  # HS
+
+        # Initialize array store
+        self.store = ArrayStore()
+        self.store.create("h", self.MODEL_RECORD_SIZE)
+        self.store.create("u", self.MODEL_RECORD_SIZE)
 
     def __del__(self) -> None:
         self._destroy_plot()
@@ -341,7 +346,6 @@ class GlacierFlowModel:
                 self.fracd8_mode,
             )
             self.i = i
-            self.h_diff = np.copy(self.h)
             self._add_mass_balance()
             self._flow(
                 a=self.FLOW_ICE_RATE_FACTOR,
@@ -349,10 +353,13 @@ class GlacierFlowModel:
                 p=self.FLOW_ICE_DENSITY,
                 g=self.FLOW_EARTH_ACCELERATION,
             )
-            self.h_diff = self.h - self.h_diff
             self._update_stats()
             if i % self.PLOT_FRAME_RATE == 0:
                 self._update_plot()
+
+            # Add layers to array store
+            self.store["h"] = self.h
+            self.store["u"] = self.u
 
             # Adjust temperature change
             if temp_change > 0 and self.ela < (self.ela_start + 100 * temp_change):
@@ -447,7 +454,12 @@ class GlacierFlowModel:
 
         # Assume linear decrease of 'ud' towards zero at the glacier bed use
         # velocity at medium height. Set u = ud, 'ub' and 'us' are ignored.
-        self.u = ud * 0.5
+        ud = ud * 0.5
+
+        # Limit maximum flow velocity to maxium fracd8 offset
+        u_max = self.res * (self.MODEL_FRACD8_OFFSET + 1)
+        ud[ud >= u_max] = u_max
+        self.u = ud
 
         # Use limited or infnite 'fracd8' algorithm to simulate flow
         h_new, self.asp, self.fracd8_mode = fracd8(
@@ -589,13 +601,11 @@ class GlacierFlowModel:
         )
         driver = GetDriverByName("GTiff")
         data_set = driver.Create(
-            str(file_path), self.h.shape[1], self.h.shape[0], 5, GDT_Float32
+            str(file_path), self.h.shape[1], self.h.shape[0], 3, GDT_Float32
         )
-        data_set.GetRasterBand(1).WriteArray(self.h)
-        data_set.GetRasterBand(2).WriteArray(self.u)
-        data_set.GetRasterBand(3).WriteArray(self.h_diff)
-        data_set.GetRasterBand(4).WriteArray(self.slp)
-        data_set.GetRasterBand(5).WriteArray(self.asp)
+        data_set.GetRasterBand(1).WriteArray(self.store.mean("h"))
+        data_set.GetRasterBand(2).WriteArray(self.store.mean("u"))
+        data_set.GetRasterBand(3).WriteArray(self.store.diff("h"))
         data_set.SetGeoTransform(self._geo_trans)
         data_set.SetProjection(self._geo_proj)
         data_set.FlushCache()

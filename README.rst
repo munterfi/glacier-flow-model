@@ -128,13 +128,12 @@ Export the results of the model into :code:`.csv` and :code:`.tif` files:
 
     gfm.export()
 
-The GeoTiff contains the following bands:
+The GeoTiff contains the following bands, averaged over the last 10 simulation
+years (default :code:`MODEL_RECORD_SIZE=10`):
 
 1. Glacier thickness [m].
 2. Velocity at medium height [m/a].
-3. Mass balance of most recent simulation year [m].
-4. Slope of DEM with glacier geometry [rad].
-5. Classified aspect of of DEM with glacier geometry (D8 directions, 0 = flat).
+3. Mass balance [m].
 
 Check out the `video <https://munterfinger.ch/media/film/gfm.mp4>`_ of the scenario simulation in the Aletsch
 glacial arena in Switzerland
