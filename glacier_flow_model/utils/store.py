@@ -28,7 +28,7 @@ class ArrayStore:
 
 
 class LiFoStack:
-    """Last in – first out stack for numpy nd arrays."""
+    """Last in – first out stack for numpy ndarrays."""
 
     def __init__(self, size: int) -> None:
         self.size = size
