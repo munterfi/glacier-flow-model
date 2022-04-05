@@ -13,6 +13,10 @@ from osgeo.gdal import Open
 from scipy.ndimage import gaussian_filter
 from scipy.ndimage import uniform_filter
 
+from .fracd8.flow import fracd8
+from .utils.hillshade import hillshade
+from .utils.store import ArrayStore
+
 LOG = getLogger(__name__)
 
 # Disable toolbar
@@ -25,11 +29,19 @@ class GlacierFlowModel:
 
     Attributes
     ----------
-    MODEL_RANDOM_NUDGING : bool
-        Random nudging of the aspect of the flow to avoid pure convergence.
     MODEL_TOLERANCE : float
         The fluctuation tolerance for the long-term trend of the mass balance
         to achieve a steady state of the model.
+    MODEL_FRACD8_OFFSET : int
+        Maximum number of steps to follow the flow in cells with u > res. Since
+        this is an experimental feature the default value is set to 0, which
+        always chooses the limited version of fracd8, by default 0.
+    MODEL_RECORD_SIZE : int
+        Number of iterations to keep record of the ndarrays in the ArrayStore
+        (h and u) for the export.
+    MODEL_ITERATION_MIN : int
+        Minimum number of iterations to simulate after calling
+        'reach_steady_state' or 'simulate'.
     FLOW_ICE_RATE_FACTOR : float
         The rate factor describes the deformability of the ice (default is
         tempered ice; 0°C: 1.4e-16, -5°C: 0.4e-16, -10°C: 0.05e-16).
@@ -56,8 +68,10 @@ class GlacierFlowModel:
         hillshade calculation.
     """
 
-    MODEL_RANDOM_NUDGING = True
     MODEL_TOLERANCE = 0.0001
+    MODEL_FRACD8_OFFSET = 0
+    MODEL_RECORD_SIZE = 10
+    MODEL_ITERATION_MIN = 50
 
     FLOW_ICE_RATE_FACTOR = 1.4e-16
     FLOW_ICE_DENSITY = 917.0
@@ -107,7 +121,7 @@ class GlacierFlowModel:
         # Load DEM ------------------------------------------------------------
         dem = Open(dem_path)
         band = dem.GetRasterBand(1)
-        ele = band.ReadAsArray()
+        ele = band.ReadAsArray().astype(np.float32)
 
         # Instance variables --------------------------------------------------
         self.model_name = Path(dem_path).stem if model_name is None else model_name
@@ -119,22 +133,20 @@ class GlacierFlowModel:
         self._setup_params()  # Variable parameters (i, ela, steady_state)
 
         # 2D arrays
-        self.ele_orig = np.array(ele)  # Original topography
-        self._setup_arrays()  # Variable arrays (ele, h, u ,hs)
+        self.ele_orig = np.copy(ele)  # Original topography
+        self._setup_ndarrays()  # Variable arrays (ele, h, u ,hs)
 
-        # Coordinates
+        # Coordinate reference system and dem resolution
         self._geo_trans = dem.GetGeoTransform()
         self._geo_proj = dem.GetProjection()
-        self.res = dem.GetGeoTransform()[1]  # Resolution
+        self.res = self._geo_trans[1]
+
+        # Geographical extent of the dem
         nrows, ncols = ele.shape
-        x0, dx, dxdy, y0, dydx, dy = dem.GetGeoTransform()
+        x0, dx, dxdy, y0, dydx, dy = self._geo_trans
         x1 = x0 + dx * ncols
         y1 = y0 + dy * nrows
-        self.extent = [x0, x1, y1, y0]  # Geographical extent of file
-
-        # Define empty row and column for later F8 shift
-        self.newcolumn = np.zeros((ele.shape[0], 1))
-        self.newrow = np.zeros((1, ele.shape[1]))
+        self.extent = (x0, x1, y1, y0)
 
         # Setup statistics
         self._setup_stats()
@@ -180,10 +192,11 @@ class GlacierFlowModel:
         self.i = 0  # Year
         self.ela = self.ela_start  # Equilibrium line altitude
         self.steady_state = False  # Control variable for steady state
+        self.fracd8_mode = "limited"  # Mode of the fracd8 algorithm
 
-    def _setup_arrays(self) -> None:
+    def _setup_ndarrays(self) -> None:
         """
-        Setup arrays
+        Setup 2D arrays
 
         Resets the model arrays internally.
 
@@ -192,14 +205,23 @@ class GlacierFlowModel:
         None
 
         """
+        empty = self.ele_orig * 0
         # 2D arrays
-        self.ele = self.ele_orig  # Elevation including glaciers
-        self.h = self.ele_orig * 0  # Local glacier height
-        self.h_diff = self.ele_orig * 0  # Local glacier mass balance
-        self.u = self.ele_orig * 0  # Local glacier velocity
-        self.hs = self._hillshade(
-            self.ele_orig, self.PLOT_HILLSHADE_AZIMUTH, self.PLOT_HILLSHADE_ALTITUDE
+        self.ele = np.copy(self.ele_orig)  # Elevation including glaciers
+        self.slp = np.copy(empty)  # Slope with glacier geometry
+        self.asp = np.copy(empty)  # Classified aspect with glacier geometry
+        self.h = np.copy(empty)  # Local glacier height
+        self.u = np.copy(empty)  # Local glacier velocity
+        self.hs = hillshade(
+            self.ele_orig,
+            self.PLOT_HILLSHADE_AZIMUTH,
+            self.PLOT_HILLSHADE_ALTITUDE,
         )  # HS
+
+        # Initialize array store
+        self.store = ArrayStore()
+        self.store.create("h", self.MODEL_RECORD_SIZE)
+        self.store.create("u", self.MODEL_RECORD_SIZE)
 
     def __del__(self) -> None:
         self._destroy_plot()
@@ -207,9 +229,9 @@ class GlacierFlowModel:
     def __repr__(self) -> str:
         return (
             "GlacierFlowModel("
-            + f"{self.dem_path}, {self.model_name},"
-            + f"{self.ela_start}, {self.m}, "
-            + f"{self.plot})"
+            + f"dem_path={self.dem_path!r}, model_name={self.model_name!r}, "
+            + f"ela={self.ela_start}, m={self.m}, "
+            + f"plot={self.plot})"
         )
 
     def __str__(self) -> str:
@@ -264,7 +286,7 @@ class GlacierFlowModel:
         """
         # Reset year, state of model and stats
         self._setup_params()
-        self._setup_arrays()
+        self._setup_ndarrays()
         self._setup_stats()
 
         # Reset plot if active
@@ -318,14 +340,19 @@ class GlacierFlowModel:
         # Format logs
         log_template = (
             "Simulating year %s (ELA: %.0f, "
-            + f"mass balance long-term trend: %.{self.precision}f) ..."
+            + f"mass balance trend: %.{self.precision}f, fracd8: %s) ..."
         )
 
         # Iterate years until steady state or abort
         for i in range(max_years):
-            LOG.info(log_template, i, self.ela, self.mass_balance_l_trend[-1])
+            LOG.info(
+                log_template,
+                i,
+                self.ela,
+                self.mass_balance_l_trend[-1],
+                self.fracd8_mode,
+            )
             self.i = i
-            self.h_diff = np.copy(self.h)
             self._add_mass_balance()
             self._flow(
                 a=self.FLOW_ICE_RATE_FACTOR,
@@ -333,10 +360,13 @@ class GlacierFlowModel:
                 p=self.FLOW_ICE_DENSITY,
                 g=self.FLOW_EARTH_ACCELERATION,
             )
-            self.h_diff = self.h - self.h_diff
             self._update_stats()
             if i % self.PLOT_FRAME_RATE == 0:
                 self._update_plot()
+
+            # Add layers to array store
+            self.store["h"] = self.h
+            self.store["u"] = self.u
 
             # Adjust temperature change
             if temp_change > 0 and self.ela < (self.ela_start + 100 * temp_change):
@@ -345,7 +375,7 @@ class GlacierFlowModel:
                 self.ela -= 1
 
             # Check if mass balance is constantly around zero; steady state
-            if (
+            if (self.i >= self.MODEL_ITERATION_MIN) and (
                 -self.MODEL_TOLERANCE
                 <= self.mass_balance_l_trend[-1]
                 <= self.MODEL_TOLERANCE
@@ -394,7 +424,7 @@ class GlacierFlowModel:
         """
         Simulates the flow of the ice for one year.
 
-        The ice flow is modeled using the D8 flow direction technique
+        The ice flow is modeled using the fracd8 flow direction technique
         to determine the direction of the flow and the velocity
         of the ice per raster cell to estimate the proportion of the ice
         that flows out of each cell. This proportion is then added to the
@@ -420,100 +450,31 @@ class GlacierFlowModel:
         # Aspect and slope ----------------------------------------------------
         # Calculate slope
         x_slp, y_slp = np.gradient(self.ele, 22, 22)
-        slp = np.arctan(np.sqrt(x_slp * x_slp + y_slp * y_slp))
-
-        # Calculate aspect
-        x_asp, y_asp = np.gradient(self.ele, 3, 3)
-        asp = np.arctan2(-y_asp, x_asp)
-        asp[asp < 0] += 2 * np.pi
-
-        # Classify aspect F8
-        asp = np.round(((asp - np.radians(22.5)) / np.radians(40)), decimals=0)
-        asp[asp == 0] = 8
-        asp[asp == -1] = 7
-
-        # Random nudging the flow
-        if self.MODEL_RANDOM_NUDGING:
-            asp = asp + np.clip(
-                np.random.normal(loc=0.0, scale=1.0, size=asp.shape).astype(int), -1, 1
-            )
-            asp[asp == 9] = 1
-            asp[asp == 0] = 8
+        self.slp = np.arctan(np.sqrt(x_slp * x_slp + y_slp * y_slp))
 
         # Ice flow ------------------------------------------------------------
         # u = ud + ub + us
         #   = ice deformation/creep + basal slide + soft bed deformation
 
         # Calculate ice deformation velocity 'ud' at glacier surface
-        ud = (2 * a * ((f * p * g * np.sin(slp)) ** 3.0) * self.h**4.0) / 4
+        ud = (2 * a * ((f * p * g * np.sin(self.slp)) ** 3.0) * self.h**4.0) / 4
 
         # Assume linear decrease of 'ud' towards zero at the glacier bed use
         # velocity at medium height. Set u = ud, 'ub' and 'us' are ignored.
-        self.u = ud * 0.5
+        ud = ud * 0.5
 
-        # If u is greater than raster resolution, set u = res
-        u_max = (1 - self.MODEL_TOLERANCE) * self.res
-        self.u[self.u > u_max] = u_max
+        # Limit maximum flow velocity to maxium fracd8 offset
+        u_max = self.res * (self.MODEL_FRACD8_OFFSET + 1)
+        ud[ud >= u_max] = u_max
+        self.u = ud
 
-        # Share of ice per pixel that changes
-        change = (self.u / self.res) * self.h
-
-        # Calculate the flow per direction 'D8' -------------------------------
-        change_1 = change * (asp == 8)
-        change_1 = np.concatenate((change_1, self.newrow), axis=0)
-        change_1 = np.delete(change_1, (0), axis=0)
-
-        change_2 = change * (asp == 1)
-        change_2 = np.concatenate((change_2, self.newrow), axis=0)
-        change_2 = np.delete(change_2, (0), axis=0)
-        change_2 = np.concatenate((self.newcolumn, change_2), axis=1)
-        change_2 = np.delete(change_2, (-1), axis=1)
-
-        change_3 = change * (asp == 2)
-        change_3 = np.concatenate((self.newcolumn, change_3), axis=1)
-        change_3 = np.delete(change_3, (-1), axis=1)
-
-        change_4 = change * (asp == 3)
-        change_4 = np.concatenate((self.newrow, change_4), axis=0)
-        change_4 = np.delete(change_4, (-1), axis=0)
-        change_4 = np.concatenate((self.newcolumn, change_4), axis=1)
-        change_4 = np.delete(change_4, (-1), axis=1)
-
-        change_5 = change * (asp == 4)
-        change_5 = np.concatenate((self.newrow, change_5), axis=0)
-        change_5 = np.delete(change_5, (-1), axis=0)
-
-        change_6 = change * (asp == 5)
-        change_6 = np.concatenate((self.newrow, change_6), axis=0)
-        change_6 = np.delete(change_6, (-1), axis=0)
-        change_6 = np.concatenate((change_6, self.newcolumn), axis=1)
-        change_6 = np.delete(change_6, (0), axis=1)
-
-        change_7 = change * (asp == 6)
-        change_7 = np.concatenate((change_7, self.newcolumn), axis=1)
-        change_7 = np.delete(change_7, (0), axis=1)
-
-        change_8 = change * (asp == 7)
-        change_8 = np.concatenate((change_8, self.newrow), axis=0)
-        change_8 = np.delete(change_8, (0), axis=0)
-        change_8 = np.concatenate((change_8, self.newcolumn), axis=1)
-        change_8 = np.delete(change_8, (0), axis=1)
+        # Use limited or infnite 'fracd8' algorithm to simulate flow
+        h_new, self.asp, self.fracd8_mode = fracd8(
+            self.ele, self.u, self.h, self.res, self.MODEL_FRACD8_OFFSET
+        )
 
         # Calculate new glacier height 'h_new' after flow ---------------------
-        self.h = (
-            self.h
-            - change
-            + (
-                change_1
-                + change_2
-                + change_3
-                + change_4
-                + change_5
-                + change_6
-                + change_7
-                + change_8
-            )
-        )
+        self.h = h_new
         h_new_index = np.copy((self.h < self.m))
         self.h = uniform_filter(self.h, size=5)
         self.h[h_new_index] = 0
@@ -558,23 +519,13 @@ class GlacierFlowModel:
 
         # Calculate trend of mass balance (take last 20 and 100 elements)
         # Short term trend (20)
-        if self.i < 20:
-            self.mass_balance_s_trend = np.append(
-                self.mass_balance_s_trend, np.mean(self.mass_balance)
-            )
-        else:
-            self.mass_balance_s_trend = np.append(
-                self.mass_balance_s_trend, np.mean(self.mass_balance[-20:])
-            )
+        self.mass_balance_s_trend = np.append(
+            self.mass_balance_s_trend, np.mean(self.mass_balance[-20:])
+        )
         # Long term trend (100)
-        if self.i < 100:
-            self.mass_balance_l_trend = np.append(
-                self.mass_balance_l_trend, np.mean(self.mass_balance)
-            )
-        else:
-            self.mass_balance_l_trend = np.append(
-                self.mass_balance_l_trend, np.mean(self.mass_balance[-100:])
-            )
+        self.mass_balance_l_trend = np.append(
+            self.mass_balance_l_trend, np.mean(self.mass_balance[-100:])
+        )
 
     # Export ------------------------------------------------------------------
     def export(self, folder_path: Optional[str] = None) -> None:
@@ -649,9 +600,9 @@ class GlacierFlowModel:
         data_set = driver.Create(
             str(file_path), self.h.shape[1], self.h.shape[0], 3, GDT_Float32
         )
-        data_set.GetRasterBand(1).WriteArray(self.h)
-        data_set.GetRasterBand(2).WriteArray(self.u)
-        data_set.GetRasterBand(3).WriteArray(self.h_diff)
+        data_set.GetRasterBand(1).WriteArray(self.store.mean("h"))
+        data_set.GetRasterBand(2).WriteArray(self.store.mean("u"))
+        data_set.GetRasterBand(3).WriteArray(self.store.diff("h"))
         data_set.SetGeoTransform(self._geo_trans)
         data_set.SetProjection(self._geo_proj)
         data_set.FlushCache()
@@ -705,7 +656,7 @@ class GlacierFlowModel:
         # Extract glaciated area
         hs_back = np.ma.masked_where(
             self.h <= 1,
-            self._hillshade(
+            hillshade(
                 self.ele, self.PLOT_HILLSHADE_AZIMUTH, self.PLOT_HILLSHADE_ALTITUDE
             ),
         )
@@ -761,38 +712,3 @@ class GlacierFlowModel:
         except AttributeError:
             pass
         self._fig = None
-
-    @staticmethod
-    def _hillshade(array: np.ndarray, azimuth: int, altitude: int) -> np.ndarray:
-        """
-        Render hillshade
-
-        Calculates a shaded relief from a digital elevation model (DEM) input.
-
-        Parameters
-        ----------
-        array : np.ndarray
-            Digital elevation model.
-        azimuth : int
-            Direction of the illumination source.
-        altitude : int
-            Altitude of illumination source
-
-        Returns
-        -------
-        np.ndarray
-            The rendered hillshade.
-
-        """
-        x, y = np.gradient(array, 22, 22)
-        slope = np.pi / 2.0 - np.arctan(np.sqrt(x * x + y * y))
-        x, y = np.gradient(array, 3, 3)
-        aspect = np.arctan2(-y, x)
-        azimuth_rad = azimuth * np.pi / 180.0
-        altitude_rad = altitude * np.pi / 180.0
-
-        shaded = np.sin(altitude_rad) * np.sin(slope) + np.cos(altitude_rad) * np.cos(
-            slope
-        ) * np.cos(azimuth_rad - aspect)
-
-        return 255 * (shaded + 1) / 2

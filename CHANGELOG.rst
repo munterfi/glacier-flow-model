@@ -22,6 +22,10 @@ Version 0.2.0
     - Reproject example DEM :code:`aletsch.tif` from Swiss CH1903 / LV03
       (EPSG:21781) to Swiss CH1903+ / LV95 (EPSG:2056).
     - Add flow and model parameters as class attributes.
+    - Add :code:`fracd8` algorithm as new submodule. The algorithm is JIT
+      compiled using numba.
+    - Add :code:`utils` module for helper utilities: Recording arrays and 
+      generating hillshades.
 - Bugfixes:
     - Fix failing CI: Update package dependencies, set GitHub actions to python
       3.10, set GDAL version to 3.4.1 and remove shebang from tests.
@@ -35,6 +39,8 @@ Version 0.2.0
     - Clarify the velocity variable :code:`ud` as surface ice deformation
       velocity (at medium height), and point out that basal sliding and soft
       bed deformation are ignored.
+    - Fix mass balance long-term trend line in plot, when calling simulate on a
+      model in steady state.
 
 Version 0.1.2
 -------------
