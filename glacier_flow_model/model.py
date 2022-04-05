@@ -14,6 +14,7 @@ from scipy.ndimage import gaussian_filter
 from scipy.ndimage import uniform_filter
 
 from .fracd8.flow import fracd8
+from .utils.hillshade import hillshade
 
 LOG = getLogger(__name__)
 
@@ -62,6 +63,7 @@ class GlacierFlowModel:
 
     MODEL_TOLERANCE = 0.0001
     MODEL_FRACD8_OFFSET = 0
+    MODEL_RECORD_SIZE = 10
 
     FLOW_ICE_RATE_FACTOR = 1.4e-16
     FLOW_ICE_DENSITY = 917.0
@@ -124,21 +126,19 @@ class GlacierFlowModel:
 
         # 2D arrays
         self.ele_orig = np.copy(ele)  # Original topography
-        self._setup_arrays()  # Variable arrays (ele, h, u ,hs)
+        self._setup_ndarrays()  # Variable arrays (ele, h, u ,hs)
 
-        # Coordinates
+        # Coordinate reference system and dem resolution
         self._geo_trans = dem.GetGeoTransform()
         self._geo_proj = dem.GetProjection()
-        self.res = dem.GetGeoTransform()[1]  # Resolution
+        self.res = self._geo_trans[1]
+
+        # Geographical extent of the dem
         nrows, ncols = ele.shape
-        x0, dx, dxdy, y0, dydx, dy = dem.GetGeoTransform()
+        x0, dx, dxdy, y0, dydx, dy = self._geo_trans
         x1 = x0 + dx * ncols
         y1 = y0 + dy * nrows
-        self.extent = [x0, x1, y1, y0]  # Geographical extent of file
-
-        # Define empty row and column for later F8 shift
-        self.newcolumn = np.zeros((ele.shape[0], 1))
-        self.newrow = np.zeros((1, ele.shape[1]))
+        self.extent = (x0, x1, y1, y0)
 
         # Setup statistics
         self._setup_stats()
@@ -186,9 +186,9 @@ class GlacierFlowModel:
         self.steady_state = False  # Control variable for steady state
         self.fracd8_mode = "limited"  # Mode of the fracd8 algorithm
 
-    def _setup_arrays(self) -> None:
+    def _setup_ndarrays(self) -> None:
         """
-        Setup arrays
+        Setup 2D arrays
 
         Resets the model arrays internally.
 
@@ -197,15 +197,18 @@ class GlacierFlowModel:
         None
 
         """
+        empty = self.ele_orig * 0
         # 2D arrays
-        self.ele = self.ele_orig  # Elevation including glaciers
-        self.slp = self.ele_orig * 0  # Slope with glacier geometry
-        self.asp = self.ele_orig * 0  # Classified aspect with glacier geometry
-        self.h = self.ele_orig * 0  # Local glacier height
-        self.h_diff = self.ele_orig * 0  # Local glacier mass balance
-        self.u = self.ele_orig * 0  # Local glacier velocity
-        self.hs = self._hillshade(
-            self.ele_orig, self.PLOT_HILLSHADE_AZIMUTH, self.PLOT_HILLSHADE_ALTITUDE
+        self.ele = np.copy(self.ele_orig)  # Elevation including glaciers
+        self.slp = np.copy(empty)  # Slope with glacier geometry
+        self.asp = np.copy(empty)  # Classified aspect with glacier geometry
+        self.h = np.copy(empty)  # Local glacier height
+        self.h_diff = np.copy(empty)  # Local glacier mass balance
+        self.u = np.copy(empty)  # Local glacier velocity
+        self.hs = hillshade(
+            self.ele_orig,
+            self.PLOT_HILLSHADE_AZIMUTH,
+            self.PLOT_HILLSHADE_ALTITUDE,
         )  # HS
 
     def __del__(self) -> None:
@@ -271,7 +274,7 @@ class GlacierFlowModel:
         """
         # Reset year, state of model and stats
         self._setup_params()
-        self._setup_arrays()
+        self._setup_ndarrays()
         self._setup_stats()
 
         # Reset plot if active
@@ -646,7 +649,7 @@ class GlacierFlowModel:
         # Extract glaciated area
         hs_back = np.ma.masked_where(
             self.h <= 1,
-            self._hillshade(
+            hillshade(
                 self.ele, self.PLOT_HILLSHADE_AZIMUTH, self.PLOT_HILLSHADE_ALTITUDE
             ),
         )
@@ -702,38 +705,3 @@ class GlacierFlowModel:
         except AttributeError:
             pass
         self._fig = None
-
-    @staticmethod
-    def _hillshade(array: np.ndarray, azimuth: int, altitude: int) -> np.ndarray:
-        """
-        Render hillshade
-
-        Calculates a shaded relief from a digital elevation model (DEM) input.
-
-        Parameters
-        ----------
-        array : np.ndarray
-            Digital elevation model.
-        azimuth : int
-            Direction of the illumination source.
-        altitude : int
-            Altitude of illumination source
-
-        Returns
-        -------
-        np.ndarray
-            The rendered hillshade.
-
-        """
-        x, y = np.gradient(array, 22, 22)
-        slope = np.pi / 2.0 - np.arctan(np.sqrt(x * x + y * y))
-        x, y = np.gradient(array, 3, 3)
-        aspect = np.arctan2(-y, x)
-        azimuth_rad = azimuth * np.pi / 180.0
-        altitude_rad = altitude * np.pi / 180.0
-
-        shaded = np.sin(altitude_rad) * np.sin(slope) + np.cos(altitude_rad) * np.cos(
-            slope
-        ) * np.cos(azimuth_rad - aspect)
-
-        return 255 * (shaded + 1) / 2
