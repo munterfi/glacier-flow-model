@@ -458,7 +458,7 @@ class GlacierFlowModel:
         #   = ice deformation/creep + basal slide + soft bed deformation
 
         # Calculate ice deformation velocity 'ud' at glacier surface
-        ud = (2 * a * ((f * p * g * np.sin(self.slp)) ** 3.0) * self.h**4.0) / 4
+        ud = (2 * a * ((f * p * g * np.sin(self.slp)) ** 3.0) * self.h ** 4.0) / 4
 
         # Assume linear decrease of 'ud' towards zero at the glacier bed use
         # velocity at medium height. Set u = ud, 'ub' and 'us' are ignored.
@@ -520,7 +520,7 @@ class GlacierFlowModel:
         # Calculate trend of mass balance (take last MODEL_TREND_SIZE elements)
         self.mass_balance_trend = np.append(
             self.mass_balance_trend,
-            np.mean(self.mass_balance[-self.MODEL_TREND_SIZE :]),
+            np.mean(self.mass_balance[-self.MODEL_TREND_SIZE :]),  # noqa: E203
         )
 
     # Export ------------------------------------------------------------------

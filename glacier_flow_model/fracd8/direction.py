@@ -6,17 +6,18 @@ from numba import njit
 
 @njit
 def position(x: int, y: int, n: int) -> Tuple[int, int]:
-    """D8 position in array
+    """
+    D8 position in array
 
     Returns the position in an array based on the D8 directions.
 
-     --- --- ---
+    +---+---+---+
     | 7 | 8 | 1 |
-     --- --- ---
+    +---+---+---+
     | 6 | 0 | 2 |
-     --- --- ---
+    +---+---+---+
     | 5 | 4 | 3 |
-     --- --- ---
+    +---+---+---+
 
     Parameters
     ----------

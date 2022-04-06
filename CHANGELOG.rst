@@ -24,7 +24,7 @@ Version 0.2.0
     - Add flow and model parameters as class attributes.
     - Add :code:`fracd8` algorithm as new submodule. The algorithm is JIT
       compiled using numba.
-    - Add :code:`utils` module for helper utilities: Recording arrays and 
+    - Add :code:`utils` module for helper utilities: Recording arrays and
       generating hillshades.
 - Bugfixes:
     - Fix failing CI: Update package dependencies, set GitHub actions to python

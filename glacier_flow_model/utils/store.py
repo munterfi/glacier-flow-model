@@ -11,6 +11,9 @@ class ArrayStore:
     def __init__(self) -> None:
         self._container = defaultdict()  # type: Dict[str, LiFoStack]
 
+    def __repr__(self) -> str:
+        return "ArrayStore()"
+
     def create(self, key: str, size: int) -> None:
         self._container[key] = LiFoStack(size)
 
@@ -28,11 +31,14 @@ class ArrayStore:
 
 
 class LiFoStack:
-    """Last in – first out stack for numpy ndarrays."""
+    """Last in first out stack for numpy ndarrays."""
 
     def __init__(self, size: int) -> None:
         self.size = size
         self._stack = list()  # type: List[np.ndarray]
+
+    def __repr__(self) -> str:
+        return f"LiFoStack(size={self.size})"
 
     def push(self, layer: np.ndarray) -> None:
         self._stack.append(np.copy(layer))
