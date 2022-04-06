@@ -32,16 +32,17 @@ class GlacierFlowModel:
     MODEL_TOLERANCE : float
         The fluctuation tolerance for the long-term trend of the mass balance
         to achieve a steady state of the model.
+    MODEL_TREND_SIZE : int
+        Number of iterations to average for the calculation of the mass balance
+        trend. Defines also the minimum number of iterations to simulate after
+        calling 'reach_steady_state' or 'simulate'.
+    MODEL_RECORD_SIZE : int
+        Number of iterations to keep record of the ndarrays in the ArrayStore
+        (h and u) for the export.
     MODEL_FRACD8_OFFSET : int
         Maximum number of steps to follow the flow in cells with u > res. Since
         this is an experimental feature the default value is set to 0, which
         always chooses the limited version of fracd8, by default 0.
-    MODEL_RECORD_SIZE : int
-        Number of iterations to keep record of the ndarrays in the ArrayStore
-        (h and u) for the export.
-    MODEL_ITERATION_MIN : int
-        Minimum number of iterations to simulate after calling
-        'reach_steady_state' or 'simulate'.
     FLOW_ICE_RATE_FACTOR : float
         The rate factor describes the deformability of the ice (default is
         tempered ice; 0°C: 1.4e-16, -5°C: 0.4e-16, -10°C: 0.05e-16).
@@ -69,9 +70,9 @@ class GlacierFlowModel:
     """
 
     MODEL_TOLERANCE = 0.0001
-    MODEL_FRACD8_OFFSET = 0
+    MODEL_TREND_SIZE = 100
     MODEL_RECORD_SIZE = 10
-    MODEL_ITERATION_MIN = 50
+    MODEL_FRACD8_OFFSET = 0
 
     FLOW_ICE_RATE_FACTOR = 1.4e-16
     FLOW_ICE_DENSITY = 917.0
@@ -270,7 +271,7 @@ class GlacierFlowModel:
         - Let the ice flow.
 
         This steps are repeated until the change in mass balance is
-        constantly low (mass_balance_l_trend < tolerance, default 0.0001).
+        constantly low (mass_balance_trend < tolerance, default 0.0001).
 
         Parameters
         ----------
@@ -304,7 +305,7 @@ class GlacierFlowModel:
         temperature change can be simulated. This method applies the
         temperature change (negative or positive) to the initially set
         parameters (ela) and iterates the model until a steady state is reached
-        again (mass_balance_l_trend < tolerance, default 0.0001).
+        again (mass_balance_trend < tolerance, default 0.0001).
 
         Parameters
         ----------
@@ -349,7 +350,7 @@ class GlacierFlowModel:
                 log_template,
                 i,
                 self.ela,
-                self.mass_balance_l_trend[-1],
+                self.mass_balance_trend[-1],
                 self.fracd8_mode,
             )
             self.i = i
@@ -375,9 +376,9 @@ class GlacierFlowModel:
                 self.ela -= 1
 
             # Check if mass balance is constantly around zero; steady state
-            if (self.i >= self.MODEL_ITERATION_MIN) and (
+            if (self.i >= self.MODEL_TREND_SIZE) and (
                 -self.MODEL_TOLERANCE
-                <= self.mass_balance_l_trend[-1]
+                <= self.mass_balance_trend[-1]
                 <= self.MODEL_TOLERANCE
             ):
                 self.steady_state = True
@@ -495,8 +496,7 @@ class GlacierFlowModel:
         # Save statistics
         self.mass = np.array([0])
         self.mass_balance = np.array([0])
-        self.mass_balance_s_trend = np.array([0])
-        self.mass_balance_l_trend = np.array([0])
+        self.mass_balance_trend = np.array([0])
 
     def _update_stats(self) -> None:
         """
@@ -509,22 +509,18 @@ class GlacierFlowModel:
         None
 
         """
-        # Mass, only consider pixels with ice
+        # Mass (average height in m), only consider pixels with ice
         self.mass = np.append(self.mass, np.mean(self.h[self.h > 0]))
 
-        # Difference mass 'mass balance'
+        # Difference in mass 'mass balance'
         self.mass_balance = np.append(
             self.mass_balance, (self.mass[-1] - self.mass[-2])
         )
 
-        # Calculate trend of mass balance (take last 20 and 100 elements)
-        # Short term trend (20)
-        self.mass_balance_s_trend = np.append(
-            self.mass_balance_s_trend, np.mean(self.mass_balance[-20:])
-        )
-        # Long term trend (100)
-        self.mass_balance_l_trend = np.append(
-            self.mass_balance_l_trend, np.mean(self.mass_balance[-100:])
+        # Calculate trend of mass balance (take last MODEL_TREND_SIZE elements)
+        self.mass_balance_trend = np.append(
+            self.mass_balance_trend,
+            np.mean(self.mass_balance[-self.MODEL_TREND_SIZE :]),
         )
 
     # Export ------------------------------------------------------------------
@@ -570,13 +566,12 @@ class GlacierFlowModel:
 
     def _export_csv(self, file_path: Path) -> None:
         LOG.debug("Writing %i lines to '%s' ...", self.mass.shape[0], file_path)
-        header = "mass,mass_balance,mass_balance_s_trend,mass_balance_l_trend"
+        header = "mass,mass_balance,mass_balance_trend"
         statistics = np.asarray(
             np.c_[
                 self.mass,
                 self.mass_balance,
-                self.mass_balance_s_trend,
-                self.mass_balance_l_trend,
+                self.mass_balance_trend,
             ]
         )
         np.savetxt(
@@ -679,7 +674,7 @@ class GlacierFlowModel:
         # Mass balance
         ax1 = plt.subplot(222, facecolor="black")
         ax1.plot(self.mass_balance, color="w")
-        ax1.plot(self.mass_balance_s_trend, color="r")
+        ax1.plot(self.mass_balance_trend, color="r")
         ax1.set(ylabel="Mass balance [m]")
         ax1.yaxis.label.set_color("w")
         plt.setp(ax1.get_xticklabels(), visible=False)
