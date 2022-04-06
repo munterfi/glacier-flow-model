@@ -35,7 +35,6 @@ def fracd8_lim(
 
     # Setup arrays
     asp = np.zeros_like(ele, dtype=np.uint8)
-    asp[:] = np.nan
     h_flow = np.zeros_like(ele, dtype=np.float32)
 
     # Iterate through grid

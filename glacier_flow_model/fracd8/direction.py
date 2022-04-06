@@ -72,7 +72,6 @@ def classify_aspect(ele: np.ndarray) -> np.ndarray:
 
     ele = ele.astype(np.float32)
     asp = np.zeros_like(ele, dtype=np.uint8)
-    asp[:] = np.nan
 
     rows, cols = ele.shape
     for y in range(1, rows - 1):
