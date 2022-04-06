@@ -30,13 +30,15 @@ glaciers at 0.01 m/m. The alpine gradient is set by default in the model.
 To model the glaciers, annual steps are calculated. First the mass balance
 (accumulation and ablation) for the area is added to the glacier layer and in a
 second step the glacier flow is simulated by using a modified D8 technique
-("fracd8").
+(submodule :code:`fracd8`).
 Since the prupose of the D8 flow direction algorithm is modeling surface water
 flows over terrain, the D8 algorithm was modified to be able to consider the
 fraction of ice that is flowing out of each cell based on the glaciers
 velocity. In order to avoid pure convergence of the flow, the surface of the
 glaciers is slightly smoothed. The simulation stops when the observed
-difference in mass balance for a smoothed curve (n=-100) is less than 0.0001 m.
+difference in mass balance for a smoothed curve (default
+:code:`MODEL_TREND_SIZE=100`) is less than a given tolerance (default
+:code:`MODEL_TOLERANCE=0.0001`).
 
 Getting started
 ---------------
@@ -109,11 +111,11 @@ Heating 4.5°C after initial steady state:
    :alt: https://github.com/munterfi/glacier-flow-model
    :align: center
 
-Cooling -1°C after initial steady state:
+Cooling -3°C after initial steady state:
 
 .. code-block:: python
 
-    gfm.simulate(-1)
+    gfm.simulate(-3)
 
 .. image:: https://raw.githubusercontent.com/munterfi/glacier-flow-model/master/docs/source/_static/steady_state_cooling.png
    :alt: https://github.com/munterfi/glacier-flow-model
