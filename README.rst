@@ -64,16 +64,15 @@ a raster cell resolution of 200m.
     from glacier_flow_model import PkgDataAccess
     dem = PkgDataAccess.load_dem()
 
-The original DEM can be downloaded `here <https://shop.swisstopo.admin.ch/en/products/height_models/dhm25200>`_.
+The original DEM can be downloaded `here <https://www.swisstopo.admin.ch/en/geodata/height/dhm25200.html>`_.
 
 Usage
 _____
 
-To set up a glacier flow model, a path to a DEM in the GeoTiff (:code:`.tif` or
-:code:`.asc`) file format has to passed to the model class constructor. By
-default the mass balance parameters for alpine glaciers in the year 2000 are
-set. Keep the input file size small, otherwise the model may be slowed down
-remarkably:
+To set up a glacier flow model, a path to a DEM in the GeoTiff file format has
+to passed to the model class constructor. By default the mass balance
+parameters for alpine glaciers in the year 2000 are set. Keep the input file
+size small, otherwise the model may be slowed down remarkably:
 
 .. code-block:: python
 
