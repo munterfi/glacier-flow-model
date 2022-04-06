@@ -458,7 +458,7 @@ class GlacierFlowModel:
         #   = ice deformation/creep + basal slide + soft bed deformation
 
         # Calculate ice deformation velocity 'ud' at glacier surface
-        ud = (2 * a * ((f * p * g * np.sin(self.slp)) ** 3.0) * self.h ** 4.0) / 4
+        ud = (2 * a * ((f * p * g * np.sin(self.slp)) ** 3.0) * self.h**4.0) / 4
 
         # Assume linear decrease of 'ud' towards zero at the glacier bed use
         # velocity at medium height. Set u = ud, 'ub' and 'us' are ignored.
@@ -664,8 +664,8 @@ class GlacierFlowModel:
         ax.set(xlabel="X-coordinate [m]", ylabel="Y-coordinate [m]")
         ax.xaxis.label.set_color("w")
         ax.yaxis.label.set_color("w")
-        title_text = f"Year: {str(self.i)}  ELA: {str(int(self.ela))}"
-        ax.set_title(title_text, color="white", size=20)
+        title_text = f"Year: {str(self.i)}  ELA: {str(int(self.ela))} m.a.s.l."
+        ax.set_title(title_text, color="white", size=18)
 
         # Draw new image layers
         plt.imshow(self.hs, vmin=90, vmax=345, cmap="copper", extent=self.extent)
@@ -679,6 +679,7 @@ class GlacierFlowModel:
         ax1.yaxis.label.set_color("w")
         plt.setp(ax1.get_xticklabels(), visible=False)
         ax1.tick_params(axis="y", colors="w")
+        ax1.set_title(f"Gradient: {str(self.m)} m/m", color="white", size=18)
 
         # Plot mean thickness
         ax2 = plt.subplot(224, sharex=ax1, facecolor="black")
