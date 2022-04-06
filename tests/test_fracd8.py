@@ -1,8 +1,9 @@
-"""Tests for the GlacierFlowModel class."""
+"""Tests for `glacier_flow_model.fracd8` module."""
+import numpy as np
+
 from glacier_flow_model.fracd8.flow import fracd8
 from glacier_flow_model.fracd8.infinite import fracd8_inf
 from glacier_flow_model.fracd8.limited import fracd8_lim
-import numpy as np
 
 # Globals
 MAX_ITER = 50
