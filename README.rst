@@ -91,7 +91,6 @@ it reaches a steady state, call the :code:`reach_steady_state` method to do so:
     gfm.reach_steady_state()
 
 .. image:: https://raw.githubusercontent.com/munterfi/glacier-flow-model/master/docs/source/_static/steady_state_initial.png
-   :width: 120 px
    :alt: https://github.com/munterfi/glacier-flow-model
    :align: center
 
@@ -107,7 +106,6 @@ Heating 4.5°C after initial steady state:
     gfm.simulate(4.5)
 
 .. image:: https://raw.githubusercontent.com/munterfi/glacier-flow-model/master/docs/source/_static/steady_state_heating.png
-   :width: 120 px
    :alt: https://github.com/munterfi/glacier-flow-model
    :align: center
 
@@ -118,7 +116,6 @@ Cooling -1°C after initial steady state:
     gfm.simulate(-1)
 
 .. image:: https://raw.githubusercontent.com/munterfi/glacier-flow-model/master/docs/source/_static/steady_state_cooling.png
-   :width: 120 px
    :alt: https://github.com/munterfi/glacier-flow-model
    :align: center
 
