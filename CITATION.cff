@@ -9,5 +9,6 @@ authors:
   orcid: "https://orcid.org/0000-0003-1222-0070"
 title: "Modeling glaciers on a digital elevation model based on mass balance and a modified D8 flow algorithm applied to ice."
 version: 0.2.0
-date-released: 2022-03-24
+doi: 10.5281/zenodo.6418201
+date-released: 2022-04-06
 url: "https://github.com/munterfi/glacier-flow-model"

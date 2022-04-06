@@ -7,6 +7,9 @@
 Glacier flow model
 ==================
 
+.. image:: https://zenodo.org/badge/96700423.svg
+   :target: https://zenodo.org/badge/latestdoi/96700423
+
 .. image:: https://img.shields.io/pypi/v/glacier-flow-model.svg
         :target: https://pypi.python.org/pypi/glacier-flow-model
 

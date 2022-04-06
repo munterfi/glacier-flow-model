@@ -34,8 +34,6 @@ Version 0.2.0
       will now perform a clean reset of the model.
     - A model destructor ensures closing the model figure, when the model is
       deleted or garbage collected.
-    - Random nudging had no effect, now the layer is considered if class
-      variable :code:`MODEL_RANDOM_NUDGING` is set to :code:`True` (default).
     - Clarify the velocity variable :code:`ud` as surface ice deformation
       velocity (at medium height), and point out that basal sliding and soft
       bed deformation are ignored.
