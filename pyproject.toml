@@ -30,7 +30,7 @@ tomlkit = "^0.10.0"
 codecov = "^2.1.12"
 pydata-sphinx-theme = "^0.8.0"
 black = {version = "^22.1.0", allow-prereleases = true}
-rstcheck = "^3.4.0"
+rstcheck = "^3.5.0"
 doc8 = "^0.11.1"
 
 [tool.mypy]
