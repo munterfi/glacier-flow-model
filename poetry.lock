@@ -578,14 +578,20 @@ docutils = ">=0.11,<1.0"
 
 [[package]]
 name = "rstcheck"
-version = "3.5.0"
+version = "5.0.0"
 description = "Checks syntax of reStructuredText and code blocks nested within it"
 category = "dev"
 optional = false
-python-versions = "*"
+python-versions = ">=3.7,<4.0"
 
 [package.dependencies]
-docutils = ">=0.7"
+docutils = ">=0.7,<0.19"
+types-docutils = ">=0.18,<0.19"
+typing-extensions = ">=4.1,<5"
+
+[package.extras]
+sphinx = ["sphinx (>=4,<5)"]
+testing = ["pytest (>=6)", "pytest-xdist[psutil] (>=2.5)", "pytest-randomly (>=3)"]
 
 [[package]]
 name = "scipy"
@@ -769,6 +775,14 @@ optional = false
 python-versions = ">=3.6,<4.0"
 
 [[package]]
+name = "types-docutils"
+version = "0.18.2"
+description = "Typing stubs for docutils"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "typing-extensions"
 version = "4.1.1"
 description = "Backported and Experimental Type Hints for Python 3.6+"
@@ -804,7 +818,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.9,<3.11"
-content-hash = "ea08d0e5957b70cde67d307ee8da3063674de4306111e417dbdcef775902300f"
+content-hash = "b196c0bfa9228f36f239fb81ae79278b9a115bb10eb5bebd2cbff27de5170f2f"
 
 [metadata.files]
 alabaster = [
@@ -1311,8 +1325,8 @@ restructuredtext-lint = [
     {file = "restructuredtext_lint-1.4.0.tar.gz", hash = "sha256:1b235c0c922341ab6c530390892eb9e92f90b9b75046063e047cacfb0f050c45"},
 ]
 rstcheck = [
-    {file = "rstcheck-3.5.0-py3-none-any.whl", hash = "sha256:30c36768c4bd617a85ab93c31facaf410582e53803fde624845eb00c1430070c"},
-    {file = "rstcheck-3.5.0.tar.gz", hash = "sha256:d4b035300b7d898403544f38c3a4980171ce85f487d25e188347bbafb6ee58c0"},
+    {file = "rstcheck-5.0.0-py3-none-any.whl", hash = "sha256:8fba7f864e3fc09e3a6eac640a809cac89838f72eb1845ef21b37b13f71e7421"},
+    {file = "rstcheck-5.0.0.tar.gz", hash = "sha256:c0c4e44ebb630a7f1ff61d8fc26adc7d49c16fcd4ba85e3ea5542b864cf982e4"},
 ]
 scipy = [
     {file = "scipy-1.8.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:87b01c7d5761e8a266a0fbdb9d88dcba0910d63c1c671bdb4d99d29f469e9e03"},
@@ -1394,6 +1408,10 @@ tomli = [
 tomlkit = [
     {file = "tomlkit-0.10.1-py3-none-any.whl", hash = "sha256:3eba517439dcb2f84cf39f4f85fd2c3398309823a3c75ac3e73003638daf7915"},
     {file = "tomlkit-0.10.1.tar.gz", hash = "sha256:3c517894eadef53e9072d343d37e4427b8f0b6200a70b7c9a19b2ebd1f53b951"},
+]
+types-docutils = [
+    {file = "types-docutils-0.18.2.tar.gz", hash = "sha256:35aa0a9d40c150f96f59a5adcdafc0bb9927d6a421efbd0097374c673ad8d793"},
+    {file = "types_docutils-0.18.2-py3-none-any.whl", hash = "sha256:470700fdd29c1267cf3f1cefc1d1d88492d5d381a8e1c422e51f82e1d8b2762b"},
 ]
 typing-extensions = [
     {file = "typing_extensions-4.1.1-py3-none-any.whl", hash = "sha256:21c85e0fe4b9a155d0799430b0ad741cdce7e359660ccbd8b530613e8df88ce2"},
