@@ -462,7 +462,7 @@ email = ["email-validator (>=1.0.3)"]
 
 [[package]]
 name = "pydata-sphinx-theme"
-version = "0.8.1"
+version = "0.9.0"
 description = "Bootstrap-based Sphinx theme from the PyData community"
 category = "dev"
 optional = false
@@ -472,10 +472,10 @@ python-versions = ">=3.7"
 beautifulsoup4 = "*"
 docutils = "!=0.17.0"
 packaging = "*"
-sphinx = ">=3.5.4,<5"
+sphinx = ">=4.0.2"
 
 [package.extras]
-doc = ["numpydoc", "myst-parser", "pandas", "pytest", "pytest-regressions", "sphinxext-rediraffe", "sphinx-sitemap", "jupyter-sphinx", "plotly", "numpy", "xarray"]
+doc = ["numpydoc", "myst-parser", "pandas", "pytest", "pytest-regressions", "sphinxext-rediraffe", "sphinx-sitemap", "jupyter-sphinx", "plotly", "numpy", "xarray", "sphinx-design"]
 test = ["pytest", "pydata-sphinx-theme"]
 coverage = ["pytest-cov", "codecov", "pydata-sphinx-theme"]
 dev = ["pyyaml", "pre-commit", "nox", "pydata-sphinx-theme"]
@@ -883,7 +883,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.9,<3.11"
-content-hash = "a89e55b24916d0f550c6fc316f1ee5f3809baf3099defffccf09bbed11d651cf"
+content-hash = "a5f6bebb1f898e3918080b33367d30d6ba1693cfcf41fc53620f8636d8138fe7"
 
 [metadata.files]
 alabaster = [
@@ -1382,8 +1382,8 @@ pydantic = [
     {file = "pydantic-1.9.1.tar.gz", hash = "sha256:1ed987c3ff29fff7fd8c3ea3a3ea877ad310aae2ef9889a119e22d3f2db0691a"},
 ]
 pydata-sphinx-theme = [
-    {file = "pydata_sphinx_theme-0.8.1-py3-none-any.whl", hash = "sha256:af2c99cb0b43d95247b1563860942ba75d7f1596360594fce510caaf8c4fcc16"},
-    {file = "pydata_sphinx_theme-0.8.1.tar.gz", hash = "sha256:96165702253917ece13dd895e23b96ee6dce422dcc144d560806067852fe1fed"},
+    {file = "pydata_sphinx_theme-0.9.0-py3-none-any.whl", hash = "sha256:b22b442a6d6437e5eaf0a1f057169ffcb31eaa9f10be7d5481a125e735c71c12"},
+    {file = "pydata_sphinx_theme-0.9.0.tar.gz", hash = "sha256:03598a86915b596f4bf80bef79a4d33276a83e670bf360def699dbb9f99dc57a"},
 ]
 pyflakes = [
     {file = "pyflakes-2.4.0-py2.py3-none-any.whl", hash = "sha256:3bb3a3f256f4b7968c9c788781e4ff07dce46bdf12339dcda61053375426ee2e"},
