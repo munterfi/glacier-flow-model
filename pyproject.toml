@@ -26,7 +26,7 @@ pytest-cov = "^3.0.0"
 mypy = "^0.961"
 Sphinx = "^5.0.2"
 flake8 = "^4.0.1"
-tomlkit = "^0.11.0"
+tomlkit = "^0.11.1"
 codecov = "^2.1.12"
 pydata-sphinx-theme = "^0.9.0"
 black = {version = "^22.6.0", allow-prereleases = true}
