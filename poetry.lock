@@ -426,8 +426,8 @@ optional = false
 python-versions = ">=3.6"
 
 [package.extras]
-dev = ["pre-commit", "tox"]
-testing = ["pytest", "pytest-benchmark"]
+testing = ["pytest-benchmark", "pytest"]
+dev = ["tox", "pre-commit"]
 
 [[package]]
 name = "py"
@@ -475,10 +475,10 @@ packaging = "*"
 sphinx = ">=4.0.2"
 
 [package.extras]
-doc = ["numpydoc", "myst-parser", "pandas", "pytest", "pytest-regressions", "sphinxext-rediraffe", "sphinx-sitemap", "jupyter-sphinx", "plotly", "numpy", "xarray", "sphinx-design"]
-test = ["pytest", "pydata-sphinx-theme"]
-coverage = ["pytest-cov", "codecov", "pydata-sphinx-theme"]
-dev = ["pyyaml", "pre-commit", "nox", "pydata-sphinx-theme"]
+dev = ["pydata-sphinx-theme", "nox", "pre-commit", "pyyaml"]
+coverage = ["pydata-sphinx-theme", "codecov", "pytest-cov"]
+test = ["pydata-sphinx-theme", "pytest"]
+doc = ["sphinx-design", "xarray", "numpy", "plotly", "jupyter-sphinx", "sphinx-sitemap", "sphinxext-rediraffe", "pytest-regressions", "pytest", "pandas", "myst-parser", "numpydoc"]
 
 [[package]]
 name = "pyflakes"
@@ -541,7 +541,7 @@ coverage = {version = ">=5.2.1", extras = ["toml"]}
 pytest = ">=4.6"
 
 [package.extras]
-testing = ["fields", "hunter", "process-tests", "six", "pytest-xdist", "virtualenv"]
+testing = ["virtualenv", "pytest-xdist", "six", "process-tests", "hunter", "fields"]
 
 [[package]]
 name = "python-dateutil"
@@ -626,10 +626,10 @@ pydantic = ">=1.2,<2.0"
 types-docutils = ">=0.18,<0.19"
 
 [package.extras]
-sphinx = ["sphinx (>=4.0,<6.0)"]
-docs = ["sphinx (>=4.0,<6.0)", "sphinx-autobuild (==2021.3.14)", "m2r2 (>=0.3.2)", "sphinx-rtd-theme (<1)", "sphinx-rtd-dark-mode (>=1.2.4,<2.0.0)", "sphinx-autodoc-typehints (>=1.15)", "sphinxcontrib-apidoc (>=0.3)", "sphinxcontrib-spelling (>=7.3)"]
+docs = ["sphinxcontrib-spelling (>=7.3)", "sphinxcontrib-apidoc (>=0.3)", "sphinx-autodoc-typehints (>=1.15)", "sphinx-rtd-dark-mode (>=1.2.4,<2.0.0)", "sphinx-rtd-theme (<1)", "m2r2 (>=0.3.2)", "sphinx-autobuild (==2021.3.14)", "sphinx (>=4.0,<6.0)"]
+testing = ["mock (>=4.0)", "pytest-mock (>=3.7)", "pytest-randomly (>=3.0)", "coverage-conditional-plugin (>=0.5)", "coverage[toml] (>=6.0)", "pytest-cov (>=3.0)", "pytest (>=6.0)"]
 toml = ["tomli (>=2.0,<3.0)"]
-testing = ["pytest (>=6.0)", "pytest-cov (>=3.0)", "coverage[toml] (>=6.0)", "coverage-conditional-plugin (>=0.5)", "pytest-randomly (>=3.0)", "pytest-mock (>=3.7)", "mock (>=4.0)"]
+sphinx = ["sphinx (>=4.0,<6.0)"]
 
 [[package]]
 name = "scipy"
@@ -692,7 +692,7 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "sphinx"
-version = "5.0.2"
+version = "5.1.0"
 description = "Python documentation generator"
 category = "dev"
 optional = false
@@ -702,7 +702,7 @@ python-versions = ">=3.6"
 alabaster = ">=0.7,<0.8"
 babel = ">=1.3"
 colorama = {version = ">=0.3.5", markers = "sys_platform == \"win32\""}
-docutils = ">=0.14,<0.19"
+docutils = ">=0.14,<0.20"
 imagesize = "*"
 importlib-metadata = {version = ">=4.4", markers = "python_version < \"3.10\""}
 Jinja2 = ">=2.3"
@@ -719,7 +719,7 @@ sphinxcontrib-serializinghtml = ">=1.1.5"
 
 [package.extras]
 docs = ["sphinxcontrib-websupport"]
-lint = ["flake8 (>=3.5.0)", "isort", "mypy (>=0.950)", "docutils-stubs", "types-typed-ast", "types-requests"]
+lint = ["flake8 (>=3.5.0)", "flake8-comprehensions", "flake8-bugbear", "isort", "mypy (>=0.971)", "sphinx-lint", "docutils-stubs", "types-typed-ast", "types-requests"]
 test = ["pytest (>=4.6)", "html5lib", "cython", "typed-ast"]
 
 [[package]]
@@ -731,8 +731,8 @@ optional = false
 python-versions = ">=3.5"
 
 [package.extras]
-lint = ["flake8", "mypy", "docutils-stubs"]
 test = ["pytest"]
+lint = ["docutils-stubs", "mypy", "flake8"]
 
 [[package]]
 name = "sphinxcontrib-devhelp"
@@ -743,8 +743,8 @@ optional = false
 python-versions = ">=3.5"
 
 [package.extras]
-lint = ["flake8", "mypy", "docutils-stubs"]
 test = ["pytest"]
+lint = ["docutils-stubs", "mypy", "flake8"]
 
 [[package]]
 name = "sphinxcontrib-htmlhelp"
@@ -755,8 +755,8 @@ optional = false
 python-versions = ">=3.6"
 
 [package.extras]
-lint = ["flake8", "mypy", "docutils-stubs"]
-test = ["pytest", "html5lib"]
+test = ["html5lib", "pytest"]
+lint = ["docutils-stubs", "mypy", "flake8"]
 
 [[package]]
 name = "sphinxcontrib-jsmath"
@@ -767,7 +767,7 @@ optional = false
 python-versions = ">=3.5"
 
 [package.extras]
-test = ["pytest", "flake8", "mypy"]
+test = ["mypy", "flake8", "pytest"]
 
 [[package]]
 name = "sphinxcontrib-qthelp"
@@ -778,8 +778,8 @@ optional = false
 python-versions = ">=3.5"
 
 [package.extras]
-lint = ["flake8", "mypy", "docutils-stubs"]
 test = ["pytest"]
+lint = ["docutils-stubs", "mypy", "flake8"]
 
 [[package]]
 name = "sphinxcontrib-serializinghtml"
@@ -834,10 +834,10 @@ colorama = {version = ">=0.4.3,<0.5.0", optional = true, markers = "extra == \"a
 shellingham = {version = ">=1.3.0,<2.0.0", optional = true, markers = "extra == \"all\""}
 
 [package.extras]
-all = ["colorama (>=0.4.3,<0.5.0)", "shellingham (>=1.3.0,<2.0.0)"]
-dev = ["autoflake (>=1.3.1,<2.0.0)", "flake8 (>=3.8.3,<4.0.0)", "pre-commit (>=2.17.0,<3.0.0)"]
-doc = ["mkdocs (>=1.1.2,<2.0.0)", "mkdocs-material (>=8.1.4,<9.0.0)", "mdx-include (>=1.4.1,<2.0.0)"]
-test = ["shellingham (>=1.3.0,<2.0.0)", "pytest (>=4.4.0,<5.4.0)", "pytest-cov (>=2.10.0,<3.0.0)", "coverage (>=5.2,<6.0)", "pytest-xdist (>=1.32.0,<2.0.0)", "pytest-sugar (>=0.9.4,<0.10.0)", "mypy (==0.910)", "black (>=22.3.0,<23.0.0)", "isort (>=5.0.6,<6.0.0)"]
+test = ["isort (>=5.0.6,<6.0.0)", "black (>=22.3.0,<23.0.0)", "mypy (==0.910)", "pytest-sugar (>=0.9.4,<0.10.0)", "pytest-xdist (>=1.32.0,<2.0.0)", "coverage (>=5.2,<6.0)", "pytest-cov (>=2.10.0,<3.0.0)", "pytest (>=4.4.0,<5.4.0)", "shellingham (>=1.3.0,<2.0.0)"]
+doc = ["mdx-include (>=1.4.1,<2.0.0)", "mkdocs-material (>=8.1.4,<9.0.0)", "mkdocs (>=1.1.2,<2.0.0)"]
+dev = ["pre-commit (>=2.17.0,<3.0.0)", "flake8 (>=3.8.3,<4.0.0)", "autoflake (>=1.3.1,<2.0.0)"]
+all = ["shellingham (>=1.3.0,<2.0.0)", "colorama (>=0.4.3,<0.5.0)"]
 
 [[package]]
 name = "types-docutils"
@@ -883,7 +883,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.9,<3.11"
-content-hash = "a9cdd441756d6f7a946d1d23cdeb385fd838f911fa99123e66f0301fdd29d9b8"
+content-hash = "f4478d2e4e82a685802797db1475216c827d10a5e53d7a1d60bef067eda53fb0"
 
 [metadata.files]
 alabaster = [
@@ -1474,8 +1474,8 @@ soupsieve = [
     {file = "soupsieve-2.3.1.tar.gz", hash = "sha256:b8d49b1cd4f037c7082a9683dfa1801aa2597fb11c3a1155b7a5b94829b4f1f9"},
 ]
 sphinx = [
-    {file = "Sphinx-5.0.2-py3-none-any.whl", hash = "sha256:d3e57663eed1d7c5c50895d191fdeda0b54ded6f44d5621b50709466c338d1e8"},
-    {file = "Sphinx-5.0.2.tar.gz", hash = "sha256:b18e978ea7565720f26019c702cd85c84376e948370f1cd43d60265010e1c7b0"},
+    {file = "Sphinx-5.1.0-py3-none-any.whl", hash = "sha256:50661b4dbe6a4a1ac15692a7b6db48671da6bae1d4d507e814f1b8525b6bba86"},
+    {file = "Sphinx-5.1.0.tar.gz", hash = "sha256:7893d10d9d852c16673f9b1b7e9eda1606b420b7810270294d6e4b44c0accacc"},
 ]
 sphinxcontrib-applehelp = [
     {file = "sphinxcontrib-applehelp-1.0.2.tar.gz", hash = "sha256:a072735ec80e7675e3f432fcae8610ecf509c5f1869d17e2eecff44389cdbc58"},
