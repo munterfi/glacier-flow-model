@@ -18,7 +18,7 @@ scipy = "^1.8.0"
 numpy = "^1.19.0"
 GDAL = "^3.4.1"
 matplotlib = "^3.5.1"
-numba = "^0.55.1"
+numba = ">=0.55.1,<0.57.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.2"
