@@ -473,7 +473,7 @@ email = ["email-validator (>=1.0.3)"]
 
 [[package]]
 name = "pydata-sphinx-theme"
-version = "0.9.0"
+version = "0.10.1"
 description = "Bootstrap-based Sphinx theme from the PyData community"
 category = "dev"
 optional = false
@@ -483,12 +483,13 @@ python-versions = ">=3.7"
 beautifulsoup4 = "*"
 docutils = "!=0.17.0"
 packaging = "*"
+pygments = ">=2.7"
 sphinx = ">=4.0.2"
 
 [package.extras]
 coverage = ["codecov", "pydata-sphinx-theme", "pytest-cov"]
 dev = ["nox", "pre-commit", "pydata-sphinx-theme", "pyyaml"]
-doc = ["jupyter-sphinx", "myst-parser", "numpy", "numpydoc", "pandas", "plotly", "pytest", "pytest-regressions", "sphinx-design", "sphinx-sitemap", "sphinxext-rediraffe", "xarray"]
+doc = ["ablog", "jupyter-sphinx", "matplotlib", "myst-nb", "nbsphinx", "numpy", "numpydoc", "pandas", "plotly", "pytest", "pytest-regressions", "rich", "sphinx-copybutton", "sphinx-design", "sphinx-sitemap", "sphinx-togglebutton", "sphinxext-rediraffe", "xarray"]
 test = ["pydata-sphinx-theme", "pytest"]
 
 [[package]]
@@ -910,7 +911,7 @@ testing = ["func-timeout", "jaraco.itertools", "pytest (>=6)", "pytest-black (>=
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.9,<3.11"
-content-hash = "219fce8ff5776ea7a12308f7aa50a26a41a5c632218a1c68974109c86c2bdf65"
+content-hash = "bc27cc566fa37282e953a238319e2872b59e1122c66c8e25b57bac35754dc431"
 
 [metadata.files]
 alabaster = [
@@ -1416,8 +1417,8 @@ pydantic = [
     {file = "pydantic-1.9.1.tar.gz", hash = "sha256:1ed987c3ff29fff7fd8c3ea3a3ea877ad310aae2ef9889a119e22d3f2db0691a"},
 ]
 pydata-sphinx-theme = [
-    {file = "pydata_sphinx_theme-0.9.0-py3-none-any.whl", hash = "sha256:b22b442a6d6437e5eaf0a1f057169ffcb31eaa9f10be7d5481a125e735c71c12"},
-    {file = "pydata_sphinx_theme-0.9.0.tar.gz", hash = "sha256:03598a86915b596f4bf80bef79a4d33276a83e670bf360def699dbb9f99dc57a"},
+    {file = "pydata_sphinx_theme-0.10.1-py3-none-any.whl", hash = "sha256:4731f937c7f42f516e927d52be0a356ab6b901698aef8331b097e6c4fd8100f4"},
+    {file = "pydata_sphinx_theme-0.10.1.tar.gz", hash = "sha256:0c203ff3761407da96c3a5b7a51ae079fb3268a9c95557a4a8bbe0593c88ada2"},
 ]
 pyflakes = [
     {file = "pyflakes-2.5.0-py2.py3-none-any.whl", hash = "sha256:4579f67d887f804e67edb544428f264b7b24f435b263c4614f384135cea553d2"},
