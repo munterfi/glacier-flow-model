@@ -34,6 +34,8 @@ jobs:
     - name: Install dependencies
       run: |
         poetry config virtualenvs.in-project true
+        # Force numpy to be installed before GDAL
+        poetry run pip install numpy
         poetry install
 
     - name: Run checks
