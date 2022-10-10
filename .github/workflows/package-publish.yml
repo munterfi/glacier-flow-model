@@ -35,7 +35,7 @@ jobs:
     - name: Run checks
       run: |
         poetry run flake8 glacier_flow_model tests --count
-        # poetry run mypy .
+        poetry run mypy .
         poetry run pytest --cov=glacier_flow_model
         cd docs && poetry run make html && cd ..
 
