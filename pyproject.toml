@@ -38,5 +38,5 @@ ignore_missing_imports = true
 exclude = ["^docs\\/source\\/conf\\.py$"]
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = ["poetry-core>=1.0.0", "numpy>=1.19.0"]
 build-backend = "poetry.core.masonry.api"
