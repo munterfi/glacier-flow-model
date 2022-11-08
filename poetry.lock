@@ -26,7 +26,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 dev = ["cloudpickle", "coverage[toml] (>=5.0.2)", "furo", "hypothesis", "mypy", "pre-commit", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins", "six", "sphinx", "sphinx-notfound-page", "zope.interface"]
 docs = ["furo", "sphinx", "sphinx-notfound-page", "zope.interface"]
 tests = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins", "six", "zope.interface"]
-tests_no_zope = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins", "six"]
+tests-no-zope = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy", "pympler", "pytest (>=4.3.0)", "pytest-mypy-plugins", "six"]
 
 [[package]]
 name = "babel"
@@ -93,7 +93,7 @@ optional = false
 python-versions = ">=3.5.0"
 
 [package.extras]
-unicode_backport = ["unicodedata2"]
+unicode-backport = ["unicodedata2"]
 
 [[package]]
 name = "click"
@@ -359,7 +359,7 @@ python-versions = "*"
 
 [[package]]
 name = "numba"
-version = "0.56.0"
+version = "0.56.4"
 description = "compiling Python code using LLVM"
 category = "main"
 optional = false
@@ -367,7 +367,8 @@ python-versions = ">=3.7"
 
 [package.dependencies]
 llvmlite = ">=0.39.0dev0,<0.40"
-numpy = ">=1.18,<1.23"
+numpy = ">=1.18,<1.24"
+setuptools = "*"
 
 [[package]]
 name = "numpy"
@@ -487,10 +488,10 @@ pygments = ">=2.7"
 sphinx = ">=4.0.2"
 
 [package.extras]
-coverage = ["codecov", "pydata-sphinx-theme", "pytest-cov"]
-dev = ["nox", "pre-commit", "pydata-sphinx-theme", "pyyaml"]
-doc = ["ablog", "jupyter-sphinx", "matplotlib", "myst-nb", "nbsphinx", "numpy", "numpydoc", "pandas", "plotly", "pytest", "pytest-regressions", "rich", "sphinx-copybutton", "sphinx-design", "sphinx-sitemap", "sphinx-togglebutton", "sphinxext-rediraffe", "xarray"]
-test = ["pydata-sphinx-theme", "pytest"]
+coverage = ["codecov", "pydata-sphinx-theme[test]", "pytest-cov"]
+dev = ["nox", "pre-commit", "pydata-sphinx-theme[coverage]", "pyyaml"]
+doc = ["ablog", "jupyter_sphinx", "matplotlib", "myst-nb", "nbsphinx", "numpy", "numpydoc", "pandas", "plotly", "pytest", "pytest-regressions", "rich", "sphinx-copybutton", "sphinx-design", "sphinx-sitemap", "sphinx-togglebutton", "sphinxext-rediraffe", "xarray"]
+test = ["pydata-sphinx-theme[doc]", "pytest"]
 
 [[package]]
 name = "pyflakes"
@@ -590,7 +591,7 @@ urllib3 = ">=1.21.1,<1.27"
 
 [package.extras]
 socks = ["PySocks (>=1.5.6,!=1.5.7)", "win-inet-pton"]
-use_chardet_on_py3 = ["chardet (>=3.0.2,<5)"]
+use-chardet-on-py3 = ["chardet (>=3.0.2,<5)"]
 
 [[package]]
 name = "restructuredtext-lint"
@@ -670,6 +671,19 @@ python-versions = ">=3.8,<3.12"
 numpy = ">=1.18.5,<1.25.0"
 
 [[package]]
+name = "setuptools"
+version = "65.5.1"
+description = "Easily download, build, install, upgrade, and uninstall Python packages"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+docs = ["furo", "jaraco.packaging (>=9)", "jaraco.tidelift (>=1.4)", "pygments-github-lexers (==0.0.5)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-favicon", "sphinx-hoverxref (<2)", "sphinx-inline-tabs", "sphinx-notfound-page (==0.8.3)", "sphinx-reredirects", "sphinxcontrib-towncrier"]
+testing = ["build[virtualenv]", "filelock (>=3.4.0)", "flake8 (<5)", "flake8-2020", "ini2toml[lite] (>=0.9)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "pip (>=19.1)", "pip-run (>=8.8)", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=1.3)", "pytest-flake8", "pytest-mypy (>=0.9.1)", "pytest-perf", "pytest-timeout", "pytest-xdist", "tomli-w (>=1.0.0)", "virtualenv (>=13.0.0)", "wheel"]
+testing-integration = ["build[virtualenv]", "filelock (>=3.4.0)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "pytest", "pytest-enabler", "pytest-xdist", "tomli", "virtualenv (>=13.0.0)", "wheel"]
+
+[[package]]
 name = "setuptools-scm"
 version = "6.4.2"
 description = "the blessed package to manage your versions by scm tags"
@@ -679,6 +693,7 @@ python-versions = ">=3.6"
 
 [package.dependencies]
 packaging = ">=20.0"
+setuptools = "*"
 tomli = ">=1.0.0"
 
 [package.extras]
@@ -973,7 +988,6 @@ click = [
 ]
 codecov = [
     {file = "codecov-2.1.12-py2.py3-none-any.whl", hash = "sha256:585dc217dc3d8185198ceb402f85d5cb5dbfa0c5f350a5abcdf9e347776a5b47"},
-    {file = "codecov-2.1.12-py3.8.egg", hash = "sha256:782a8e5352f22593cbc5427a35320b99490eb24d9dcfa2155fd99d2b75cfb635"},
     {file = "codecov-2.1.12.tar.gz", hash = "sha256:a0da46bb5025426da895af90938def8ee12d37fcbcbbbc15b6dc64cf7ebc51c1"},
 ]
 colorama = [
@@ -1258,34 +1272,34 @@ mypy-extensions = [
     {file = "mypy_extensions-0.4.3.tar.gz", hash = "sha256:2d82818f5bb3e369420cb3c4060a7970edba416647068eb4c5343488a6c604a8"},
 ]
 numba = [
-    {file = "numba-0.56.0-cp310-cp310-macosx_10_14_x86_64.whl", hash = "sha256:885174997a1c875f8fa56d17451c96001c571090083e59c5973eeb26616a88e8"},
-    {file = "numba-0.56.0-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:f9696d2d800860f1820127190dc58d4b754cff98d913c11e0c00cfd5273b607a"},
-    {file = "numba-0.56.0-cp310-cp310-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:606b746e4799ea734dcb57bc1182d4af9192b8634ddefbc8790048c157a442c6"},
-    {file = "numba-0.56.0-cp310-cp310-manylinux2014_i686.manylinux_2_17_i686.whl", hash = "sha256:452b076b082cb91476c309c90a5ecb1094608e777c7b6d1b38a11b3d90585826"},
-    {file = "numba-0.56.0-cp310-cp310-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:a4482b921644c8415e15ccf180d866ea95fc499fe29ca5f27a9aa61aa484133e"},
-    {file = "numba-0.56.0-cp310-cp310-win32.whl", hash = "sha256:50e156bc1d29457a5db25d2df8745e0caa178ef8c9cd2507236eda4cdb1aa05e"},
-    {file = "numba-0.56.0-cp310-cp310-win_amd64.whl", hash = "sha256:f3558988e9d05efb2d552ed747124e4d2f0313b6664451a995f971904aeb83f6"},
-    {file = "numba-0.56.0-cp37-cp37m-macosx_10_14_x86_64.whl", hash = "sha256:4fd22a209dda8a662392fd06db426c13be029cd0a0a5d8d4eb5d6da4813093a4"},
-    {file = "numba-0.56.0-cp37-cp37m-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:bb07dce1492ebaf3890859178c9bbe8f45d5b9075c6745372ee4c735a785ce07"},
-    {file = "numba-0.56.0-cp37-cp37m-manylinux2014_i686.manylinux_2_17_i686.whl", hash = "sha256:aa7cd6ca961072f6c073d9fc501b9c019d9140276ef782ba7913e786ca71a84a"},
-    {file = "numba-0.56.0-cp37-cp37m-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:bc09a025e11627fdca888e8d49dae16d2a3dcc5b58f95627ee37e1637e281d9d"},
-    {file = "numba-0.56.0-cp37-cp37m-win32.whl", hash = "sha256:4393f4c8a46f454a9f3007f442506b19803fffd72f3e241607b1d42162ca0bb2"},
-    {file = "numba-0.56.0-cp37-cp37m-win_amd64.whl", hash = "sha256:3785329ee5f71321f672ccf27ea05ac80df84b8d20f5f6fdcf863d01cc0e64ce"},
-    {file = "numba-0.56.0-cp38-cp38-macosx_10_14_x86_64.whl", hash = "sha256:949f03f7744a0ec3257e87ac2da7ca82c599a9da679321bf120caf0df1f16d2c"},
-    {file = "numba-0.56.0-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:c72fddecd4499efc8ace9f54ef46fefdae6690e687f378e20314bddde4d13ee6"},
-    {file = "numba-0.56.0-cp38-cp38-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:c5fc5c14b7d9ab9a71519c1203bc1b28f80893693ef0b1b660a9d464e18b6a0d"},
-    {file = "numba-0.56.0-cp38-cp38-manylinux2014_i686.manylinux_2_17_i686.whl", hash = "sha256:1ae20b2e811b707632ca2a80a62b4f60bff98af71e28690541e427c336c464e7"},
-    {file = "numba-0.56.0-cp38-cp38-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:1f7f5fcc4d69a2d59182e566e68f87cfde09d25f952a00c70c679d046664b12d"},
-    {file = "numba-0.56.0-cp38-cp38-win32.whl", hash = "sha256:e45395d77a91fc9d91d8ab1c90de14579f312bd23d6122856737e227d599c726"},
-    {file = "numba-0.56.0-cp38-cp38-win_amd64.whl", hash = "sha256:b963149ddb7d26eca1aff0b1f54e8d6e5020e8a459d724f58f6adb157f36c27c"},
-    {file = "numba-0.56.0-cp39-cp39-macosx_10_14_x86_64.whl", hash = "sha256:4a613ff04d32e160a4bf2fcc5f805a03d9e3e3d8f2d3c9a742407880e66d8e0f"},
-    {file = "numba-0.56.0-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:f4c6c0ba5950c2d92d4688162887f194798abf5039fd94060a31bade91ef8638"},
-    {file = "numba-0.56.0-cp39-cp39-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:e06b6ffc0c3efda7b8b1c41b5244c856cf9e04efa77c48d6f788ef3a003704c7"},
-    {file = "numba-0.56.0-cp39-cp39-manylinux2014_i686.manylinux_2_17_i686.whl", hash = "sha256:34627da15052dc0480640e35bc1be72b9cfc253dedea8d15891f0066e5d1f58f"},
-    {file = "numba-0.56.0-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:cba64cd7dadfe5fa71a51d1b641e6535f47ee7e61537d5d62d2af3fb3d5fbd02"},
-    {file = "numba-0.56.0-cp39-cp39-win32.whl", hash = "sha256:f44b6da86911098eaf910e6e56c5db1d6b851266377880513660f4f8312cadb8"},
-    {file = "numba-0.56.0-cp39-cp39-win_amd64.whl", hash = "sha256:8994db76f36d043e883b81784954057893e34de4accd27d35ac2cf27093f40e3"},
-    {file = "numba-0.56.0.tar.gz", hash = "sha256:87a647dd4b8fce389869ff71f117732de9a519fe07663d9a02d75724eb8e244d"},
+    {file = "numba-0.56.4-cp310-cp310-macosx_10_14_x86_64.whl", hash = "sha256:9f62672145f8669ec08762895fe85f4cf0ead08ce3164667f2b94b2f62ab23c3"},
+    {file = "numba-0.56.4-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:c602d015478b7958408d788ba00a50272649c5186ea8baa6cf71d4a1c761bba1"},
+    {file = "numba-0.56.4-cp310-cp310-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:85dbaed7a05ff96492b69a8900c5ba605551afb9b27774f7f10511095451137c"},
+    {file = "numba-0.56.4-cp310-cp310-manylinux2014_i686.manylinux_2_17_i686.whl", hash = "sha256:f4cfc3a19d1e26448032049c79fc60331b104f694cf570a9e94f4e2c9d0932bb"},
+    {file = "numba-0.56.4-cp310-cp310-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:4e08e203b163ace08bad500b0c16f6092b1eb34fd1fce4feaf31a67a3a5ecf3b"},
+    {file = "numba-0.56.4-cp310-cp310-win32.whl", hash = "sha256:0611e6d3eebe4cb903f1a836ffdb2bda8d18482bcd0a0dcc56e79e2aa3fefef5"},
+    {file = "numba-0.56.4-cp310-cp310-win_amd64.whl", hash = "sha256:fbfb45e7b297749029cb28694abf437a78695a100e7c2033983d69f0ba2698d4"},
+    {file = "numba-0.56.4-cp37-cp37m-macosx_10_14_x86_64.whl", hash = "sha256:3cb1a07a082a61df80a468f232e452d818f5ae254b40c26390054e4e868556e0"},
+    {file = "numba-0.56.4-cp37-cp37m-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:d69ad934e13c15684e7887100a8f5f0f61d7a8e57e0fd29d9993210089a5b531"},
+    {file = "numba-0.56.4-cp37-cp37m-manylinux2014_i686.manylinux_2_17_i686.whl", hash = "sha256:dbcc847bac2d225265d054993a7f910fda66e73d6662fe7156452cac0325b073"},
+    {file = "numba-0.56.4-cp37-cp37m-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:8a95ca9cc77ea4571081f6594e08bd272b66060634b8324e99cd1843020364f9"},
+    {file = "numba-0.56.4-cp37-cp37m-win32.whl", hash = "sha256:fcdf84ba3ed8124eb7234adfbb8792f311991cbf8aed1cad4b1b1a7ee08380c1"},
+    {file = "numba-0.56.4-cp37-cp37m-win_amd64.whl", hash = "sha256:42f9e1be942b215df7e6cc9948cf9c15bb8170acc8286c063a9e57994ef82fd1"},
+    {file = "numba-0.56.4-cp38-cp38-macosx_10_14_x86_64.whl", hash = "sha256:553da2ce74e8862e18a72a209ed3b6d2924403bdd0fb341fa891c6455545ba7c"},
+    {file = "numba-0.56.4-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:4373da9757049db7c90591e9ec55a2e97b2b36ba7ae3bf9c956a513374077470"},
+    {file = "numba-0.56.4-cp38-cp38-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:3a993349b90569518739009d8f4b523dfedd7e0049e6838c0e17435c3e70dcc4"},
+    {file = "numba-0.56.4-cp38-cp38-manylinux2014_i686.manylinux_2_17_i686.whl", hash = "sha256:720886b852a2d62619ae3900fe71f1852c62db4f287d0c275a60219e1643fc04"},
+    {file = "numba-0.56.4-cp38-cp38-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:e64d338b504c9394a4a34942df4627e1e6cb07396ee3b49fe7b8d6420aa5104f"},
+    {file = "numba-0.56.4-cp38-cp38-win32.whl", hash = "sha256:03fe94cd31e96185cce2fae005334a8cc712fc2ba7756e52dff8c9400718173f"},
+    {file = "numba-0.56.4-cp38-cp38-win_amd64.whl", hash = "sha256:91f021145a8081f881996818474ef737800bcc613ffb1e618a655725a0f9e246"},
+    {file = "numba-0.56.4-cp39-cp39-macosx_10_14_x86_64.whl", hash = "sha256:d0ae9270a7a5cc0ede63cd234b4ff1ce166c7a749b91dbbf45e0000c56d3eade"},
+    {file = "numba-0.56.4-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:c75e8a5f810ce80a0cfad6e74ee94f9fde9b40c81312949bf356b7304ef20740"},
+    {file = "numba-0.56.4-cp39-cp39-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:a12ef323c0f2101529d455cfde7f4135eaa147bad17afe10b48634f796d96abd"},
+    {file = "numba-0.56.4-cp39-cp39-manylinux2014_i686.manylinux_2_17_i686.whl", hash = "sha256:03634579d10a6129181129de293dd6b5eaabee86881369d24d63f8fe352dd6cb"},
+    {file = "numba-0.56.4-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:0240f9026b015e336069329839208ebd70ec34ae5bfbf402e4fcc8e06197528e"},
+    {file = "numba-0.56.4-cp39-cp39-win32.whl", hash = "sha256:14dbbabf6ffcd96ee2ac827389afa59a70ffa9f089576500434c34abf9b054a4"},
+    {file = "numba-0.56.4-cp39-cp39-win_amd64.whl", hash = "sha256:0da583c532cd72feefd8e551435747e0e0fbb3c0530357e6845fcc11e38d6aea"},
+    {file = "numba-0.56.4.tar.gz", hash = "sha256:32d9fef412c81483d7efe0ceb6cf4d3310fde8b624a9cecca00f790573ac96ee"},
 ]
 numpy = [
     {file = "numpy-1.22.4-cp310-cp310-macosx_10_14_x86_64.whl", hash = "sha256:ba9ead61dfb5d971d77b6c131a9dbee62294a932bf6a356e48c75ae684e635b3"},
@@ -1491,6 +1505,10 @@ scipy = [
     {file = "scipy-1.9.1-cp39-cp39-win32.whl", hash = "sha256:09412eb7fb60b8f00b328037fd814d25d261066ebc43a1e339cdce4f7502877e"},
     {file = "scipy-1.9.1-cp39-cp39-win_amd64.whl", hash = "sha256:90c805f30c46cf60f1e76e947574f02954d25e3bb1e97aa8a07bc53aa31cf7d1"},
     {file = "scipy-1.9.1.tar.gz", hash = "sha256:26d28c468900e6d5fdb37d2812ab46db0ccd22c63baa095057871faa3a498bc9"},
+]
+setuptools = [
+    {file = "setuptools-65.5.1-py3-none-any.whl", hash = "sha256:d0b9a8433464d5800cbe05094acf5c6d52a91bfac9b52bcfc4d41382be5d5d31"},
+    {file = "setuptools-65.5.1.tar.gz", hash = "sha256:e197a19aa8ec9722928f2206f8de752def0e4c9fc6953527360d1c36d94ddb2f"},
 ]
 setuptools-scm = [
     {file = "setuptools_scm-6.4.2-py3-none-any.whl", hash = "sha256:acea13255093849de7ccb11af9e1fb8bde7067783450cee9ef7a93139bddf6d4"},
