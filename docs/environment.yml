@@ -4,6 +4,7 @@ channels:
 dependencies:
 - scipy
 - numpy
+- rasterio
 - gdal
 - libgdal
 - matplotlib

@@ -7,9 +7,7 @@ from typing import Optional
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
-from osgeo.gdal import GDT_Float32
-from osgeo.gdal import GetDriverByName
-from osgeo.gdal import Open
+from rasterio import open
 from scipy.ndimage import gaussian_filter
 from scipy.ndimage import uniform_filter
 
@@ -120,9 +118,8 @@ class GlacierFlowModel:
         """
 
         # Load DEM ------------------------------------------------------------
-        dem = Open(dem_path)
-        band = dem.GetRasterBand(1)
-        ele = band.ReadAsArray().astype(np.float32)
+        dem = open(dem_path)
+        ele = dem.read(1).astype(np.float32)
 
         # Instance variables --------------------------------------------------
         self.model_name = Path(dem_path).stem if model_name is None else model_name
@@ -138,15 +135,11 @@ class GlacierFlowModel:
         self._setup_ndarrays()  # Variable arrays (ele, h, u ,hs)
 
         # Coordinate reference system and dem resolution
-        self._geo_trans = dem.GetGeoTransform()
-        self._geo_proj = dem.GetProjection()
-        self.res = self._geo_trans[1]
+        self._dem_meta = dem.meta
+        self.res = dem.res[0]
 
         # Geographical extent of the dem
-        nrows, ncols = ele.shape
-        x0, dx, dxdy, y0, dydx, dy = self._geo_trans
-        x1 = x0 + dx * ncols
-        y1 = y0 + dy * nrows
+        x0, y0, x1, y1 = dem.bounds
         self.extent = (x0, x1, y1, y0)
 
         # Setup statistics
@@ -591,16 +584,11 @@ class GlacierFlowModel:
             self.h.shape[1],
             file_path,
         )
-        driver = GetDriverByName("GTiff")
-        data_set = driver.Create(
-            str(file_path), self.h.shape[1], self.h.shape[0], 3, GDT_Float32
-        )
-        data_set.GetRasterBand(1).WriteArray(self.store.mean("h"))
-        data_set.GetRasterBand(2).WriteArray(self.store.mean("u"))
-        data_set.GetRasterBand(3).WriteArray(self.store.diff("h"))
-        data_set.SetGeoTransform(self._geo_trans)
-        data_set.SetProjection(self._geo_proj)
-        data_set.FlushCache()
+        self._dem_meta.update(count=3)
+        with open(file_path, 'w', **self._dem_meta) as dst:
+            dst.write_band(1, self.store.mean("h"))
+            dst.write_band(2, self.store.mean("u"))
+            dst.write_band(3, self.store.diff("h"))
 
     # Visualization -----------------------------------------------------------
     @staticmethod

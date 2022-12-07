@@ -22,8 +22,8 @@ jobs:
 
     - name: Install poetry
       run: |
-        curl -sSL \
-          "https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py" | python
+        curl -sSL https://install.python-poetry.org | python3 -
+        echo "${HOME}/.local/bin" >> $GITHUB_PATH
 
     - name: Set up cache
       uses: actions/cache@v1
@@ -33,15 +33,11 @@ jobs:
 
     - name: Install dependencies
       run: |
-        source "$HOME/.poetry/env"
         poetry config virtualenvs.in-project true
-
-        # Install
         poetry install
 
     - name: Run checks
       run: |
-        source "$HOME/.poetry/env"
         poetry run flake8 glacier_flow_model tests --count
         poetry run mypy .
         poetry run pytest --cov=glacier_flow_model
@@ -49,5 +45,4 @@ jobs:
 
     - name: Upload coverage reports to Codecov
       run: |
-        source "$HOME/.poetry/env"
         poetry run codecov

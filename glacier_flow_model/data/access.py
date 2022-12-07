@@ -2,8 +2,8 @@
 import importlib.resources as resources
 from logging import getLogger
 
-from osgeo.gdal import Dataset
-from osgeo.gdal import Open
+from rasterio import open
+from rasterio import DatasetReader
 
 LOG = getLogger(__name__)
 
@@ -39,7 +39,7 @@ class PkgDataAccess:
             return str(file_path)
 
     @staticmethod
-    def load_dem() -> Dataset:
+    def load_dem() -> DatasetReader:
         """
         Loads the file 'dem.tif' on the current system.
 
@@ -51,5 +51,5 @@ class PkgDataAccess:
         """
         file_path = PkgDataAccess.locate_dem()
         LOG.info("Reading DEM from '%s' ...", file_path)
-        dem = Open(file_path)
+        dem = open(file_path)
         return dem
