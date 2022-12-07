@@ -1,6 +1,6 @@
 from collections import defaultdict
-from typing import Dict
-from typing import List
+from typing import Dict  # noqa: F401
+from typing import List  # noqa: F401
 
 import numpy as np
 

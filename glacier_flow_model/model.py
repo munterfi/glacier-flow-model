@@ -585,7 +585,7 @@ class GlacierFlowModel:
             file_path,
         )
         self._dem_meta.update(count=3)
-        with open(file_path, 'w', **self._dem_meta) as dst:
+        with open(file_path, "w", **self._dem_meta) as dst:
             dst.write_band(1, self.store.mean("h"))
             dst.write_band(2, self.store.mean("u"))
             dst.write_band(3, self.store.diff("h"))
