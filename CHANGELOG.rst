@@ -3,6 +3,15 @@ Changelog
 
 This packages uses `semantic versioning <https://semver.org/>`_.
 
+Version 0.3.0
+-------------
+
+- Features:
+    - Remove the direct dependency on GDAL via the :code:`osgeo` package and
+      use the :code:`rasterio` package to read and write raster files instead.
+- Bugfixes:
+    - Fix failing CI due to an defunct poetry installation instruction.
+
 Version 0.2.0
 -------------
 
