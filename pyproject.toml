@@ -29,7 +29,7 @@ flake8 = "^6.0.0"
 tomlkit = "^0.11.4"
 codecov = "^2.1.12"
 pydata-sphinx-theme = "^0.12.0"
-black = {version = "^22.6.0", allow-prereleases = true}
+black = {version = "^22.12.0", allow-prereleases = true}
 rstcheck = "^6.1.0"
 doc8 = "^1.0.0"
 
