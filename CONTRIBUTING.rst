@@ -57,7 +57,7 @@ When the fix is complete, it gets merged back into :code:`master` and the bugfix
 
 Release
 _______
-This packages uses `semantic versioning <https://semver.org/>`_. Once :code:`master` has aquired enough features for a release,
+This packages uses `semantic versioning <https://semver.org/>`_. Once :code:`master` has acquired enough features for a release,
 set the new version number of the in the :code:`pyproject.toml` and the :code:`CHANGELOG:rst` file. Commit and push to :code:`master`
 and publish a new release on `GitHub <https://github.com/munterfi/glacier-flow-model/releases>`_, which will trigger an action to build
 and publish the package to PyPi.

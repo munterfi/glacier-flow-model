@@ -3,6 +3,13 @@ Changelog
 
 This packages uses `semantic versioning <https://semver.org/>`_.
 
+Version 0.3.1
+-------------
+
+- Bugfixes:
+    - Fix documentation build by switching from conda to mamba in order to
+      reduce the memory consumption of the dependency solving process.
+  
 Version 0.3.0
 -------------
 
