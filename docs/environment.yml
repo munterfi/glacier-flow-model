@@ -2,12 +2,11 @@ name: gfm_docs
 channels:
 - conda-forge
 dependencies:
-- scipy
-- numpy
-- rasterio
-- gdal
-- libgdal
 - matplotlib
+- numba
+- numpy
+- pydata-sphinx-theme
+- rasterio
+- scipy
 - sphinx
 - tomlkit
-- pydata-sphinx-theme
