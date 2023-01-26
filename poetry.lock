@@ -1299,25 +1299,25 @@ files = [
 
 [[package]]
 name = "rasterio"
-version = "1.3.4"
+version = "1.3.5"
 description = "Fast and direct raster I/O for use with Numpy and SciPy"
 category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "rasterio-1.3.4-cp310-cp310-macosx_10_15_x86_64.whl", hash = "sha256:abd2d182a7b41910745c3a5eab713fcf39a1eba75edb29cec64d7fe8c4f04584"},
-    {file = "rasterio-1.3.4-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c63038d135dbd0abadda5959d08da6300c966995c51c04e4132d3dfa8a07d6d1"},
-    {file = "rasterio-1.3.4-cp310-cp310-win_amd64.whl", hash = "sha256:8c574b4a993682c2d667f30aab377c74a8fefe9ab2319c48ad23bec19e4ca637"},
-    {file = "rasterio-1.3.4-cp311-cp311-macosx_10_15_x86_64.whl", hash = "sha256:019213ebe82ef2b55a9fce650f341fbf911008c0d8b1c752be61d194199272f5"},
-    {file = "rasterio-1.3.4-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:06edaeba8ddda1da88a9598de40afc2e6f4ccb2777f1a52628c8847aefecc8e4"},
-    {file = "rasterio-1.3.4-cp311-cp311-win_amd64.whl", hash = "sha256:33877cb5ee2dc60cba547b08b8f19c013450ab61a402dfc4f3532692c59d52f2"},
-    {file = "rasterio-1.3.4-cp38-cp38-macosx_10_15_x86_64.whl", hash = "sha256:d4786be447b06d1971d489609763fd081bcb2fe4bbc3bcd84d8efa154190766b"},
-    {file = "rasterio-1.3.4-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:a007585a7d904aa69c7c78bc32c30487e9d17ac5e40d631e48e05d0e38b0d7ed"},
-    {file = "rasterio-1.3.4-cp38-cp38-win_amd64.whl", hash = "sha256:4a79fb8e85cf8f3de6fac02c391d81ad0978b25e2618cd3391908468c0ba92a6"},
-    {file = "rasterio-1.3.4-cp39-cp39-macosx_10_15_x86_64.whl", hash = "sha256:658d4ffaedc9bc3b2025c9b054455b04e4b873ad84dd15a290371c02482dc1c1"},
-    {file = "rasterio-1.3.4-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:80785c7917157bf79334e1b668df6d9ce4f55125bb7b895fb6bea09f9c2b8101"},
-    {file = "rasterio-1.3.4-cp39-cp39-win_amd64.whl", hash = "sha256:7547e1088b0a98404c678d61936dbe55df58134fe4909c68cb45acf29cdf7178"},
-    {file = "rasterio-1.3.4.tar.gz", hash = "sha256:5a8771405276ecf00b8ee927bd0a81ec21778dcfc97e4a37d0b388f10c9a41a8"},
+    {file = "rasterio-1.3.5-cp310-cp310-macosx_10_15_x86_64.whl", hash = "sha256:2363062a9e911824f2026e42bb867dc2f54c73f0ff6369cb4761d4571d338e56"},
+    {file = "rasterio-1.3.5-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:9b21620a0ed3c7b4448e6391b33062ea4e6b15faa05a6d746bbaf04e192fd395"},
+    {file = "rasterio-1.3.5-cp310-cp310-win_amd64.whl", hash = "sha256:24a2e2e5b33843886e21aa8f2ff47cc6c942d981659ecd2e7a039a77c7269d6b"},
+    {file = "rasterio-1.3.5-cp311-cp311-macosx_10_15_x86_64.whl", hash = "sha256:ae995a76b298c9bba4906a7c94c176787ca0954606e25274d6d7b6124a937ee6"},
+    {file = "rasterio-1.3.5-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:8f2fa08896de3e1bd465491c5544de90883a2a96418eb1a07bd83899be7ebb72"},
+    {file = "rasterio-1.3.5-cp311-cp311-win_amd64.whl", hash = "sha256:ba23c61536f66af8bfae8bdde569cdbd5307b7ad9e9d7a33bd27c1024f263e25"},
+    {file = "rasterio-1.3.5-cp38-cp38-macosx_10_15_x86_64.whl", hash = "sha256:b2671d7c93929c4252a2a2e642c03b3a98f151d28840fc4818518392c7dd18ca"},
+    {file = "rasterio-1.3.5-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:8b915c4ad464162aa6ae89f70e5c8498de3fb80dbedb21e9b1b28df3867396fc"},
+    {file = "rasterio-1.3.5-cp38-cp38-win_amd64.whl", hash = "sha256:582610222fe5d0dc9207b75ad163973d9a9a494bccc8678c25f586bcca7174fb"},
+    {file = "rasterio-1.3.5-cp39-cp39-macosx_10_15_x86_64.whl", hash = "sha256:da1d0bda9927889d5a2c12d46aeee52eed63ce4e8dd875532e26c419022c04b1"},
+    {file = "rasterio-1.3.5-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e73d4dec0ab23b9e5be353e07594f2f2acad56dc50c242b95c37452d7880679d"},
+    {file = "rasterio-1.3.5-cp39-cp39-win_amd64.whl", hash = "sha256:44fda24d2a1da0eea090cc9107d32799e96242ba2916b59af3eec219be259e52"},
+    {file = "rasterio-1.3.5.tar.gz", hash = "sha256:92358c3d4d5d6f3c7cd2812c8832d5175abce02b11bc101ac9548ff07163e8e2"},
 ]
 
 [package.dependencies]
