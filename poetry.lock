@@ -1309,29 +1309,29 @@ files = [
 
 [[package]]
 name = "rasterio"
-version = "1.3.5"
+version = "1.3.6"
 description = "Fast and direct raster I/O for use with Numpy and SciPy"
 category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "rasterio-1.3.5-cp310-cp310-macosx_10_15_x86_64.whl", hash = "sha256:2363062a9e911824f2026e42bb867dc2f54c73f0ff6369cb4761d4571d338e56"},
-    {file = "rasterio-1.3.5-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:b43ee85b076952b2e366da6bbb5d1e370d8deadb166277e289d8d2f0f5500db1"},
-    {file = "rasterio-1.3.5-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:9b21620a0ed3c7b4448e6391b33062ea4e6b15faa05a6d746bbaf04e192fd395"},
-    {file = "rasterio-1.3.5-cp310-cp310-win_amd64.whl", hash = "sha256:24a2e2e5b33843886e21aa8f2ff47cc6c942d981659ecd2e7a039a77c7269d6b"},
-    {file = "rasterio-1.3.5-cp311-cp311-macosx_10_15_x86_64.whl", hash = "sha256:ae995a76b298c9bba4906a7c94c176787ca0954606e25274d6d7b6124a937ee6"},
-    {file = "rasterio-1.3.5-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:b197995261e720b99ab4e97b70810fde980d301c196c0656517b010663cbb545"},
-    {file = "rasterio-1.3.5-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:8f2fa08896de3e1bd465491c5544de90883a2a96418eb1a07bd83899be7ebb72"},
-    {file = "rasterio-1.3.5-cp311-cp311-win_amd64.whl", hash = "sha256:ba23c61536f66af8bfae8bdde569cdbd5307b7ad9e9d7a33bd27c1024f263e25"},
-    {file = "rasterio-1.3.5-cp38-cp38-macosx_10_15_x86_64.whl", hash = "sha256:b2671d7c93929c4252a2a2e642c03b3a98f151d28840fc4818518392c7dd18ca"},
-    {file = "rasterio-1.3.5-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:6e39ed79dc5ecb29338bce79cb3480afe72c65ce319ae5f2fb3e5bccac11c709"},
-    {file = "rasterio-1.3.5-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:8b915c4ad464162aa6ae89f70e5c8498de3fb80dbedb21e9b1b28df3867396fc"},
-    {file = "rasterio-1.3.5-cp38-cp38-win_amd64.whl", hash = "sha256:582610222fe5d0dc9207b75ad163973d9a9a494bccc8678c25f586bcca7174fb"},
-    {file = "rasterio-1.3.5-cp39-cp39-macosx_10_15_x86_64.whl", hash = "sha256:da1d0bda9927889d5a2c12d46aeee52eed63ce4e8dd875532e26c419022c04b1"},
-    {file = "rasterio-1.3.5-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:3f8c2c2e39baf0315e18ab665f1adad928fa701234c581b0b809c42c4ab2c214"},
-    {file = "rasterio-1.3.5-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e73d4dec0ab23b9e5be353e07594f2f2acad56dc50c242b95c37452d7880679d"},
-    {file = "rasterio-1.3.5-cp39-cp39-win_amd64.whl", hash = "sha256:44fda24d2a1da0eea090cc9107d32799e96242ba2916b59af3eec219be259e52"},
-    {file = "rasterio-1.3.5.tar.gz", hash = "sha256:92358c3d4d5d6f3c7cd2812c8832d5175abce02b11bc101ac9548ff07163e8e2"},
+    {file = "rasterio-1.3.6-cp310-cp310-macosx_10_15_x86_64.whl", hash = "sha256:23a8d10ba17301029962a5667915381a8b4711ed80b712eb71cf68834cb5f946"},
+    {file = "rasterio-1.3.6-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:76b6bd4b566cd733f0ddd05ba88bea3f96705ff74e2e5fab73ead2a26cbc5979"},
+    {file = "rasterio-1.3.6-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:50785004d7adf66cf96c9c3498cf530ec91292e9349e66e8d1f1183085ee93b1"},
+    {file = "rasterio-1.3.6-cp310-cp310-win_amd64.whl", hash = "sha256:9f3f901097c3f306f1143d6fdc503440596c66a2c39054e25604bdf3f4eaaff3"},
+    {file = "rasterio-1.3.6-cp311-cp311-macosx_10_15_x86_64.whl", hash = "sha256:a732f8d314b7d9cb532b1969e968d08bf208886f04309662a5d16884af39bb4a"},
+    {file = "rasterio-1.3.6-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:d03e2fcd8f3aafb0ea1fa27a021fecc385655630a46c70d6ba693675c6cc3830"},
+    {file = "rasterio-1.3.6-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:69fdc712e9c79e82d00d783d23034bb16ca8faa18856e83e297bb7e4d7e3e277"},
+    {file = "rasterio-1.3.6-cp311-cp311-win_amd64.whl", hash = "sha256:83f764c2b30e3d07bea5626392f1ce5481e61d5583256ab66f3a610a2f40dec7"},
+    {file = "rasterio-1.3.6-cp38-cp38-macosx_10_15_x86_64.whl", hash = "sha256:1321372c653a36928b4e5e11cbe7f851903fb76608b8e48a860168b248d5f8e6"},
+    {file = "rasterio-1.3.6-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:8a584fedd92953a0580e8de3f41ce9f33a3205ba79ea58fff8f90ba5d14a0c04"},
+    {file = "rasterio-1.3.6-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:92f0f92254fcce57d25d5f60ef2cf649297f8a1e1fa279b32795bde20f11ff41"},
+    {file = "rasterio-1.3.6-cp38-cp38-win_amd64.whl", hash = "sha256:e73339e8fb9b9091a4a0ffd9f84725b2d1f118cf51c35fb0d03b94e82e1736a3"},
+    {file = "rasterio-1.3.6-cp39-cp39-macosx_10_15_x86_64.whl", hash = "sha256:eaaeb2e661d1ffc07a7ae4fd997bb326d3561f641178126102842d608a010cc3"},
+    {file = "rasterio-1.3.6-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:0883a38bd32e6a3d8d85bac67e3b75a2f04f7de265803585516883223ddbb8d1"},
+    {file = "rasterio-1.3.6-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b72fc032ddca55d73de87ef3872530b7384989378a1bc66d77c69cedafe7feaf"},
+    {file = "rasterio-1.3.6-cp39-cp39-win_amd64.whl", hash = "sha256:cb3288add5d55248f5d48815f9d509819ba8985cd0302d2e8dd743f83c5ec96d"},
+    {file = "rasterio-1.3.6.tar.gz", hash = "sha256:c8b90eb10e16102d1ab0334a7436185f295de1c07f0d197e206d1c005fc33905"},
 ]
 
 [package.dependencies]
