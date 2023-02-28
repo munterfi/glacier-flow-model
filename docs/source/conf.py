@@ -75,10 +75,11 @@ html_theme = "pydata_sphinx_theme"
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    "github_url": "https://github.com/munterfi/glacier-flow-model",
-    "twitter_url": "https://twitter.com/munterfi1",
+    "external_links": [
+        {"name": "github_url", "url": "https://github.com/munterfi/glacier-flow-model"},
+        {"name": "twitter_url", "url": "https://twitter.com/munterfi1"},
+    ]
 }
-
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
