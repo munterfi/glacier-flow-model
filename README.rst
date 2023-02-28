@@ -20,7 +20,7 @@ Glacier flow model
         :target: https://glacier-flow-model.readthedocs.io/en/latest/
         :alt: Documentation Status
 
-.. image:: https://codecov.io/gh/munterfi/glacier-flow-model/branch/master/graph/badge.svg
+.. image:: https://codecov.io/gh/munterfi/glacier-flow-model/branch/master/graph/badge.svg?token=2Kh9EboLXx
         :target: https://codecov.io/gh/munterfi/glacier-flow-model
 
 Modeling glaciers on a digital elevation model (DEM) based on mass balance and
