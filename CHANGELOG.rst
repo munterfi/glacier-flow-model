@@ -3,6 +3,13 @@ Changelog
 
 This packages uses `semantic versioning <https://semver.org/>`_.
 
+Version 0.3.2
+-------------
+
+- Features:
+    - Major update of sphinx and minor update of pydata-sphinx-theme. Adjusted
+      configuration to new schema.
+
 Version 0.3.1
 -------------
 
