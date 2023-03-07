@@ -1300,14 +1300,14 @@ email = ["email-validator (>=1.0.3)"]
 
 [[package]]
 name = "pydata-sphinx-theme"
-version = "0.13.0"
+version = "0.13.1"
 description = "Bootstrap-based Sphinx theme from the PyData community"
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "pydata_sphinx_theme-0.13.0-py3-none-any.whl", hash = "sha256:f884d40bb69d31d964ff19d6064f7bceaaa6341935fdbc092d5c249d1ff00b52"},
-    {file = "pydata_sphinx_theme-0.13.0.tar.gz", hash = "sha256:0c012b633c20ded12b5d7912c46d5ec51a1ad0ad423d5f77a085189e473c4d94"},
+    {file = "pydata_sphinx_theme-0.13.1-py3-none-any.whl", hash = "sha256:ce29c1de7961d616dfa25f4c3a9619818d4bb2d4a9985ed078367af294fbccc2"},
+    {file = "pydata_sphinx_theme-0.13.1.tar.gz", hash = "sha256:a37d967207c2d787cfe5cf74abfc6b3bcaf0606cac6b283a3876e603d67d6a71"},
 ]
 
 [package.dependencies]
@@ -1321,7 +1321,7 @@ sphinx = ">=4.2"
 
 [package.extras]
 dev = ["nox", "pre-commit", "pydata-sphinx-theme[doc,test]", "pyyaml"]
-doc = ["ablog (>=0.11.0rc2)", "colorama", "ipyleaflet", "jupyter_sphinx", "linkify-it-py", "matplotlib", "myst-nb", "nbsphinx", "numpy", "numpydoc", "pandas", "plotly", "rich", "sphinx-copybutton", "sphinx-design", "sphinx-sitemap", "sphinx-togglebutton", "sphinxcontrib-youtube", "sphinxext-rediraffe", "xarray"]
+doc = ["ablog (>=0.11.0rc2)", "colorama", "ipyleaflet", "jupyter_sphinx", "linkify-it-py", "matplotlib", "myst-nb", "nbsphinx", "numpy", "numpydoc", "pandas", "plotly", "rich", "sphinx-copybutton", "sphinx-design", "sphinx-favicon (>=1.0.1)", "sphinx-sitemap", "sphinx-togglebutton", "sphinxcontrib-youtube", "sphinxext-rediraffe", "xarray"]
 test = ["codecov", "pytest", "pytest-cov", "pytest-regressions"]
 
 [[package]]
@@ -1947,4 +1947,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.11"
-content-hash = "27149f5d71dfc0b47268d3f3db6dac850d6f54e8a6bbc3d0f43f510739c98999"
+content-hash = "92f96b0316b3a1b717d21318fe5b5c5d27016bc144f3f008df36b58ff6611e2b"
