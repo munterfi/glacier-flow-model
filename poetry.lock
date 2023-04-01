@@ -1300,14 +1300,14 @@ email = ["email-validator (>=1.0.3)"]
 
 [[package]]
 name = "pydata-sphinx-theme"
-version = "0.13.1"
+version = "0.13.3"
 description = "Bootstrap-based Sphinx theme from the PyData community"
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "pydata_sphinx_theme-0.13.1-py3-none-any.whl", hash = "sha256:ce29c1de7961d616dfa25f4c3a9619818d4bb2d4a9985ed078367af294fbccc2"},
-    {file = "pydata_sphinx_theme-0.13.1.tar.gz", hash = "sha256:a37d967207c2d787cfe5cf74abfc6b3bcaf0606cac6b283a3876e603d67d6a71"},
+    {file = "pydata_sphinx_theme-0.13.3-py3-none-any.whl", hash = "sha256:bf41ca6c1c6216e929e28834e404bfc90e080b51915bbe7563b5e6fda70354f0"},
+    {file = "pydata_sphinx_theme-0.13.3.tar.gz", hash = "sha256:827f16b065c4fd97e847c11c108bf632b7f2ff53a3bca3272f63f3f3ff782ecc"},
 ]
 
 [package.dependencies]
@@ -1318,6 +1318,7 @@ docutils = "!=0.17.0"
 packaging = "*"
 pygments = ">=2.7"
 sphinx = ">=4.2"
+typing-extensions = "*"
 
 [package.extras]
 dev = ["nox", "pre-commit", "pydata-sphinx-theme[doc,test]", "pyyaml"]
@@ -1947,4 +1948,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.11"
-content-hash = "ee10d5b10d215a216f80b9fef6d78af39e168f9c9c6e6cb08dc3b28ec5217e3f"
+content-hash = "fe3d673ba793aa852c9401f25c4016c4da87c83873a18c7a818778dee068b568"
