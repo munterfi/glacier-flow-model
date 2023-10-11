@@ -23,7 +23,7 @@ numba = ">=0.55.1,<0.59.0"
 [tool.poetry.dev-dependencies]
 pytest = "^7.4.2"
 pytest-cov = "^4.1.0"
-mypy = "^1.5"
+mypy = "^1.6"
 Sphinx = "^7.2.6"
 flake8 = "^6.1.0"
 tomlkit = "^0.12.1"
