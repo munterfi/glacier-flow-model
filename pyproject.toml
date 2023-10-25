@@ -21,7 +21,7 @@ matplotlib = "^3.5.1"
 numba = ">=0.55.1,<0.59.0"
 
 [tool.poetry.dev-dependencies]
-pytest = "^7.4.2"
+pytest = "^7.4.3"
 pytest-cov = "^4.1.0"
 mypy = "^1.6"
 Sphinx = "^7.2.6"
