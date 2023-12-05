@@ -11,9 +11,9 @@ sphinx:
 
 # Use mamba to reduce the memory consumption of the dependency solving process.
 build:
-  os: "ubuntu-20.04"
+  os: "ubuntu-22.04"
   tools:
-    python: "mambaforge-4.10"
+    python: "mambaforge-22.9"
 
 # Conda environment
 conda:
