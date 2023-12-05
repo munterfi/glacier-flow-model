@@ -2,7 +2,7 @@
 import importlib.resources as resources
 from logging import getLogger
 
-from rasterio import open
+from rasterio import open as open_raster
 from rasterio import DatasetReader
 
 LOG = getLogger(__name__)
@@ -21,7 +21,6 @@ class PkgDataAccess:
             Constructor of the PkgDataAccess class.
 
         """
-        pass
 
     @staticmethod
     def locate_dem() -> str:
@@ -34,9 +33,10 @@ class PkgDataAccess:
             The path to the file on the system.
 
         """
-        with resources.path("glacier_flow_model.data", "aletsch.tif") as file_path:
-            LOG.info("Example DEM at '%s' ...", file_path)
-            return str(file_path)
+        data_folder = resources.files("glacier_flow_model.data")
+        file_path = data_folder / "aletsch.tif"
+        LOG.info("Example DEM at '%s' ...", file_path)
+        return str(file_path)
 
     @staticmethod
     def load_dem() -> DatasetReader:
@@ -51,5 +51,5 @@ class PkgDataAccess:
         """
         file_path = PkgDataAccess.locate_dem()
         LOG.info("Reading DEM from '%s' ...", file_path)
-        dem = open(file_path)
+        dem = open_raster(file_path)
         return dem

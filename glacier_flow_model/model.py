@@ -7,7 +7,7 @@ from typing import Optional
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
-from rasterio import open
+from rasterio import open as open_raster
 from scipy.ndimage import gaussian_filter
 from scipy.ndimage import uniform_filter
 
@@ -118,7 +118,7 @@ class GlacierFlowModel:
         """
 
         # Load DEM ------------------------------------------------------------
-        dem = open(dem_path)
+        dem = open_raster(dem_path)
         ele = dem.read(1).astype(np.float32)
 
         # Instance variables --------------------------------------------------
@@ -147,6 +147,7 @@ class GlacierFlowModel:
 
         # Setup plot
         self.plot = plot
+        self._fig: Optional[mpl.figure.Figure] = None
 
     @property
     def precision(self) -> int:
@@ -330,7 +331,6 @@ class GlacierFlowModel:
         _ = self._iterate(temp_change=temp_change, max_years=max_years)
 
     def _iterate(self, temp_change: float, max_years: int) -> bool:
-
         # Format logs
         log_template = (
             "Simulating year %s (ELA: %.0f, "
@@ -585,14 +585,14 @@ class GlacierFlowModel:
             file_path,
         )
         self._dem_meta.update(count=3)
-        with open(file_path, "w", **self._dem_meta) as dst:
+        with open_raster(file_path, "w", **self._dem_meta) as dst:
             dst.write_band(1, self.store.mean("h"))
             dst.write_band(2, self.store.mean("u"))
             dst.write_band(3, self.store.diff("h"))
 
     # Visualization -----------------------------------------------------------
     @staticmethod
-    def _setup_plot(x: float, y: float) -> plt.figure:
+    def _setup_plot(x: float, y: float) -> mpl.figure.Figure:
         """
         Setup empty model plot
 
@@ -695,4 +695,5 @@ class GlacierFlowModel:
             LOG.debug("Destroying plot.")
         except AttributeError:
             pass
-        self._fig = None
+        finally:
+            self._fig = None

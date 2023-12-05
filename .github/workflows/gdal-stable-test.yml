@@ -7,47 +7,47 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.10"]
+        python-version: ["3.11"]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
-      with:
-        python-version: ${{ matrix.python-version }}
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
 
-    - name: Install system dependencies
-      run: |
-        sudo add-apt-repository ppa:ubuntugis/ppa && sudo apt-get update
-        sudo apt-get update
-        sudo apt-get install gdal-bin
-        sudo apt-get install libgdal-dev
+      - name: Install system dependencies
+        run: |
+          sudo add-apt-repository ppa:ubuntugis/ppa && sudo apt-get update
+          sudo apt-get update
+          sudo apt-get install gdal-bin
+          sudo apt-get install libgdal-dev
 
-    - name: Install poetry
-      run: |
-        curl -sSL https://install.python-poetry.org | python3 -
-        echo "${HOME}/.local/bin" >> $GITHUB_PATH
+      - name: Install poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          echo "${HOME}/.local/bin" >> $GITHUB_PATH
 
-    - name: Set up cache
-      uses: actions/cache@v1
-      with:
-        path: .venv
-        key: venv-${{ matrix.python-version }}-${{ hashFiles('poetry.lock') }}
+      - name: Set up cache
+        uses: actions/cache@v1
+        with:
+          path: .venv
+          key: venv-${{ matrix.python-version }}-${{ hashFiles('poetry.lock') }}
 
-    - name: Install dependencies
-      run: |
-        poetry config virtualenvs.in-project true
+      - name: Install dependencies
+        run: |
+          poetry config virtualenvs.in-project true
 
-        # Pip install without GDAL
-        poetry export -f requirements.txt --dev --without-hashes | grep -v gdal > requirements.txt
-        python3 -m pip install -r requirements.txt
+          # Pip install without GDAL
+          poetry export -f requirements.txt --dev --without-hashes | grep -v gdal > requirements.txt
+          python3 -m pip install -r requirements.txt
 
-        # GDAL
-        export CPLUS_INCLUDE_PATH=/usr/include/gdal
-        export C_INCLUDE_PATH=/usr/include/gdal
-        python3 -m pip install --upgrade pip
-        python3 -m pip install --global-option=build_ext --global-option="-I/usr/include/gdal" GDAL==`gdal-config --version`
+          # GDAL
+          export CPLUS_INCLUDE_PATH=/usr/include/gdal
+          export C_INCLUDE_PATH=/usr/include/gdal
+          python3 -m pip install --upgrade pip
+          python3 -m pip install --global-option=build_ext --global-option="-I/usr/include/gdal" GDAL==`gdal-config --version`
 
-    - name: Run checks
-      run: |
-        pytest --cov=glacier_flow_model
+      - name: Run checks
+        run: |
+          pytest --cov=glacier_flow_model

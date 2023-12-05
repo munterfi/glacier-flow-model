@@ -1,11 +1,12 @@
 [tool.poetry]
 name = "glacier-flow-model"
-version = "0.3.2"
+version = "0.4.0"
 description = "Modeling glaciers on a digital elevation model based on mass balance and a modified D8 flow algorithm applied to ice"
 maintainers = ["Merlin Unterfinger <info@munterfinger.ch>"]
 authors = [
     "Merlin Unterfinger <info@munterfinger.ch>",
-    "Manuel Andreas Luck <manuel.luck@gmail.com>"]
+    "Manuel Andreas Luck <manuel.luck@gmail.com>",
+]
 license = "MIT"
 readme = "README.rst"
 homepage = "https://pypi.org/project/glacier-flow-model/"
@@ -13,25 +14,25 @@ documentation = "https://glacier-flow-model.readthedocs.io/en/latest/"
 repository = "https://github.com/munterfi/glacier-flow-model"
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.11"
-scipy = "^1.8.0"
-numpy = "^1.19.0"
-rasterio = "^1.3.4"
-matplotlib = "^3.5.1"
-numba = ">=0.55.1,<0.59.0"
+python = "^3.11"
+numpy = "^1.26.2"
+numba = "^0.58.1"
+matplotlib = "^3.8.2"
+scipy = "^1.11.4"
+rasterio = "^1.3.9"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
+black = "^23.11.0"
+codecov = "^2.1.13"
+doc8 = "^1.1.1"
+flake8 = "^6.1.0"
+mypy = "^1.7.1"
+pydata-sphinx-theme = "^0.14.4"
 pytest = "^7.4.3"
 pytest-cov = "^4.1.0"
-mypy = "^1.7"
-Sphinx = "^7.2.6"
-flake8 = "^6.1.0"
-tomlkit = "^0.12.3"
-codecov = "^2.1.13"
-pydata-sphinx-theme = "^0.14.3"
-black = {version = "^23.11.0", allow-prereleases = true}
 rstcheck = "^6.2.0"
-doc8 = "^1.1.1"
+sphinx = "^7.2.6"
+tomlkit = "^0.12.3"
 
 [tool.mypy]
 ignore_missing_imports = true

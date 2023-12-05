@@ -7,42 +7,42 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        python-version: ["3.10"]
+        python-version: ["3.11"]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
-      with:
-        python-version: ${{ matrix.python-version }}
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
 
-    - name: Install system dependencies
-      run: |
-        brew install gdal
+      - name: Install system dependencies
+        run: |
+          brew install gdal
 
-    - name: Install poetry
-      run: |
-        curl -sSL https://install.python-poetry.org | python3 -
-        echo "${HOME}/.local/bin" >> $GITHUB_PATH
+      - name: Install poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          echo "${HOME}/.local/bin" >> $GITHUB_PATH
 
-    - name: Set up cache
-      uses: actions/cache@v1
-      with:
-        path: .venv
-        key: venv-${{ matrix.python-version }}-${{ hashFiles('poetry.lock') }}
+      - name: Set up cache
+        uses: actions/cache@v1
+        with:
+          path: .venv
+          key: venv-${{ matrix.python-version }}-${{ hashFiles('poetry.lock') }}
 
-    - name: Install dependencies
-      run: |
-        poetry config virtualenvs.in-project true
-        poetry install
+      - name: Install dependencies
+        run: |
+          poetry config virtualenvs.in-project true
+          poetry install
 
-    - name: Run checks
-      run: |
-        poetry run flake8 glacier_flow_model tests --count
-        poetry run mypy .
-        poetry run pytest --cov=glacier_flow_model
-        cd docs && poetry run make html && cd ..
+      - name: Run checks
+        run: |
+          poetry run flake8 glacier_flow_model tests --count
+          poetry run mypy .
+          poetry run pytest --cov=glacier_flow_model
+          cd docs && poetry run make html && cd ..
 
-    - name: Upload coverage reports to Codecov
-      run: |
-        poetry run codecov
+      - name: Upload coverage reports to Codecov
+        run: |
+          poetry run codecov
