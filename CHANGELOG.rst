@@ -3,6 +3,14 @@ Changelog
 
 This packages uses `semantic versioning <https://semver.org/>`_.
 
+Version 0.4.0
+-------------
+
+- Features:
+    - Update to Python 3.11 and new numba version.
+- Bugfixes:
+    - Solve mypy issues with matplotlib figure. 
+
 Version 0.3.2
 -------------
 
