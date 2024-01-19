@@ -1357,13 +1357,13 @@ typing-extensions = ">=4.6.0,<4.7.0 || >4.7.0"
 
 [[package]]
 name = "pydata-sphinx-theme"
-version = "0.15.1"
+version = "0.15.2"
 description = "Bootstrap-based Sphinx theme from the PyData community"
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "pydata_sphinx_theme-0.15.1-py3-none-any.whl", hash = "sha256:064efbe96137bd0acab80413759f1db38a42b51e2429b159af75c43a7590320b"},
-    {file = "pydata_sphinx_theme-0.15.1.tar.gz", hash = "sha256:4606f7d59765ae06ff7cb5e07dead4286ea2ff2164deeee63922481eddf1083c"},
+    {file = "pydata_sphinx_theme-0.15.2-py3-none-any.whl", hash = "sha256:0c5fa1fa98a9b26dae590666ff576f27e26c7ba708fee754ecb9e07359ed4588"},
+    {file = "pydata_sphinx_theme-0.15.2.tar.gz", hash = "sha256:4243fee85b3afcfae9df64f83210a04e7182e53bc3db8841ffff6d21d95ae320"},
 ]
 
 [package.dependencies]
