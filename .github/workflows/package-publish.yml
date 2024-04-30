@@ -12,38 +12,38 @@ jobs:
         python-version: ["3.11"]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
-      with:
-        python-version: ${{ matrix.python-version }}
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
 
-    - name: Install system dependencies
-      run: |
-        brew install gdal
+      - name: Install system dependencies
+        run: |
+          brew install gdal
 
-    - name: Install poetry
-      run: |
-        curl -sSL https://install.python-poetry.org | python3 -
-        echo "${HOME}/.local/bin" >> $GITHUB_PATH
+      - name: Install poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          echo "${HOME}/.local/bin" >> $GITHUB_PATH
 
-    - name: Install dependencies
-      run: |
-        poetry config virtualenvs.in-project true
-        poetry install
+      - name: Install dependencies
+        run: |
+          poetry config virtualenvs.in-project true
+          poetry install
 
-    - name: Run checks
-      run: |
-        poetry run flake8 glacier_flow_model tests --count
-        poetry run mypy .
-        poetry run pytest --cov=glacier_flow_model
-        cd docs && poetry run make html && cd ..
+      - name: Run checks
+        run: |
+          poetry run flake8 glacier_flow_model tests --count
+          poetry run mypy .
+          poetry run pytest --cov=glacier_flow_model
+          cd docs && poetry run make html && cd ..
 
-    - name: Build and publish
-      env:
-        TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
-        TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-      run: |
-        poetry build
-        python3 -m pip install --upgrade twine
-        python3 -m twine upload dist/*
+      - name: Build and publish
+        env:
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        run: |
+          poetry build
+          python3 -m pip install --upgrade twine
+          python3 -m twine upload dist/*
