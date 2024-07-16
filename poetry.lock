@@ -1773,13 +1773,13 @@ files = [
 
 [[package]]
 name = "sphinx"
-version = "7.4.1"
+version = "7.4.4"
 description = "Python documentation generator"
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "sphinx-7.4.1-py3-none-any.whl", hash = "sha256:ae21f3f4337ccc0a1054459bf232a25e495bdf647ccbcd50d3b5e355293ceff3"},
-    {file = "sphinx-7.4.1.tar.gz", hash = "sha256:09539a16d74d1850b123cdd0752b9d24f3adc025ff887d611d1010348cd3648c"},
+    {file = "sphinx-7.4.4-py3-none-any.whl", hash = "sha256:0b800d06701329cba601a40ab8c3d5afd8f7e3518f688dda61fd670effc327d2"},
+    {file = "sphinx-7.4.4.tar.gz", hash = "sha256:43c911f997a4530b6cffd4ff8d5516591f6c60d178591f4406f0dd02282e3f64"},
 ]
 
 [package.dependencies]
